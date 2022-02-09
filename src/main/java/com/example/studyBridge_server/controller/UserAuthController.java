@@ -1,5 +1,6 @@
 package com.example.studyBridge_server.controller;
 
+import com.example.studyBridge_server.domaion.ErrorMessage;
 import com.example.studyBridge_server.dto.UserAuth.UserLoginReq;
 import com.example.studyBridge_server.dto.UserAuth.UserSignUpReq;
 import com.example.studyBridge_server.dto.UserAuth.UserSignUpRes;
@@ -28,7 +29,7 @@ public class UserAuthController {
         try {
             return ResponseEntity.ok().body(userAuthService.login(userLoginReq));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new ErrorMessage(e.getMessage()));
         }
 
     }
