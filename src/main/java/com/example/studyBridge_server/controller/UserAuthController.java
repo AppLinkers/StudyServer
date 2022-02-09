@@ -22,7 +22,7 @@ public class UserAuthController {
     }
 
     // 로그인
-    @GetMapping("/")
+    @PostMapping("/")
     public ResponseEntity login(@RequestBody UserLoginReq userLoginReq) {
 
         try {

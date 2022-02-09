@@ -31,8 +31,8 @@ public class UserAuthTest {
         // given
         UserSignUpReq userSignUpReq = UserSignUpReq.builder()
                 .name("test_name")
-                .loginId("test_loginId")
-                .loginPw("test_loginPw")
+                .loginId("test_loginId2")
+                .loginPw("test_loginPw2")
                 .role("MENTOR")
                 .phone("010-0000-0000")
                 .gender("MALE")
@@ -53,8 +53,8 @@ public class UserAuthTest {
         // given
         UserSignUpReq userSignUpReq = UserSignUpReq.builder()
                 .name("test_name")
-                .loginId("test_loginId")
-                .loginPw("test_loginPw")
+                .loginId("test_loginId2")
+                .loginPw("test_loginPw2")
                 .role("MENTOR")
                 .phone("010-0000-0000")
                 .gender("MALE")
@@ -65,8 +65,8 @@ public class UserAuthTest {
         userAuthService.create(userSignUpReq);
 
         UserLoginReq userLoginReq = UserLoginReq.builder()
-                .loginId("test_loginId")
-                .loginPw("test_loginPw")
+                .loginId("test_loginId2")
+                .loginPw("test_loginPw2")
                 .build();
 
         // when
