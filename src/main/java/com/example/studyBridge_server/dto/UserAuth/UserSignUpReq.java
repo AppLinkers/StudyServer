@@ -1,6 +1,5 @@
 package com.example.studyBridge_server.dto.UserAuth;
 
-import com.example.studyBridge_server.domaion.Role;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,5 +22,5 @@ public class UserSignUpReq {
 
     private String location;
 
-    private MultipartFile profileImg; // img -> s3 -> url 값 저장
+//    private MultipartFile profileImg; // img -> s3 -> url 값 저장
 }

@@ -1,10 +1,14 @@
 package com.example.studyBridge_server.domaion;
 
 import com.example.studyBridge_server.domaion.listener.Auditable;
+import com.example.studyBridge_server.domaion.type.Gender;
+import com.example.studyBridge_server.domaion.type.Role;
 import com.example.studyBridge_server.support.BooleanToYNConverter;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -42,4 +46,10 @@ public class User extends BaseEntity implements Auditable {
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private List<UserAndStudy> userAndStudyList = new ArrayList<>();
+
 }

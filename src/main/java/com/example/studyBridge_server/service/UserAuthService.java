@@ -1,7 +1,7 @@
 package com.example.studyBridge_server.service;
 
-import com.example.studyBridge_server.domaion.Gender;
-import com.example.studyBridge_server.domaion.Role;
+import com.example.studyBridge_server.domaion.type.Gender;
+import com.example.studyBridge_server.domaion.type.Role;
 import com.example.studyBridge_server.domaion.User;
 import com.example.studyBridge_server.dto.UserAuth.UserLoginReq;
 import com.example.studyBridge_server.dto.UserAuth.UserLoginRes;
@@ -38,7 +38,8 @@ public class UserAuthService {
         user.setLocation(userSignUpReq.getLocation());
 
         // profile img 처리
-        String ImgUrl = s3Uploader.upload(userSignUpReq.getProfileImg(), "user/profile");
+//        String ImgUrl = s3Uploader.upload(userSignUpReq.getProfileImg(), "user/profile");
+        String ImgUrl = "https://study-bridge.s3.us-east-2.amazonaws.com/user/profile/basic.png";
         user.setProfileImg(ImgUrl);
 
         User createdUser = userRepository.save(user);
