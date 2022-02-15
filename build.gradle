@@ -33,6 +33,9 @@ dependencies {
 
 	// h2 DB
 	runtimeOnly 'com.h2database:h2'
+
+	// S3 client
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-aws-context', version: '2.2.6.RELEASE'
 }
 
 tasks.named('test') {

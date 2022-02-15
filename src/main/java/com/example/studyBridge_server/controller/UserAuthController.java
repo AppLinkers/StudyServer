@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/user/auth")
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class UserAuthController {
 
     // 회원가입
     @PostMapping("/sign")
-    public ResponseEntity<UserSignUpRes> create(@ModelAttribute UserSignUpReq userSignUpReq) {
+    public ResponseEntity<UserSignUpRes> create(@ModelAttribute UserSignUpReq userSignUpReq) throws IOException {
         return ResponseEntity.status(201).body(userAuthService.create(userSignUpReq));
     }
 

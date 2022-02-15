@@ -12,14 +12,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 @RequiredArgsConstructor
 public class UserAuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final S3Uploader s3Uploader;
 
-    public UserSignUpRes create(UserSignUpReq userSignUpReq) {
+    public UserSignUpRes create(UserSignUpReq userSignUpReq) throws IOException {
         System.out.println(userSignUpReq.getName());
         User user = new User();
 
@@ -35,8 +38,8 @@ public class UserAuthService {
         user.setLocation(userSignUpReq.getLocation());
 
         // profile img 처리
-        System.out.println(userSignUpReq.getProfileImg().getOriginalFilename());
-        user.setProfileImg("test");
+        String ImgUrl = s3Uploader.upload(userSignUpReq.getProfileImg(), "user/profile");
+        user.setProfileImg(ImgUrl);
 
         User createdUser = userRepository.save(user);
 
