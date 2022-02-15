@@ -22,7 +22,7 @@ public class UserAuthService {
     private final PasswordEncoder passwordEncoder;
     private final S3Uploader s3Uploader;
 
-    public UserSignUpRes create(UserSignUpReq userSignUpReq) throws IOException {
+    public UserSignUpRes create(UserSignUpReq userSignUpReq) {
         System.out.println(userSignUpReq.getName());
         User user = new User();
 

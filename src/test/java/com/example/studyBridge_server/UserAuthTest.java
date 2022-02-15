@@ -37,7 +37,6 @@ public class UserAuthTest {
                 .phone("010-0000-0000")
                 .gender("MALE")
                 .location("test_location")
-                .profileImg(new MockMultipartFile("name", "content".getBytes()))
                 .build();
 
         // when

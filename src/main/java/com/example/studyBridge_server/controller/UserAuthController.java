@@ -20,7 +20,7 @@ public class UserAuthController {
 
     // 회원가입
     @PostMapping("/sign")
-    public ResponseEntity<UserSignUpRes> create(@ModelAttribute UserSignUpReq userSignUpReq) throws IOException {
+    public ResponseEntity<UserSignUpRes> create(@ModelAttribute UserSignUpReq userSignUpReq) {
         return ResponseEntity.status(201).body(userAuthService.create(userSignUpReq));
     }
 
