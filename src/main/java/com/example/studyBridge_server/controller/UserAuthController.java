@@ -1,15 +1,13 @@
 package com.example.studyBridge_server.controller;
 
 import com.example.studyBridge_server.domaion.ErrorMessage;
-import com.example.studyBridge_server.dto.UserAuth.UserLoginReq;
-import com.example.studyBridge_server.dto.UserAuth.UserSignUpReq;
-import com.example.studyBridge_server.dto.UserAuth.UserSignUpRes;
+import com.example.studyBridge_server.dto.userAuth.UserLoginReq;
+import com.example.studyBridge_server.dto.userAuth.UserSignUpReq;
+import com.example.studyBridge_server.dto.userAuth.UserSignUpRes;
 import com.example.studyBridge_server.service.UserAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/user/auth")
@@ -33,6 +31,15 @@ public class UserAuthController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ErrorMessage(e.getMessage()));
         }
+    }
 
+    // ID 중복 체크
+    @GetMapping("/id")
+    public ResponseEntity<String> valid(@RequestParam String userLoginId) {
+        if (userAuthService.IdValidChk(userLoginId)) {
+            return ResponseEntity.ok().body("success");
+        } else {
+            return ResponseEntity.badRequest().body("not valid");
+        }
     }
 }

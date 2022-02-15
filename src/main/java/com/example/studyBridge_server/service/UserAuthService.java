@@ -3,16 +3,14 @@ package com.example.studyBridge_server.service;
 import com.example.studyBridge_server.domaion.type.Gender;
 import com.example.studyBridge_server.domaion.type.Role;
 import com.example.studyBridge_server.domaion.User;
-import com.example.studyBridge_server.dto.UserAuth.UserLoginReq;
-import com.example.studyBridge_server.dto.UserAuth.UserLoginRes;
-import com.example.studyBridge_server.dto.UserAuth.UserSignUpReq;
-import com.example.studyBridge_server.dto.UserAuth.UserSignUpRes;
+import com.example.studyBridge_server.dto.userAuth.UserLoginReq;
+import com.example.studyBridge_server.dto.userAuth.UserLoginRes;
+import com.example.studyBridge_server.dto.userAuth.UserSignUpReq;
+import com.example.studyBridge_server.dto.userAuth.UserSignUpRes;
 import com.example.studyBridge_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor

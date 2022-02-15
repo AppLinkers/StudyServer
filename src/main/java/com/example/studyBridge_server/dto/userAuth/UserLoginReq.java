@@ -1,4 +1,4 @@
-package com.example.studyBridge_server.dto.UserAuth;
+package com.example.studyBridge_server.dto.userAuth;
 
 import lombok.Builder;
 import lombok.Data;

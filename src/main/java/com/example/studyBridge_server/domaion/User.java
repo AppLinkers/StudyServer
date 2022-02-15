@@ -52,4 +52,7 @@ public class User extends BaseEntity implements Auditable {
     @ToString.Exclude
     private List<UserAndStudy> userAndStudyList = new ArrayList<>();
 
+    public void addUserAndStudy(UserAndStudy userAndStudy) {
+        this.userAndStudyList.add(userAndStudy);
+    }
 }

@@ -1,15 +1,14 @@
 package com.example.studyBridge_server;
 
-import com.example.studyBridge_server.dto.UserAuth.UserLoginReq;
-import com.example.studyBridge_server.dto.UserAuth.UserLoginRes;
-import com.example.studyBridge_server.dto.UserAuth.UserSignUpReq;
-import com.example.studyBridge_server.dto.UserAuth.UserSignUpRes;
+import com.example.studyBridge_server.dto.userAuth.UserLoginReq;
+import com.example.studyBridge_server.dto.userAuth.UserLoginRes;
+import com.example.studyBridge_server.dto.userAuth.UserSignUpReq;
+import com.example.studyBridge_server.dto.userAuth.UserSignUpRes;
 import com.example.studyBridge_server.repository.UserRepository;
 import com.example.studyBridge_server.service.UserAuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
