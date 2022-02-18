@@ -4,15 +4,15 @@ import com.example.studyBridge_server.domaion.Study;
 import com.example.studyBridge_server.domaion.User;
 import com.example.studyBridge_server.domaion.UserAndStudy;
 import com.example.studyBridge_server.domaion.type.StudyStatus;
-import com.example.studyBridge_server.dto.study.StudyApplyReq;
-import com.example.studyBridge_server.dto.study.StudyApplyRes;
-import com.example.studyBridge_server.dto.study.StudyMakeReq;
-import com.example.studyBridge_server.dto.study.StudyMakeRes;
+import com.example.studyBridge_server.dto.study.*;
 import com.example.studyBridge_server.repository.StudyRepository;
 import com.example.studyBridge_server.repository.UserAndStudyRepository;
 import com.example.studyBridge_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -73,5 +73,24 @@ public class StudyService {
                 .build();
 
         return studyApplyRes;
+    }
+
+    public List<StudyFindRes> find() {
+        List<StudyFindRes> result = new ArrayList<>();
+        studyRepository.findAll().forEach(study -> {
+            result.add(
+                    StudyFindRes.builder()
+                            .id(study.getId())
+                            .name(study.getName())
+                            .info(study.getInfo())
+                            .maxNum(study.getMaxNum())
+                            .status(study.getStatus().toString())
+                            .type(study.getType())
+                            .place(study.getPlace())
+                            .build()
+            );
+        });
+
+        return result;
     }
 }
