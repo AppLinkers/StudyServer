@@ -1,5 +1,7 @@
 package com.example.studyBridge_server.controller;
 
+import com.example.studyBridge_server.dto.study.StudyApplyReq;
+import com.example.studyBridge_server.dto.study.StudyApplyRes;
 import com.example.studyBridge_server.dto.study.StudyMakeReq;
 import com.example.studyBridge_server.dto.study.StudyMakeRes;
 import com.example.studyBridge_server.service.StudyService;
@@ -20,5 +22,10 @@ public class StudyController {
     @PostMapping("/make")
     public ResponseEntity<StudyMakeRes> make(@RequestBody StudyMakeReq studyMakeReq) {
         return ResponseEntity.status(201).body(studyService.make(studyMakeReq));
+    }
+
+    @PostMapping("/apply")
+    public ResponseEntity<StudyApplyRes> apply(@RequestBody StudyApplyReq studyApplyReq) {
+        return ResponseEntity.status(201).body(studyService.apply(studyApplyReq));
     }
 }

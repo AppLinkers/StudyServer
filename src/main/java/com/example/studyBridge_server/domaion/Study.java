@@ -25,7 +25,13 @@ public class Study extends BaseEntity implements Auditable {
 
     private String name;
 
-    private String type;
+    private String info; // 한줄 설명
+
+    private String type; // subject
+
+    private String place; // study 위치
+
+    private Integer maxNum; // 최대 인원 수
 
     @Enumerated(value = EnumType.STRING)
     private StudyStatus status;

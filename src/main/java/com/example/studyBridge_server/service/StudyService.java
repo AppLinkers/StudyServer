@@ -27,6 +27,9 @@ public class StudyService {
         Study study = new Study();
         study.setMakerId(user.getId());
         study.setName(studyMakeReq.getName());
+        study.setInfo(studyMakeReq.getInfo());
+        study.setPlace(studyMakeReq.getPlace());
+        study.setMaxNum(studyMakeReq.getMaxNum());
         study.setType(studyMakeReq.getType());
         study.setStatus(StudyStatus.APPLY);
 

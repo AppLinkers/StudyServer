@@ -12,4 +12,10 @@ public class StudyMakeReq {
     private String name;
 
     private String type;
+
+    private String info;
+
+    private String place;
+
+    private Integer maxNum;
 }
