@@ -18,7 +18,7 @@ public class UserAuthController {
 
     // 회원가입
     @PostMapping("/sign")
-    public ResponseEntity<UserSignUpRes> create(@ModelAttribute UserSignUpReq userSignUpReq) {
+    public ResponseEntity<UserSignUpRes> create(@RequestBody UserSignUpReq userSignUpReq) {
         return ResponseEntity.status(201).body(userAuthService.create(userSignUpReq));
     }
 
