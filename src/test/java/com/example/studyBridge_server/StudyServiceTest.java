@@ -27,4 +27,9 @@ class StudyServiceTest {
         Assertions.assertThat(result);
 
     }
+
+    @Test
+    void findUserLoginIdByStudyId() {
+        System.out.println(studyService.findUserLoginIdByStudyId(1L));
+    }
 }

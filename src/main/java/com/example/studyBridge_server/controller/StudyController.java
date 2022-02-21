@@ -31,12 +31,17 @@ public class StudyController {
     }
 
     @GetMapping("/isApplied")
-    public ResponseEntity<Boolean> isApplied(@RequestParam Long studyID, @RequestParam String userLoginId) {
+    public ResponseEntity<Boolean> isApplied(@RequestParam Long studyId, @RequestParam String userLoginId) {
 
         IsAppliedReq isAppliedReq = new IsAppliedReq();
-        isAppliedReq.setStudyId(studyID);
+        isAppliedReq.setStudyId(studyId);
         isAppliedReq.setUserLoginId(userLoginId);
 
         return ResponseEntity.status(201).body(studyService.isAppliedByUser(isAppliedReq));
+    }
+
+    @GetMapping("/userList")
+    public ResponseEntity<List<String>> findUserLoginIdByStudyId(@RequestParam Long studyId) {
+        return ResponseEntity.status(201).body(studyService.findUserLoginIdByStudyId(studyId));
     }
 }

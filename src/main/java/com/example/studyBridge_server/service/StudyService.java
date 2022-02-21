@@ -115,4 +115,8 @@ public class StudyService {
 
         return result.get();
     }
+
+    public List<String> findUserLoginIdByStudyId(Long studyId) {
+        return userAndStudyRepository.findUserLoginIdByStudyId(studyId);
+    }
 }
