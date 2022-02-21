@@ -29,4 +29,14 @@ public class StudyController {
     public ResponseEntity<List<StudyFindRes>> find() {
         return ResponseEntity.status(201).body(studyService.find());
     }
+
+    @GetMapping("/isApplied")
+    public ResponseEntity<Boolean> isApplied(@RequestParam Long studyID, @RequestParam String userLoginId) {
+
+        IsAppliedReq isAppliedReq = new IsAppliedReq();
+        isAppliedReq.setStudyId(studyID);
+        isAppliedReq.setUserLoginId(userLoginId);
+
+        return ResponseEntity.status(201).body(studyService.isAppliedByUser(isAppliedReq));
+    }
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -92,5 +93,26 @@ public class StudyService {
         });
 
         return result;
+    }
+
+    // 해당 Study가 사용자가 신청한 스터디 인지 확인
+    public Boolean isAppliedByUser(IsAppliedReq isAppliedReq) {
+
+        AtomicReference<Boolean> result = new AtomicReference<>();
+
+        User user = userRepository.findUserByLoginId(isAppliedReq.getUserLoginId()).get();
+
+        Study study = studyRepository.findById(isAppliedReq.getStudyId()).get();
+
+        userAndStudyRepository.findByUserAndStudy(user, study).ifPresentOrElse(
+            userAndStudy -> {
+                result.set(true);
+        },
+            () -> {
+                result.set(false);
+            }
+        );
+
+        return result.get();
     }
 }
