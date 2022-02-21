@@ -70,12 +70,11 @@ public class UserAuthService {
     }
 
     public boolean IdValidChk(String loginId) {
-        if (userRepository.findUserByLoginId(loginId).isPresent()) {
-            return false;
-        }
-        else {
-            return true;
-        }
+        return  userRepository.findUserByLoginId(loginId).isEmpty();
+    }
+
+    public boolean isMentee(String loginId) {
+        return userRepository.findRoleByLoginId(loginId).equals(Role.MENTEE);
     }
 
 }

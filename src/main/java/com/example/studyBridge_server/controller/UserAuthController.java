@@ -42,4 +42,14 @@ public class UserAuthController {
             return ResponseEntity.badRequest().body("not valid");
         }
     }
+
+    // MENTEE 확인
+    @GetMapping("/role")
+    public ResponseEntity<Boolean> isMentee(@RequestParam String userLoginId) {
+        if (userAuthService.isMentee(userLoginId)) {
+            return ResponseEntity.ok().body(true);
+        } else {
+            return ResponseEntity.ok().body(false);
+        }
+    }
 }
