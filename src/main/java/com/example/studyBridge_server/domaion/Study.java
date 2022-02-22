@@ -3,10 +3,7 @@ package com.example.studyBridge_server.domaion;
 
 import com.example.studyBridge_server.domaion.listener.Auditable;
 import com.example.studyBridge_server.domaion.type.StudyStatus;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -49,5 +46,16 @@ public class Study extends BaseEntity implements Auditable {
 
     public void addUserAndStudy(UserAndStudy userAndStudy) {
         this.userAndStudyList.add(userAndStudy);
+    }
+
+    @Builder
+    public Study(String name, String info, String type, String place, Integer maxNum, StudyStatus status, Long makerId) {
+        this.name = name;
+        this.info = info;
+        this.type = type;
+        this.place = place;
+        this.maxNum = maxNum;
+        this.status = status;
+        this.makerId = makerId;
     }
 }

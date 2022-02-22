@@ -32,10 +32,10 @@ public class User extends BaseEntity implements Auditable {
 
     private String phone;
 
-    private int coin = 0;
+    private int coin;
 
     @Convert(converter = BooleanToYNConverter.class)
-    private boolean subscribe = false;
+    private boolean subscribe;
 
     private String profileImg;
 
@@ -54,5 +54,19 @@ public class User extends BaseEntity implements Auditable {
 
     public void addUserAndStudy(UserAndStudy userAndStudy) {
         this.userAndStudyList.add(userAndStudy);
+    }
+
+    @Builder
+    public User(@NonNull String loginId, @NonNull String loginPw, @NonNull String name, String phone, String profileImg, String location, Gender gender, Role role) {
+        this.loginId = loginId;
+        this.loginPw = loginPw;
+        this.name = name;
+        this.phone = phone;
+        this.coin = 0;
+        this.subscribe = false;
+        this.profileImg = profileImg;
+        this.location = location;
+        this.gender = gender;
+        this.role = role;
     }
 }

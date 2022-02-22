@@ -21,24 +21,23 @@ public class UserAuthService {
     private final S3Uploader s3Uploader;
 
     public UserSignUpRes create(UserSignUpReq userSignUpReq) {
-        System.out.println(userSignUpReq.getName());
-        User user = new User();
-
-        user.setName(userSignUpReq.getName());
-        user.setLoginId(userSignUpReq.getLoginId());
-
         // 비밀번호 암호화
-        user.setLoginPw(passwordEncoder.encode(userSignUpReq.getLoginPw()));
-
-        user.setGender(Gender.valueOf(userSignUpReq.getGender()));
-        user.setRole(Role.valueOf(userSignUpReq.getRole()));
-        user.setPhone(userSignUpReq.getPhone());
-        user.setLocation(userSignUpReq.getLocation());
+        String loginPw = passwordEncoder.encode(userSignUpReq.getLoginPw());
 
         // profile img 처리
-//        String ImgUrl = s3Uploader.upload(userSignUpReq.getProfileImg(), "user/profile");
+        //String ImgUrl = s3Uploader.upload(userSignUpReq.getProfileImg(), "user/profile");
         String ImgUrl = "https://study-bridge.s3.us-east-2.amazonaws.com/user/profile/basic.png";
-        user.setProfileImg(ImgUrl);
+
+        User user = User.builder()
+                .name(userSignUpReq.getName())
+                .loginId(userSignUpReq.getLoginId())
+                .loginPw(loginPw)
+                .gender(Gender.valueOf(userSignUpReq.getGender()))
+                .role(Role.valueOf(userSignUpReq.getRole()))
+                .phone(userSignUpReq.getPhone())
+                .location(userSignUpReq.getLocation())
+                .profileImg(ImgUrl)
+                .build();
 
         User createdUser = userRepository.save(user);
 

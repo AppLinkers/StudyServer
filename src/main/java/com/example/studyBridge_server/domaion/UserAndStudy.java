@@ -2,10 +2,7 @@ package com.example.studyBridge_server.domaion;
 
 import com.example.studyBridge_server.domaion.listener.Auditable;
 import com.example.studyBridge_server.domaion.type.Role;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -28,4 +25,11 @@ public class UserAndStudy extends BaseEntity implements Auditable {
 
     @ManyToOne
     private User user;
+
+    @Builder
+    public UserAndStudy(Role role, Study study, User user) {
+        this.role = role;
+        this.study = study;
+        this.user = user;
+    }
 }

@@ -54,4 +54,9 @@ public class StudyController {
     public ResponseEntity<String> findMakerLoginIdByStudyId(@RequestParam Long studyId) {
         return ResponseEntity.status(201).body(studyService.findMakerLoginIdByStudyId(studyId));
     }
+
+    @PostMapping("/status")
+    public ResponseEntity<String> changeStatus(@RequestBody ChangeStatusReq changeStatusReq) {
+        return ResponseEntity.status(201).body(studyService.changeStatus(changeStatusReq));
+    }
 }

@@ -27,14 +27,15 @@ public class StudyService {
 
     public StudyMakeRes make(StudyMakeReq studyMakeReq) {
         User user = userRepository.findUserByLoginId(studyMakeReq.getMakerId()).get();
-        Study study = new Study();
-        study.setMakerId(user.getId());
-        study.setName(studyMakeReq.getName());
-        study.setInfo(studyMakeReq.getInfo());
-        study.setPlace(studyMakeReq.getPlace());
-        study.setMaxNum(studyMakeReq.getMaxNum());
-        study.setType(studyMakeReq.getType());
-        study.setStatus(StudyStatus.APPLY);
+        Study study = Study.builder()
+                .makerId(user.getId())
+                .name(studyMakeReq.getName())
+                .info(studyMakeReq.getInfo())
+                .place(studyMakeReq.getPlace())
+                .maxNum(studyMakeReq.getMaxNum())
+                .type(studyMakeReq.getType())
+                .status(StudyStatus.APPLY)
+                .build();
 
         // 멘토가 스터디 제작 시
         if (user.getRole().equals(Role.MENTOR)) {
@@ -64,10 +65,10 @@ public class StudyService {
         User user = userRepository.findUserByLoginId(studyApplyReq.getUserId()).get();
         Study study = studyRepository.findById(studyApplyReq.getStudyId()).get();
 
-        UserAndStudy userAndStudy = new UserAndStudy();
-        userAndStudy.setStudy(study);
-        userAndStudy.setUser(user);
-        userAndStudy.setRole(user.getRole());
+        UserAndStudy userAndStudy = UserAndStudy.builder()
+                .study(study)
+                .user(user)
+                .role(user.getRole()).build();
 
         userAndStudyRepository.save(userAndStudy);
 
@@ -134,4 +135,13 @@ public class StudyService {
         return studyRepository.findMakerLoginIdByStudyId(studyId);
     }
 
+    public String changeStatus(ChangeStatusReq changeStatusReq ) {
+        Study study = studyRepository.findById(changeStatusReq.getStudyId()).get();
+
+        study.setStatus(StudyStatus.valueOf(changeStatusReq.getStatus()));
+
+        studyRepository.save(study);
+
+        return study.getStatus().toString();
+    }
 }
