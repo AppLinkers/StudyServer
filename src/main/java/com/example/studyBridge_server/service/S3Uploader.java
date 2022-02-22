@@ -36,7 +36,7 @@ public class S3Uploader {
     // S3로 파일 업로드 하기
     private String upload(File uploadFile, String dirName) {
         // S3 에 저장된 파일 이름 -> randomUUID 를 통해 파일 이름 안겹치게 함.
-        String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
+        String fileName = dirName + "/" + UUID.randomUUID();
 
         // S3로 업로드
         String uploadImageUrl = putS3(uploadFile, fileName);

@@ -59,4 +59,9 @@ public class StudyController {
     public ResponseEntity<String> changeStatus(@RequestBody ChangeStatusReq changeStatusReq) {
         return ResponseEntity.status(201).body(studyService.changeStatus(changeStatusReq));
     }
+
+    @GetMapping("/status")
+    public ResponseEntity<String> getStatus(@RequestParam Long studyId) {
+        return ResponseEntity.status(201).body(studyService.getStatus(studyId));
+    }
 }

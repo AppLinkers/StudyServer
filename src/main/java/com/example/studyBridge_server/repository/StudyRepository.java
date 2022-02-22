@@ -9,4 +9,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     @Query("select u.loginId from User u where u.id = (select s.makerId from Study s where s.id = :studyId)")
     String findMakerLoginIdByStudyId(@Param("studyId") Long studyId);
+
+    @Query("select s.status from Study s where s.id = :studyId")
+    String findStatus(@Param("studyId") Long studyId);
 }

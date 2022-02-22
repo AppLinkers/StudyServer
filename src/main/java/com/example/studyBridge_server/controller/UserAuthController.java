@@ -43,7 +43,7 @@ public class UserAuthController {
         }
     }
 
-    // MENTEE 확인
+    // Mentee 확인
     @GetMapping("/role")
     public ResponseEntity<Boolean> isMentee(@RequestParam String userLoginId) {
         if (userAuthService.isMentee(userLoginId)) {

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -143,5 +142,9 @@ public class StudyService {
         studyRepository.save(study);
 
         return study.getStatus().toString();
+    }
+
+    public String getStatus(Long studyId) {
+        return studyRepository.findStatus(studyId);
     }
 }

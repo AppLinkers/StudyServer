@@ -1,5 +1,6 @@
 package com.example.studyBridge_server.service;
 
+import com.example.studyBridge_server.domaion.MentorProfile;
 import com.example.studyBridge_server.domaion.type.Gender;
 import com.example.studyBridge_server.domaion.type.Role;
 import com.example.studyBridge_server.domaion.User;
@@ -7,6 +8,7 @@ import com.example.studyBridge_server.dto.userAuth.UserLoginReq;
 import com.example.studyBridge_server.dto.userAuth.UserLoginRes;
 import com.example.studyBridge_server.dto.userAuth.UserSignUpReq;
 import com.example.studyBridge_server.dto.userAuth.UserSignUpRes;
+import com.example.studyBridge_server.repository.MentorProfileRepository;
 import com.example.studyBridge_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +20,7 @@ public class UserAuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final S3Uploader s3Uploader;
+    private final MentorProfileRepository mentorProfileRepository;
 
     public UserSignUpRes create(UserSignUpReq userSignUpReq) {
         // 비밀번호 암호화
@@ -40,6 +42,14 @@ public class UserAuthService {
                 .build();
 
         User createdUser = userRepository.save(user);
+
+        // 사용자가 멘토 일 때, 초기 프로필 작성
+        if (createdUser.getRole().equals(Role.MENTOR)) {
+            MentorProfile mentorProfile = MentorProfile.initialize()
+                    .user(createdUser)
+                    .build();
+            mentorProfileRepository.save(mentorProfile);
+        }
 
         // 결과 반환
         UserSignUpRes userSignUpRes = UserSignUpRes.builder()
