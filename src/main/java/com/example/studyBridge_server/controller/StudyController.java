@@ -50,5 +50,8 @@ public class StudyController {
         return ResponseEntity.status(201).body(studyService.findMenteeLoginIdByStudyId(studyId));
     }
 
-
+    @GetMapping("/maker")
+    public ResponseEntity<String> findMakerLoginIdByStudyId(@RequestParam Long studyId) {
+        return ResponseEntity.status(201).body(studyService.findMakerLoginIdByStudyId(studyId));
+    }
 }

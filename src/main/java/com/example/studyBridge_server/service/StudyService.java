@@ -69,12 +69,7 @@ public class StudyService {
         userAndStudy.setUser(user);
         userAndStudy.setRole(user.getRole());
 
-        user.addUserAndStudy(userAndStudy);
-        study.addUserAndStudy(userAndStudy);
-
         userAndStudyRepository.save(userAndStudy);
-        userRepository.save(user);
-        studyRepository.save(study);
 
         StudyApplyRes studyApplyRes = StudyApplyRes.builder()
                 .studyName(study.getName())
@@ -107,22 +102,11 @@ public class StudyService {
     // 해당 Study가 사용자가 신청한 스터디 인지 확인
     public Boolean isAppliedByUser(IsAppliedReq isAppliedReq) {
 
-        AtomicReference<Boolean> result = new AtomicReference<>();
-
-        User user = userRepository.findUserByLoginId(isAppliedReq.getUserLoginId()).get();
-
-        Study study = studyRepository.findById(isAppliedReq.getStudyId()).get();
-
-        userAndStudyRepository.findByUserAndStudy(user, study).ifPresentOrElse(
-            userAndStudy -> {
-                result.set(true);
-        },
-            () -> {
-                result.set(false);
-            }
-        );
-
-        return result.get();
+        if (userAndStudyRepository.findByUserAndStudy(isAppliedReq.getUserLoginId(), isAppliedReq.getStudyId()).isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public List<String> findMentorLoginIdByStudyId(Long studyId) {
@@ -144,6 +128,10 @@ public class StudyService {
         } else {
             return new ArrayList<>();
         }
+    }
+
+    public String findMakerLoginIdByStudyId(Long studyId) {
+        return studyRepository.findMakerLoginIdByStudyId(studyId);
     }
 
 }
