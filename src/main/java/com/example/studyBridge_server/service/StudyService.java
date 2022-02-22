@@ -3,6 +3,7 @@ package com.example.studyBridge_server.service;
 import com.example.studyBridge_server.domaion.Study;
 import com.example.studyBridge_server.domaion.User;
 import com.example.studyBridge_server.domaion.UserAndStudy;
+import com.example.studyBridge_server.domaion.type.Role;
 import com.example.studyBridge_server.domaion.type.StudyStatus;
 import com.example.studyBridge_server.dto.study.*;
 import com.example.studyBridge_server.repository.StudyRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -34,14 +36,21 @@ public class StudyService {
         study.setType(studyMakeReq.getType());
         study.setStatus(StudyStatus.APPLY);
 
+        // 멘토가 스터디 제작 시
+        if (user.getRole().equals(Role.MENTOR)) {
+            study.setMentorId(user.getId());
+        }
+
         Study savedStudy = studyRepository.save(study);
 
-        StudyApplyReq studyApplyReq = StudyApplyReq.builder()
-                .studyId(savedStudy.getId())
-                .userId(user.getLoginId())
-                .build();
+        if (user.getRole().equals(Role.MENTEE)) {
+            StudyApplyReq studyApplyReq = StudyApplyReq.builder()
+                    .studyId(savedStudy.getId())
+                    .userId(user.getLoginId())
+                    .build();
 
-        apply(studyApplyReq);
+            apply(studyApplyReq);
+        }
 
         StudyMakeRes studyMakeRes = StudyMakeRes.builder()
                 .makerId(user.getLoginId())
@@ -116,7 +125,25 @@ public class StudyService {
         return result.get();
     }
 
-    public List<String> findUserLoginIdByStudyId(Long studyId) {
-        return userAndStudyRepository.findUserLoginIdByStudyId(studyId);
+    public List<String> findMentorLoginIdByStudyId(Long studyId) {
+
+        Optional<List<String>> result = userAndStudyRepository.findUserLoginIdByStudyId(studyId, "MENTOR");
+
+        if (result.isPresent()) {
+            return result.get();
+        } else {
+            return new ArrayList<>();
+        }
     }
+
+    public List<String> findMenteeLoginIdByStudyId(Long studyId) {
+        Optional<List<String>> result = userAndStudyRepository.findUserLoginIdByStudyId(studyId, "MENTEE");
+
+        if (result.isPresent()) {
+            return result.get();
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
 }

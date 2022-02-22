@@ -28,8 +28,4 @@ class StudyServiceTest {
 
     }
 
-    @Test
-    void findUserLoginIdByStudyId() {
-        System.out.println(studyService.findUserLoginIdByStudyId(1L));
-    }
 }

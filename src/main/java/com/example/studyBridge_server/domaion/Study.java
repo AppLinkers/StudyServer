@@ -40,7 +40,7 @@ public class Study extends BaseEntity implements Auditable {
     private Long makerId;
 
     @Column(name = "mentor_id")
-    private long mentorId;
+    private Long mentorId;
 
     @OneToMany
     @JoinColumn(name = "study_id")
