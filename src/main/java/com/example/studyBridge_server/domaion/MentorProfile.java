@@ -29,9 +29,10 @@ public class MentorProfile extends BaseEntity implements Auditable {
 
     private String nickName;
 
-    @Nullable
-    @Enumerated(value = EnumType.STRING)
-    private Subject subject;
+    //    @Nullable
+//    @Enumerated(value = EnumType.STRING)
+//    private Subject subject;
+    private String subject;
 
     private String school;
 

@@ -5,6 +5,7 @@ import com.example.studyBridge_server.domaion.User;
 import com.example.studyBridge_server.domaion.type.Subject;
 import com.example.studyBridge_server.dto.userMentor.ProfileRes;
 import com.example.studyBridge_server.dto.userMentor.ProfileReq;
+import com.example.studyBridge_server.dto.userMentor.ProfileTextReq;
 import com.example.studyBridge_server.repository.MentorProfileRepository;
 import com.example.studyBridge_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,33 +39,36 @@ public class UserMentorService {
             });
         }
 
+        ProfileTextReq profileTextReq = profileReq.getProfileTextReq();
+
 
         // 업데이트 할 멘토 사용자 객체 불러오기
-        User user = userRepository.findUserByLoginId(profileReq.getUserLoginId()).get();
+        User user = userRepository.findUserByLoginId(profileTextReq.getUserLoginId()).get();
 
-        if (!user.getLocation().equals(profileReq.getLocation())) {
-            user.setLocation(profileReq.getLocation());
+        if (!user.getLocation().equals(profileTextReq.getLocation())) {
+            user.setLocation(profileTextReq.getLocation());
             userRepository.save(user);
         }
 
         // 업데이트 할 멘토 프로필 불러오기
         MentorProfile mentorProfile = mentorProfileRepository.findByUser(user);
-        mentorProfile.setInfo(profileReq.getInfo());
-        mentorProfile.setNickName(profileReq.getNickName());
-        mentorProfile.setSchool(profileReq.getSchool());
+        mentorProfile.setInfo(profileTextReq.getInfo());
+        mentorProfile.setNickName(profileTextReq.getNickName());
+        mentorProfile.setSchool(profileTextReq.getSchool());
         mentorProfile.setSchoolImg(schoolImgUrl);
         mentorProfile.setCertificatesImg(certificatesImg);
-        mentorProfile.setSubject(Subject.valueOf(profileReq.getSubject()));
-        mentorProfile.setExperience(profileReq.getExperience());
-        mentorProfile.setCurriculum(profileReq.getCurriculum());
-        mentorProfile.setAppeal(profileReq.getAppeal());
+//        mentorProfile.setSubject(Subject.valueOf(profileTextReq.getSubject()));
+        mentorProfile.setSubject(profileTextReq.getSubject());
+        mentorProfile.setExperience(profileTextReq.getExperience());
+        mentorProfile.setCurriculum(profileTextReq.getCurriculum());
+        mentorProfile.setAppeal(profileTextReq.getAppeal());
 
         MentorProfile result = mentorProfileRepository.save(mentorProfile);
 
         // 결과 생성
         return ProfileRes.builder()
                 .userName(user.getName())
-                .location(profileReq.getLocation())
+                .location(profileTextReq.getLocation())
                 .info(result.getInfo())
                 .nickName(result.getNickName())
                 .school(result.getSchool())
