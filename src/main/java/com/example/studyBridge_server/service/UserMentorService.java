@@ -56,7 +56,7 @@ public class UserMentorService {
         mentorProfile.setNickName(profileTextReq.getNickName());
         mentorProfile.setSchool(profileTextReq.getSchool());
         mentorProfile.setSchoolImg(schoolImgUrl);
-        mentorProfile.setCertificatesImg(certificatesImg);
+        mentorProfile.setCertificatesImg(java.util.Optional.of(certificatesImg));
 //        mentorProfile.setSubject(Subject.valueOf(profileTextReq.getSubject()));
         mentorProfile.setSubject(profileTextReq.getSubject());
         mentorProfile.setExperience(profileTextReq.getExperience());
@@ -74,7 +74,7 @@ public class UserMentorService {
                 .school(result.getSchool())
                 .schoolImg(result.getSchoolImg())
                 .subject(result.getSubject().toString())
-                .certificatesImg(result.getCertificatesImg())
+                .certificatesImg(result.getCertificatesImg().get())
                 .curriculum(result.getCurriculum())
                 .appeal(result.getAppeal())
                 .build();
