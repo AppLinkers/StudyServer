@@ -23,8 +23,6 @@ public class ProfileRes {
 
     private String subject;
 
-    private List<String> certificates;
-
     private List<String> certificatesImg;
 
     private String curriculum;

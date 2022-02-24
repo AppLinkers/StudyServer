@@ -27,7 +27,7 @@ public class UserMentorService {
         // img 업로드
         String schoolImgUrl = s3Uploader.upload(profileReq.getSchoolImg(), "mentor/profile");
         List<String> certificatesImg = new ArrayList<>();
-        if (profileReq.getCertificates().size() > 0) {
+        if (profileReq.getCertificatesImg().size() > 0) {
             profileReq.getCertificatesImg().forEach(image -> {
                 try {
                     String certificateImgUrl = s3Uploader.upload(image, "mentor/profile");
@@ -53,7 +53,6 @@ public class UserMentorService {
         mentorProfile.setNickName(profileReq.getNickName());
         mentorProfile.setSchool(profileReq.getSchool());
         mentorProfile.setSchoolImg(schoolImgUrl);
-        mentorProfile.setCertificates(profileReq.getCertificates());
         mentorProfile.setCertificatesImg(certificatesImg);
         mentorProfile.setSubject(Subject.valueOf(profileReq.getSubject()));
         mentorProfile.setCurriculum(profileReq.getCurriculum());
@@ -70,7 +69,6 @@ public class UserMentorService {
                 .school(result.getSchool())
                 .schoolImg(result.getSchoolImg())
                 .subject(result.getSubject().toString())
-                .certificates(result.getCertificates())
                 .certificatesImg(result.getCertificatesImg())
                 .curriculum(result.getCurriculum())
                 .appeal(result.getAppeal())
