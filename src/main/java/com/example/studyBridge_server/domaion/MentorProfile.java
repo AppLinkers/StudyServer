@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @NoArgsConstructor
@@ -38,9 +39,8 @@ public class MentorProfile extends BaseEntity implements Auditable {
 
     private String schoolImg;
 
-    @Nullable
     @Convert(converter = StringArrayConverter.class)
-    private List<String> certificatesImg;
+    private Optional<List<String>> certificatesImg;
 
     private String experience;
 
