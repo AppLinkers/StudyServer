@@ -21,6 +21,8 @@ public class UserMentorController {
 
     @PostMapping("/profile")
     public ResponseEntity<Object> profile(@ModelAttribute ProfileReq profileReq) {
+        System.out.println("test");
+        System.out.println(profileReq.toString());
         try {
             return ResponseEntity.status(201).body(userMentorService.profile(profileReq));
         } catch (IOException e) {

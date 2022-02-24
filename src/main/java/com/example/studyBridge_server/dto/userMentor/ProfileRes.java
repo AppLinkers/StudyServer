@@ -25,6 +25,8 @@ public class ProfileRes {
 
     private List<String> certificatesImg;
 
+    private String experience;
+
     private String curriculum;
 
     private String appeal;

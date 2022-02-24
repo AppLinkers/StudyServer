@@ -24,6 +24,8 @@ public class ProfileReq {
 
     private List<MultipartFile> certificatesImg;
 
+    private String experience;
+
     private String curriculum;
 
     private String appeal;

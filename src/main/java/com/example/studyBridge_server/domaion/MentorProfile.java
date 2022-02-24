@@ -41,6 +41,8 @@ public class MentorProfile extends BaseEntity implements Auditable {
     @Convert(converter = StringArrayConverter.class)
     private List<String> certificatesImg;
 
+    private String experience;
+
     private String curriculum;
 
     private String appeal;

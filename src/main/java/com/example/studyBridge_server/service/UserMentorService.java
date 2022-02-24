@@ -55,6 +55,7 @@ public class UserMentorService {
         mentorProfile.setSchoolImg(schoolImgUrl);
         mentorProfile.setCertificatesImg(certificatesImg);
         mentorProfile.setSubject(Subject.valueOf(profileReq.getSubject()));
+        mentorProfile.setExperience(profileReq.getExperience());
         mentorProfile.setCurriculum(profileReq.getCurriculum());
         mentorProfile.setAppeal(profileReq.getAppeal());
 
