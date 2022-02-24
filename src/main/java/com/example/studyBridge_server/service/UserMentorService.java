@@ -75,6 +75,7 @@ public class UserMentorService {
                 .schoolImg(result.getSchoolImg())
                 .subject(result.getSubject().toString())
                 .certificatesImg(result.getCertificatesImg().get())
+                .experience(result.getExperience())
                 .curriculum(result.getCurriculum())
                 .appeal(result.getAppeal())
                 .build();
