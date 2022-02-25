@@ -6,12 +6,7 @@ import com.example.studyBridge_server.service.UserMentorService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("user/mentor")
@@ -23,9 +18,13 @@ public class UserMentorController {
     @SneakyThrows
     @PostMapping("/profile")
     public ResponseEntity<ProfileRes> profile(@ModelAttribute ProfileReq profileReq) {
-        System.out.println("test");
         System.out.println(profileReq.toString());
         return ResponseEntity.status(201).body(userMentorService.profile(profileReq));
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<ProfileRes> getProfile(@RequestParam String userLoginId) {
+        return ResponseEntity.status(201).body(userMentorService.getProfile(userLoginId));
     }
 
 }
