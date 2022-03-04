@@ -8,6 +8,8 @@ import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("user/mentor")
 @RequiredArgsConstructor
@@ -27,4 +29,8 @@ public class UserMentorController {
         return ResponseEntity.status(201).body(userMentorService.getProfile(userLoginId));
     }
 
+    @GetMapping("/allProfile")
+    public ResponseEntity<List<ProfileRes>> getAllProfile() {
+        return ResponseEntity.status(201).body(userMentorService.getAllProfile());
+    }
 }

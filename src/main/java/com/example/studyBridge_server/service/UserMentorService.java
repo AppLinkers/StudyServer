@@ -125,4 +125,36 @@ public class UserMentorService {
                 .appeal(mentorProfile.getAppeal())
                 .build();
     }
+
+    public List<ProfileRes> getAllProfile() {
+        List<ProfileRes> result = new ArrayList<>();
+        mentorProfileRepository.findAll().forEach(
+                mentorProfile -> {
+                    List<String> certificatesImg = new ArrayList<>();
+                    List<CertificateImg> certificateImgs = certificateImgRepository.findAllByMentorProfile(mentorProfile).get();
+                    if (certificateImgs.size() > 0) {
+                        certificateImgs.forEach(certificateImg -> {
+                            certificatesImg.add(certificateImg.getImgUrl());
+                        });
+                    }
+                    result.add(
+                        ProfileRes.builder()
+                                .userName(mentorProfile.getUser().getName())
+                                .location(mentorProfile.getUser().getLocation())
+                                .info(mentorProfile.getInfo())
+                                .nickName(mentorProfile.getNickName())
+                                .school(mentorProfile.getSchool())
+                                .schoolImg(mentorProfile.getSchoolImg())
+                                .subject(mentorProfile.getSubject())
+                                .certificatesImg(certificatesImg)
+                                .experience(mentorProfile.getExperience())
+                                .curriculum(mentorProfile.getCurriculum())
+                                .appeal(mentorProfile.getAppeal())
+                                .build()
+                    );
+                }
+        );
+
+        return result;
+    }
 }
