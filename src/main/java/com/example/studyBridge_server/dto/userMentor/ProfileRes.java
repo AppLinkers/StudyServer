@@ -1,6 +1,6 @@
 package com.example.studyBridge_server.dto.userMentor;
 
-import com.example.studyBridge_server.domaion.CertificateImg;
+import com.example.studyBridge_server.domaion.Certificate;
 import lombok.Builder;
 import lombok.Data;
 
@@ -24,7 +24,7 @@ public class ProfileRes {
 
     private String subject;
 
-    private List<String> certificatesImg;
+    private List<Certificate> certificates;
 
     private String experience;
 

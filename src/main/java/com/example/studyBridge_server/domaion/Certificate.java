@@ -10,16 +10,19 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
-public class CertificateImg {
+public class Certificate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @ManyToOne
     @JsonIgnore
     @ToString.Exclude
     private MentorProfile mentorProfile;
+
+    private String certificate;
 
     private String imgUrl;
 

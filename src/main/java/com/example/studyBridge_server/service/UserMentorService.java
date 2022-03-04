@@ -1,12 +1,12 @@
 package com.example.studyBridge_server.service;
 
-import com.example.studyBridge_server.domaion.CertificateImg;
+import com.example.studyBridge_server.domaion.Certificate;
 import com.example.studyBridge_server.domaion.MentorProfile;
 import com.example.studyBridge_server.domaion.User;
 import com.example.studyBridge_server.dto.userMentor.ProfileRes;
 import com.example.studyBridge_server.dto.userMentor.ProfileReq;
 import com.example.studyBridge_server.dto.userMentor.ProfileTextReq;
-import com.example.studyBridge_server.repository.CertificateImgRepository;
+import com.example.studyBridge_server.repository.CertificateRepository;
 import com.example.studyBridge_server.repository.MentorProfileRepository;
 import com.example.studyBridge_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,25 +23,22 @@ public class UserMentorService {
 
     private final MentorProfileRepository mentorProfileRepository;
     private final UserRepository userRepository;
-    private final CertificateImgRepository certificateImgRepository;
+    private final CertificateRepository certificateRepository;
     private final S3Uploader s3Uploader;
-
-    List<CertificateImg> certificateImgs = new ArrayList<>();
 
     public ProfileRes profile(ProfileReq profileReq) throws IOException {
 
         // img 업로드
         String schoolImgUrl = s3Uploader.upload(profileReq.getSchoolImg(), "mentor/profile");
-        List<String> certificatesImg = new ArrayList<>();
-        if (profileReq.getCertificatesImg().size() > 0) {
-            profileReq.getCertificatesImg().forEach(image -> {
-                try {
-                    String certificateImgUrl = s3Uploader.upload(image, "mentor/profile");
-                    certificatesImg.add(certificateImgUrl);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+
+        List<List<String>> certificates = new ArrayList<>();
+
+        if (profileReq.getCertificatesImg() != null) {
+            for (int i = 0; i < profileReq.getCertificatesImg().get().size();) {
+                String certificateImg = s3Uploader.upload(profileReq.getCertificatesImg().get().get(i), "mentor/profile");
+                certificates.add(List.of(new String[]{profileReq.getProfileTextReq().getCertificates().get().get(i), certificateImg}));
+                i += 1;
+            }
         }
 
         ProfileTextReq profileTextReq = profileReq.getProfileTextReq();
@@ -60,7 +58,6 @@ public class UserMentorService {
         mentorProfile.setNickName(profileTextReq.getNickName());
         mentorProfile.setSchool(profileTextReq.getSchool());
         mentorProfile.setSchoolImg(schoolImgUrl);
-//        mentorProfile.setCertificatesImg(java.util.Optional.of(certificatesImg));
         mentorProfile.setSubject(profileTextReq.getSubject());
         mentorProfile.setExperience(profileTextReq.getExperience());
         mentorProfile.setCurriculum(profileTextReq.getCurriculum());
@@ -68,19 +65,27 @@ public class UserMentorService {
 
         MentorProfile result = mentorProfileRepository.save(mentorProfile);
 
-        // 기존 이미지는 어떻게 할것인지?
-        if (!certificatesImg.isEmpty()) {
-            List<CertificateImg> saveCertificatesImg = new ArrayList<>();
-            certificatesImg.forEach(certificateImgUrl -> {
-                CertificateImg certificateImg = new CertificateImg();
+        // 기존 자격증 삭제
+        Optional<List<Certificate>> searchedCertificates = certificateRepository.findAllByMentorProfile(mentorProfile);
 
-                certificateImg.setMentorProfile(result);
-                certificateImg.setImgUrl(certificateImgUrl);
+        if (searchedCertificates.isPresent()) {
+            certificateRepository.deleteAll(searchedCertificates.get());
+        }
 
-                saveCertificatesImg.add(certificateImg);
+        List<Certificate> savedCertificate = new ArrayList<>();
+        if (!certificates.isEmpty()) {
+            List<Certificate> saveCertificates = new ArrayList<>();
+            certificates.forEach(c -> {
+                Certificate certificate = new Certificate();
+
+                certificate.setMentorProfile(result);
+                certificate.setCertificate(c.get(0));
+                certificate.setImgUrl(c.get(1));
+
+                saveCertificates.add(certificate);
             });
 
-             certificateImgs = certificateImgRepository.saveAll(saveCertificatesImg);
+            savedCertificate = certificateRepository.saveAll(saveCertificates);
         }
 
         // 결과 생성
@@ -91,8 +96,8 @@ public class UserMentorService {
                 .nickName(result.getNickName())
                 .school(result.getSchool())
                 .schoolImg(result.getSchoolImg())
-                .subject(result.getSubject().toString())
-                .certificatesImg(certificatesImg)
+                .subject(result.getSubject())
+                .certificates(savedCertificate)
                 .experience(result.getExperience())
                 .curriculum(result.getCurriculum())
                 .appeal(result.getAppeal())
@@ -103,12 +108,10 @@ public class UserMentorService {
     public ProfileRes getProfile(String userLoginId) {
         MentorProfile mentorProfile = mentorProfileRepository.findByUser(userRepository.findUserByLoginId(userLoginId).get());
 
-        List<String> certificatesImg = new ArrayList<>();
-        List<CertificateImg> certificateImgs = certificateImgRepository.findAllByMentorProfile(mentorProfile).get();
-        if (certificateImgs.size() > 0) {
-            certificateImgs.forEach(certificateImg -> {
-                certificatesImg.add(certificateImg.getImgUrl());
-            });
+        List<Certificate> certificates = new ArrayList<>();
+        Optional<List<Certificate>> searchedCertificates = certificateRepository.findAllByMentorProfile(mentorProfile);
+        if (searchedCertificates.isPresent()) {
+            certificates = searchedCertificates.get();
         }
 
         return ProfileRes.builder()
@@ -119,7 +122,7 @@ public class UserMentorService {
                 .school(mentorProfile.getSchool())
                 .schoolImg(mentorProfile.getSchoolImg())
                 .subject(mentorProfile.getSubject())
-                .certificatesImg(certificatesImg)
+                .certificates(certificates)
                 .experience(mentorProfile.getExperience())
                 .curriculum(mentorProfile.getCurriculum())
                 .appeal(mentorProfile.getAppeal())
@@ -130,12 +133,10 @@ public class UserMentorService {
         List<ProfileRes> result = new ArrayList<>();
         mentorProfileRepository.findAll().forEach(
                 mentorProfile -> {
-                    List<String> certificatesImg = new ArrayList<>();
-                    List<CertificateImg> certificateImgs = certificateImgRepository.findAllByMentorProfile(mentorProfile).get();
-                    if (certificateImgs.size() > 0) {
-                        certificateImgs.forEach(certificateImg -> {
-                            certificatesImg.add(certificateImg.getImgUrl());
-                        });
+                    List<Certificate> certificates = new ArrayList<>();
+                    Optional<List<Certificate>> searchedCertificates = certificateRepository.findAllByMentorProfile(mentorProfile);
+                    if (searchedCertificates.isPresent()) {
+                        certificates = searchedCertificates.get();
                     }
                     result.add(
                         ProfileRes.builder()
@@ -146,7 +147,7 @@ public class UserMentorService {
                                 .school(mentorProfile.getSchool())
                                 .schoolImg(mentorProfile.getSchoolImg())
                                 .subject(mentorProfile.getSubject())
-                                .certificatesImg(certificatesImg)
+                                .certificates(certificates)
                                 .experience(mentorProfile.getExperience())
                                 .curriculum(mentorProfile.getCurriculum())
                                 .appeal(mentorProfile.getAppeal())

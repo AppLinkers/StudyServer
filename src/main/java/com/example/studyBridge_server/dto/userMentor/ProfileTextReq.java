@@ -2,6 +2,9 @@ package com.example.studyBridge_server.dto.userMentor;
 
 import lombok.Data;
 
+import java.util.List;
+import java.util.Optional;
+
 @Data
 public class ProfileTextReq {
 
@@ -16,6 +19,8 @@ public class ProfileTextReq {
     private String subject;
 
     private String school;
+
+    private Optional<List<String>> certificates;
 
     private String experience;
 
