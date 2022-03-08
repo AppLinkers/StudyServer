@@ -2,6 +2,7 @@ package com.example.studyBridge_server.repository;
 
 import com.example.studyBridge_server.domaion.Study;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -12,4 +13,8 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     @Query("select s.status from Study s where s.id = :studyId")
     String findStatus(@Param("studyId") Long studyId);
+
+    @Modifying
+    @Query("update Study s set s.mentorId = null where s.id = :studyId")
+    int deleteMentor(@Param("studyId") Long studyId);
 }

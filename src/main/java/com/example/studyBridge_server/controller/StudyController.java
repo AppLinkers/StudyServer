@@ -64,4 +64,9 @@ public class StudyController {
     public ResponseEntity<String> getStatus(@RequestParam Long studyId) {
         return ResponseEntity.status(201).body(studyService.getStatus(studyId));
     }
+
+    @DeleteMapping("/mentor")
+    public ResponseEntity<Integer> deleteMentor(@RequestParam Long studyId) {
+        return ResponseEntity.status(201).body(studyService.deleteMentor(studyId));
+    }
 }

@@ -11,6 +11,7 @@ import com.example.studyBridge_server.repository.UserAndStudyRepository;
 import com.example.studyBridge_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,5 +147,10 @@ public class StudyService {
 
     public String getStatus(Long studyId) {
         return studyRepository.findStatus(studyId);
+    }
+
+    @Transactional
+    public int deleteMentor(Long studyId) {
+        return studyRepository.deleteMentor(studyId);
     }
 }
