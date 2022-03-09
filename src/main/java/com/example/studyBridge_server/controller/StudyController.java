@@ -1,5 +1,6 @@
 package com.example.studyBridge_server.controller;
 
+import com.example.studyBridge_server.domaion.Study;
 import com.example.studyBridge_server.dto.study.*;
 import com.example.studyBridge_server.service.StudyService;
 import lombok.RequiredArgsConstructor;
@@ -68,5 +69,10 @@ public class StudyController {
     @DeleteMapping("/mentor")
     public ResponseEntity<Integer> deleteMentor(@RequestParam Long studyId) {
         return ResponseEntity.status(201).body(studyService.deleteMentor(studyId));
+    }
+
+    @PostMapping("/mentor")
+    public ResponseEntity<ChooseMentorRes> chooseMentor(@RequestParam Long studyId, @RequestParam Long mentorId) {
+        return ResponseEntity.status(201).body(studyService.chooseMentor(studyId, mentorId));
     }
 }

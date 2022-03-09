@@ -171,4 +171,23 @@ public class StudyService {
 
         return studyRepository.deleteMentor(studyId);
     }
+
+    public ChooseMentorRes chooseMentor(Long studyId, Long mentorId) {
+        // 지원한 멘토 목록에서 해당 mentor Id를 제외한 나머지 다 지우기
+        userAndStudyRepository.chooseMentor(studyId, mentorId);
+
+        // 해당 스터디의 mentor 지정
+        Study study = studyRepository.findById(studyId).get();
+        study.setMentorId(mentorId);
+
+        // 해당 멘토를 채팅방에 초대
+        UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(mentorId).get(), roomRepository.findRoomByStudyId(studyId));
+        userAndRoomRepository.save(userAndRoom);
+
+        return ChooseMentorRes.builder()
+                .studyId(studyId)
+                .mentorId(mentorId)
+                .studyName(study.getName())
+                .build();
+    }
 }
