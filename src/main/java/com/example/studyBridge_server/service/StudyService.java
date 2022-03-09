@@ -21,7 +21,6 @@ public class StudyService {
     private final UserRepository userRepository;
     private final UserAndStudyRepository userAndStudyRepository;
     private final RoomRepository roomRepository;
-    private final UserAndRoomRepository userAndRoomRepository;
 
     public StudyMakeRes make(StudyMakeReq studyMakeReq) {
         User user = userRepository.findUserByLoginId(studyMakeReq.getMakerId()).get();
@@ -59,7 +58,7 @@ public class StudyService {
         if (user.getRole().equals(Role.MENTOR)) {
             // 채팅방에 해당  사용자 추가
             UserAndRoom userAndRoom = new UserAndRoom(user, room);
-            userAndRoomRepository.save(userAndRoom);
+            room.addUser(userAndRoom);
         }
 
         StudyMakeRes studyMakeRes = StudyMakeRes.builder()
@@ -83,8 +82,9 @@ public class StudyService {
 
         // 만약 신청자가 mentee 일때, 채팅방에 입장하도록 한다. - 입장 메세지는 실제 채팅창 화면에 들어갔을때 날리는 것으로 한다.
         if (user.getRole().equals(Role.MENTEE)) {
-            UserAndRoom userAndRoom = new UserAndRoom(user, roomRepository.findRoomByStudyId(study.getId()));
-            userAndRoomRepository.save(userAndRoom);
+            Room room = roomRepository.findRoomByStudyId(study.getId());
+            UserAndRoom userAndRoom = new UserAndRoom(user, room);
+            room.addUser(userAndRoom);
         }
 
         StudyApplyRes studyApplyRes = StudyApplyRes.builder()
@@ -167,7 +167,9 @@ public class StudyService {
     @Transactional
     public int deleteMentor(Long studyId) {
         // 채팅방에서 해당 사용자(멘토) 삭제
-        userAndRoomRepository.deleteUserAndRoomByUserId(studyRepository.findMentorIdByStudyId(studyId));
+        Room room = roomRepository.findRoomByStudyId(studyId);
+        UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(studyRepository.findMentorIdByStudyId(studyId)).get(), room);
+        room.deleteUser(userAndRoom);
 
         return studyRepository.deleteMentor(studyId);
     }
@@ -181,8 +183,9 @@ public class StudyService {
         study.setMentorId(mentorId);
 
         // 해당 멘토를 채팅방에 초대
-        UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(mentorId).get(), roomRepository.findRoomByStudyId(studyId));
-        userAndRoomRepository.save(userAndRoom);
+        Room room = roomRepository.findRoomByStudyId(studyId);
+        UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(mentorId).get(), room);
+        room.addUser(userAndRoom);
 
         return ChooseMentorRes.builder()
                 .studyId(studyId)

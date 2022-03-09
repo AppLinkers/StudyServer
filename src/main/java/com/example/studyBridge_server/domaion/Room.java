@@ -1,6 +1,7 @@
 package com.example.studyBridge_server.domaion;
 
 import com.example.studyBridge_server.domaion.listener.Auditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.ToString;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -28,5 +31,16 @@ public class Room extends BaseEntity implements Auditable {
         this.study = study;
     }
 
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<UserAndRoom> userAndRoomList = new ArrayList<>();
 
+
+    public void deleteUser(UserAndRoom userAndRoom) {
+        this.userAndRoomList.remove(userAndRoom);
+    }
+
+    public void addUser(UserAndRoom userAndRoom) {
+        this.userAndRoomList.add(userAndRoom);
+    }
 }

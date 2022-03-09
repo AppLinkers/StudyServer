@@ -1,15 +1,18 @@
 package com.example.studyBridge_server.domaion;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 @Entity
 @Data
-public class UserAndRoom {
+@NoArgsConstructor
+public class UserAndRoom implements Serializable {
 
     @Id
     @ManyToOne
@@ -25,4 +28,5 @@ public class UserAndRoom {
         this.user = user;
         this.room = room;
     }
+
 }
