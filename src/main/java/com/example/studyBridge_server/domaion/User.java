@@ -4,6 +4,8 @@ import com.example.studyBridge_server.domaion.listener.Auditable;
 import com.example.studyBridge_server.domaion.type.Gender;
 import com.example.studyBridge_server.domaion.type.Role;
 import com.example.studyBridge_server.support.BooleanToYNConverter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ import java.util.List;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class User extends BaseEntity implements Auditable {
 
     @Id

@@ -3,6 +3,7 @@ package com.example.studyBridge_server.domaion;
 
 import com.example.studyBridge_server.domaion.listener.Auditable;
 import com.example.studyBridge_server.domaion.type.StudyStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;

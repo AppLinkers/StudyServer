@@ -17,4 +17,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     @Modifying
     @Query("update Study s set s.mentorId = null where s.id = :studyId")
     int deleteMentor(@Param("studyId") Long studyId);
+
+    @Query("select s.mentorId from Study s where s.id = :studyId")
+    Long findMentorIdByStudyId(@Param("studyId") Long studyId);
 }

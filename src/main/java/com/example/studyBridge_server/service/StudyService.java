@@ -1,14 +1,10 @@
 package com.example.studyBridge_server.service;
 
-import com.example.studyBridge_server.domaion.Study;
-import com.example.studyBridge_server.domaion.User;
-import com.example.studyBridge_server.domaion.UserAndStudy;
+import com.example.studyBridge_server.domaion.*;
 import com.example.studyBridge_server.domaion.type.Role;
 import com.example.studyBridge_server.domaion.type.StudyStatus;
 import com.example.studyBridge_server.dto.study.*;
-import com.example.studyBridge_server.repository.StudyRepository;
-import com.example.studyBridge_server.repository.UserAndStudyRepository;
-import com.example.studyBridge_server.repository.UserRepository;
+import com.example.studyBridge_server.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +20,8 @@ public class StudyService {
     private final StudyRepository studyRepository;
     private final UserRepository userRepository;
     private final UserAndStudyRepository userAndStudyRepository;
+    private final RoomRepository roomRepository;
+    private final UserAndRoomRepository userAndRoomRepository;
 
     public StudyMakeRes make(StudyMakeReq studyMakeReq) {
         User user = userRepository.findUserByLoginId(studyMakeReq.getMakerId()).get();
@@ -42,7 +40,11 @@ public class StudyService {
             study.setMentorId(user.getId());
         }
 
+
         Study savedStudy = studyRepository.save(study);
+
+        //  스터디 생성 시, 채팅방 생성 - 입장 메세지는 실제 채팅창 화면에 들어갔을때 날리는 것으로 한다.
+        Room room = roomRepository.save(new Room(savedStudy));
 
         if (user.getRole().equals(Role.MENTEE)) {
             StudyApplyReq studyApplyReq = StudyApplyReq.builder()
@@ -51,6 +53,13 @@ public class StudyService {
                     .build();
 
             apply(studyApplyReq);
+        }
+
+        // 멘토가 스터디 제작 시,
+        if (user.getRole().equals(Role.MENTOR)) {
+            // 채팅방에 해당  사용자 추가
+            UserAndRoom userAndRoom = new UserAndRoom(user, room);
+            userAndRoomRepository.save(userAndRoom);
         }
 
         StudyMakeRes studyMakeRes = StudyMakeRes.builder()
@@ -71,6 +80,12 @@ public class StudyService {
                 .role(user.getRole()).build();
 
         userAndStudyRepository.save(userAndStudy);
+
+        // 만약 신청자가 mentee 일때, 채팅방에 입장하도록 한다. - 입장 메세지는 실제 채팅창 화면에 들어갔을때 날리는 것으로 한다.
+        if (user.getRole().equals(Role.MENTEE)) {
+            UserAndRoom userAndRoom = new UserAndRoom(user, roomRepository.findRoomByStudyId(study.getId()));
+            userAndRoomRepository.save(userAndRoom);
+        }
 
         StudyApplyRes studyApplyRes = StudyApplyRes.builder()
                 .studyName(study.getName())
@@ -151,6 +166,9 @@ public class StudyService {
 
     @Transactional
     public int deleteMentor(Long studyId) {
+        // 채팅방에서 해당 사용자(멘토) 삭제
+        userAndRoomRepository.deleteUserAndRoomByUserId(studyRepository.findMentorIdByStudyId(studyId));
+
         return studyRepository.deleteMentor(studyId);
     }
 }
