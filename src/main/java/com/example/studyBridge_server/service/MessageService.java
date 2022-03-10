@@ -1,6 +1,7 @@
 package com.example.studyBridge_server.service;
 
 import com.example.studyBridge_server.domaion.Message;
+import com.example.studyBridge_server.domaion.Room;
 import com.example.studyBridge_server.domaion.User;
 import com.example.studyBridge_server.domaion.UserAndRoom;
 import com.example.studyBridge_server.domaion.type.MessageType;
@@ -47,7 +48,13 @@ public class MessageService {
 
             // 채팅방 퇴장 처리
             UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(message.getSenderId()).get(), message.getRoom());
-            message.getRoom().deleteUser(userAndRoom);
+
+            Room room = roomRepository.findById(message.getRoom().getId()).get();
+            room.deleteUser(userAndRoom);
+
+            roomRepository.save(room);
+
+
 
         }
 

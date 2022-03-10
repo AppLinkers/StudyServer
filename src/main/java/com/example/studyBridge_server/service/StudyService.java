@@ -59,6 +59,7 @@ public class StudyService {
             // 채팅방에 해당  사용자 추가
             UserAndRoom userAndRoom = new UserAndRoom(user, room);
             room.addUser(userAndRoom);
+            roomRepository.save(room);
         }
 
         StudyMakeRes studyMakeRes = StudyMakeRes.builder()
@@ -85,6 +86,7 @@ public class StudyService {
             Room room = roomRepository.findRoomByStudyId(study.getId());
             UserAndRoom userAndRoom = new UserAndRoom(user, room);
             room.addUser(userAndRoom);
+            roomRepository.save(room);
         }
 
         StudyApplyRes studyApplyRes = StudyApplyRes.builder()
@@ -170,11 +172,13 @@ public class StudyService {
         Room room = roomRepository.findRoomByStudyId(studyId);
         UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(studyRepository.findMentorIdByStudyId(studyId)).get(), room);
         room.deleteUser(userAndRoom);
+        roomRepository.save(room);
 
         return studyRepository.deleteMentor(studyId);
     }
 
-    public ChooseMentorRes chooseMentor(Long studyId, Long mentorId) {
+    public ChooseMentorRes chooseMentor(Long studyId, String mentorLoginId) {
+        Long mentorId = userRepository.findUserByLoginId(mentorLoginId).get().getId();
         // 지원한 멘토 목록에서 해당 mentor Id를 제외한 나머지 다 지우기
         userAndStudyRepository.chooseMentor(studyId, mentorId);
 
@@ -186,6 +190,7 @@ public class StudyService {
         Room room = roomRepository.findRoomByStudyId(studyId);
         UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(mentorId).get(), room);
         room.addUser(userAndRoom);
+        roomRepository.save(room);
 
         return ChooseMentorRes.builder()
                 .studyId(studyId)

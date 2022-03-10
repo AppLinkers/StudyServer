@@ -72,7 +72,7 @@ public class StudyController {
     }
 
     @PostMapping("/mentor")
-    public ResponseEntity<ChooseMentorRes> chooseMentor(@RequestParam Long studyId, @RequestParam Long mentorId) {
-        return ResponseEntity.status(201).body(studyService.chooseMentor(studyId, mentorId));
+    public ResponseEntity<ChooseMentorRes> chooseMentor(@RequestParam Long studyId, @RequestParam String mentorLoginId) {
+        return ResponseEntity.status(201).body(studyService.chooseMentor(studyId, mentorLoginId));
     }
 }
