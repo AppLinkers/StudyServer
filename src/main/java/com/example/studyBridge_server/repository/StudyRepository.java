@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface StudyRepository extends JpaRepository<Study, Long> {
 
     @Query("select u.loginId from User u where u.id = (select s.makerId from Study s where s.id = :studyId)")
@@ -19,5 +21,5 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     int deleteMentor(@Param("studyId") Long studyId);
 
     @Query("select s.mentorId from Study s where s.id = :studyId")
-    Long findMentorIdByStudyId(@Param("studyId") Long studyId);
+    Optional<Long> findMentorIdByStudyId(@Param("studyId") Long studyId);
 }

@@ -41,7 +41,7 @@ public class StudyController {
         return ResponseEntity.status(201).body(studyService.isAppliedByUser(isAppliedReq));
     }
 
-    @GetMapping("/mentor")
+    @GetMapping("/mentor/candidate")
     public ResponseEntity<List<String>> findMentorLoginIdByStudyId(@RequestParam Long studyId) {
         return ResponseEntity.status(201).body(studyService.findMentorLoginIdByStudyId(studyId));
     }
@@ -74,5 +74,10 @@ public class StudyController {
     @PostMapping("/mentor")
     public ResponseEntity<ChooseMentorRes> chooseMentor(@RequestParam Long studyId, @RequestParam String mentorLoginId) {
         return ResponseEntity.status(201).body(studyService.chooseMentor(studyId, mentorLoginId));
+    }
+
+    @GetMapping("/mentor")
+    public ResponseEntity<String> chosenMentor(@RequestParam Long studyId) {
+        return ResponseEntity.status(201).body(studyService.findChosenMentorLoginId(studyId));
     }
 }

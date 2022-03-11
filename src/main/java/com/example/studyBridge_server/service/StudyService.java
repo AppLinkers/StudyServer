@@ -6,6 +6,7 @@ import com.example.studyBridge_server.domaion.type.StudyStatus;
 import com.example.studyBridge_server.dto.study.*;
 import com.example.studyBridge_server.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -170,7 +171,7 @@ public class StudyService {
     public int deleteMentor(Long studyId) {
         // 채팅방에서 해당 사용자(멘토) 삭제
         Room room = roomRepository.findRoomByStudyId(studyId);
-        UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(studyRepository.findMentorIdByStudyId(studyId)).get(), room);
+        UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(studyRepository.findMentorIdByStudyId(studyId).get()).get(), room);
         room.deleteUser(userAndRoom);
         roomRepository.save(room);
 
@@ -197,5 +198,15 @@ public class StudyService {
                 .mentorId(mentorId)
                 .studyName(study.getName())
                 .build();
+    }
+
+    public String findChosenMentorLoginId(Long studyId) {
+        Optional<Long> mentorId = studyRepository.findMentorIdByStudyId(studyId);
+
+        if (mentorId != null) {
+            return userRepository.findLoginIdById(mentorId.get());
+        } else {
+            return "현재 멘토가 지정되어있지 않습니다.";
+        }
     }
 }
