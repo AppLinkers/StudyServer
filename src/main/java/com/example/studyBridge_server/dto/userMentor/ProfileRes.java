@@ -10,6 +10,8 @@ import java.util.List;
 @Builder
 public class ProfileRes {
 
+    private Long userId;
+
     private String userName;
 
     private String location;

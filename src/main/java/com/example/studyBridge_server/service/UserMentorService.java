@@ -90,6 +90,7 @@ public class UserMentorService {
 
         // 결과 생성
         return ProfileRes.builder()
+                .userId(user.getId())
                 .userName(user.getName())
                 .location(profileTextReq.getLocation())
                 .info(result.getInfo())
@@ -115,6 +116,7 @@ public class UserMentorService {
         }
 
         return ProfileRes.builder()
+                .userId(mentorProfile.getUser().getId())
                 .userName(mentorProfile.getUser().getName())
                 .location(mentorProfile.getUser().getLocation())
                 .info(mentorProfile.getInfo())
@@ -140,6 +142,7 @@ public class UserMentorService {
                     }
                     result.add(
                         ProfileRes.builder()
+                                .userId(mentorProfile.getUser().getId())
                                 .userName(mentorProfile.getUser().getName())
                                 .location(mentorProfile.getUser().getLocation())
                                 .info(mentorProfile.getInfo())
