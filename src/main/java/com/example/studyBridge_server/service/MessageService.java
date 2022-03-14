@@ -5,6 +5,7 @@ import com.example.studyBridge_server.domaion.Room;
 import com.example.studyBridge_server.domaion.User;
 import com.example.studyBridge_server.domaion.UserAndRoom;
 import com.example.studyBridge_server.domaion.type.MessageType;
+import com.example.studyBridge_server.dto.message.FindRoomRes;
 import com.example.studyBridge_server.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,8 +65,13 @@ public class MessageService {
         return messageRepository.findByRoom(roomRepository.findById(room_id).get());
     }
 
-    public Room findRoomByStudyId(Long studyId) {
-        return roomRepository.findRoomByStudyId(studyId);
+    public FindRoomRes findRoomByStudyId(Long studyId) {
+        Room room = roomRepository.findRoomByStudyId(studyId);
+
+        return FindRoomRes.builder()
+                .roomId(room.getId())
+                .studyId(room.getStudy().getId())
+                .build();
     }
 
 }

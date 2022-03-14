@@ -2,6 +2,7 @@ package com.example.studyBridge_server.controller;
 
 import com.example.studyBridge_server.domaion.Message;
 import com.example.studyBridge_server.domaion.Room;
+import com.example.studyBridge_server.dto.message.FindRoomRes;
 import com.example.studyBridge_server.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class MessageController {
     }
 
     @GetMapping("/room")
-    public ResponseEntity<Room> getRoom(@RequestParam Long studyId) {
+    public ResponseEntity<FindRoomRes> getRoom(@RequestParam Long studyId) {
         return ResponseEntity.status(201).body(messageService.findRoomByStudyId(studyId));
     }
 }

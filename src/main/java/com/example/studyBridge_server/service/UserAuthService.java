@@ -65,6 +65,7 @@ public class UserAuthService {
         UserLoginRes userLoginRes;
         if (passwordEncoder.matches(userLoginReq.getLoginPw(), target.getLoginPw())) {
             userLoginRes = UserLoginRes.builder()
+                    .id(target.getId())
                     .loginId(target.getLoginId())
                     .name(target.getName())
                     .build();
