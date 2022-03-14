@@ -64,4 +64,8 @@ public class MessageService {
         return messageRepository.findByRoom(roomRepository.findById(room_id).get());
     }
 
+    public Room findRoomByStudyId(Long studyId) {
+        return roomRepository.findRoomByStudyId(studyId);
+    }
+
 }

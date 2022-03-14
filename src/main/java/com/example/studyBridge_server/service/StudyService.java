@@ -111,11 +111,16 @@ public class StudyService {
                             .status(study.getStatus().toString())
                             .type(study.getType())
                             .place(study.getPlace())
+                            .menteeCnt(menteeCntOfStudy(study.getId()))
                             .build()
             );
         });
 
         return result;
+    }
+
+    public int menteeCntOfStudy(Long studyId) {
+        return userAndStudyRepository.countAllByStudyIdAndRole(studyId, Role.MENTEE);
     }
 
     // 해당 Study가 사용자가 신청한 스터디 인지 확인

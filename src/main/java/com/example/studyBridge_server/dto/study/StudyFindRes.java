@@ -21,4 +21,6 @@ public class StudyFindRes {
     private String place;
 
     private String type;
+
+    private int menteeCnt;
 }

@@ -1,11 +1,9 @@
 package com.example.studyBridge_server.controller;
 
-import com.example.studyBridge_server.domaion.LikeMentor;
 import com.example.studyBridge_server.dto.userMentee.LikeMentorRes;
 import com.example.studyBridge_server.service.UserMenteeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

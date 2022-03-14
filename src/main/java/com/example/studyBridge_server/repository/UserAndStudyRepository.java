@@ -3,6 +3,7 @@ package com.example.studyBridge_server.repository;
 import com.example.studyBridge_server.domaion.Study;
 import com.example.studyBridge_server.domaion.User;
 import com.example.studyBridge_server.domaion.UserAndStudy;
+import com.example.studyBridge_server.domaion.type.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +23,6 @@ public interface UserAndStudyRepository extends JpaRepository<UserAndStudy, Long
     @Modifying
     @Query("delete from UserAndStudy uas where uas.study.id = :studyId and uas.user.id <> :mentorId")
     int chooseMentor(@Param("studyId") Long studyId, @Param("mentorId") Long mentorId);
+
+    int countAllByStudyIdAndRole(Long studyId, Role role);
 }

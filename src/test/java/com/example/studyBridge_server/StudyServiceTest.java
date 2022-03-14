@@ -28,4 +28,9 @@ class StudyServiceTest {
 
     }
 
+    @Test
+    void menteeCntOfStudy() {
+        System.out.println(studyService.menteeCntOfStudy(7L));
+    }
+
 }
