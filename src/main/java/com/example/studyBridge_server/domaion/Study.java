@@ -40,7 +40,7 @@ public class Study extends BaseEntity implements Auditable {
     @Column(name = "mentor_id")
     private Long mentorId;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "study_id")
     @ToString.Exclude
     private List<UserAndStudy> userAndStudyList = new ArrayList<>();

@@ -33,12 +33,4 @@ public class Room extends BaseEntity implements Auditable {
     @JsonIgnore
     private List<UserAndRoom> userAndRoomList = new ArrayList<>();
 
-
-    public void deleteUser(UserAndRoom userAndRoom) {
-        this.userAndRoomList.remove(userAndRoom);
-    }
-
-    public void addUser(UserAndRoom userAndRoom) {
-        this.userAndRoomList.add(userAndRoom);
-    }
 }

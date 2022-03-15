@@ -21,7 +21,7 @@ public class UserAndStudy extends BaseEntity implements Auditable {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     private Study study;
 
     @ManyToOne
