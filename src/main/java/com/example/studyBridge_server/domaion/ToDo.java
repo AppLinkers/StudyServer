@@ -33,12 +33,12 @@ public class ToDo extends BaseEntity implements Auditable {
     @Enumerated(value = EnumType.STRING)
     private ToDoStatus toDoStatus;
 
-    @Column(name = "mentee_id")
+    @JoinColumn(name = "mentee_id")
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @Column(name = "study_id")
+    @JoinColumn(name = "study_id")
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Study study;
