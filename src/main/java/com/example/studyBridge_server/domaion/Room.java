@@ -2,10 +2,7 @@ package com.example.studyBridge_server.domaion;
 
 import com.example.studyBridge_server.domaion.listener.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -32,6 +29,7 @@ public class Room extends BaseEntity implements Auditable {
     }
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
+    @ToString.Exclude
     @JsonIgnore
     private List<UserAndRoom> userAndRoomList = new ArrayList<>();
 

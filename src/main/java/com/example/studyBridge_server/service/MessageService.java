@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,7 +24,9 @@ public class MessageService {
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final MessageRepository messageRepository;
+    private final UserAndRoomRepository userAndRoomRepository;
 
+    @Transactional
     public void send(Message message) {
         String senderName = message.getSenderName();
 
@@ -47,15 +50,7 @@ public class MessageService {
             messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoom().getId(), message);
             messageRepository.save(message);
 
-            // 채팅방 퇴장 처리
-            UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(message.getSenderId()).get(), message.getRoom());
-
-            Room room = roomRepository.findById(message.getRoom().getId()).get();
-            room.deleteUser(userAndRoom);
-
-            roomRepository.save(room);
-
-
+            userAndRoomRepository.deleteUserAndRoomByRoomIdAndUserId(message.getRoom().getId(), message.getSenderId());
 
         }
 

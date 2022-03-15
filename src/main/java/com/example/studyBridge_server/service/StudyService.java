@@ -21,6 +21,7 @@ public class StudyService {
     private final StudyRepository studyRepository;
     private final UserRepository userRepository;
     private final UserAndStudyRepository userAndStudyRepository;
+    private final UserAndRoomRepository userAndRoomRepository;
     private final RoomRepository roomRepository;
 
     public StudyMakeRes make(StudyMakeReq studyMakeReq) {
@@ -59,8 +60,7 @@ public class StudyService {
         if (user.getRole().equals(Role.MENTOR)) {
             // 채팅방에 해당  사용자 추가
             UserAndRoom userAndRoom = new UserAndRoom(user, room);
-            room.addUser(userAndRoom);
-            roomRepository.save(room);
+            userAndRoomRepository.save(userAndRoom);
         }
 
         StudyMakeRes studyMakeRes = StudyMakeRes.builder()
@@ -86,8 +86,7 @@ public class StudyService {
         if (user.getRole().equals(Role.MENTEE)) {
             Room room = roomRepository.findRoomByStudyId(study.getId());
             UserAndRoom userAndRoom = new UserAndRoom(user, room);
-            room.addUser(userAndRoom);
-            roomRepository.save(room);
+            userAndRoomRepository.save(userAndRoom);
         }
 
         StudyApplyRes studyApplyRes = StudyApplyRes.builder()
@@ -176,13 +175,12 @@ public class StudyService {
     public int deleteMentor(Long studyId) {
         // 채팅방에서 해당 사용자(멘토) 삭제
         Room room = roomRepository.findRoomByStudyId(studyId);
-        UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(studyRepository.findMentorIdByStudyId(studyId).get()).get(), room);
-        room.deleteUser(userAndRoom);
-        roomRepository.save(room);
+        Long mentorId = studyRepository.findMentorIdByStudyId(studyId).get();
 
-        return studyRepository.deleteMentor(studyId);
+        return userAndRoomRepository.deleteUserAndRoomByRoomIdAndUserId(room.getId(), mentorId);
     }
 
+    @Transactional
     public ChooseMentorRes chooseMentor(Long studyId, String mentorLoginId) {
         Long mentorId = userRepository.findUserByLoginId(mentorLoginId).get().getId();
         // 지원한 멘토 목록에서 해당 mentor Id를 제외한 나머지 다 지우기
@@ -192,11 +190,14 @@ public class StudyService {
         Study study = studyRepository.findById(studyId).get();
         study.setMentorId(mentorId);
 
+        studyRepository.save(study);
+
         // 해당 멘토를 채팅방에 초대
         Room room = roomRepository.findRoomByStudyId(studyId);
         UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(mentorId).get(), room);
-        room.addUser(userAndRoom);
-        roomRepository.save(room);
+        userAndRoomRepository.save(userAndRoom);
+
+
 
         return ChooseMentorRes.builder()
                 .studyId(studyId)
