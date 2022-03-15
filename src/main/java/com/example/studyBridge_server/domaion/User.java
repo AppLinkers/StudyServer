@@ -55,9 +55,10 @@ public class User extends BaseEntity implements Auditable {
     @ToString.Exclude
     private List<UserAndStudy> userAndStudyList = new ArrayList<>();
 
-    public void addUserAndStudy(UserAndStudy userAndStudy) {
-        this.userAndStudyList.add(userAndStudy);
-    }
+    @OneToMany
+    @JoinColumn(name = "mentee_id")
+    @ToString.Exclude
+    private List<ToDo> toDoList = new ArrayList<>();
 
     @Builder
     public User(@NonNull String loginId, @NonNull String loginPw, @NonNull String name, String phone, String profileImg, String location, Gender gender, Role role) {

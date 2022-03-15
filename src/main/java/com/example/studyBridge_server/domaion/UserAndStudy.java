@@ -4,6 +4,8 @@ import com.example.studyBridge_server.domaion.listener.Auditable;
 import com.example.studyBridge_server.domaion.type.Role;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -22,6 +24,7 @@ public class UserAndStudy extends BaseEntity implements Auditable {
     private Role role;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Study study;
 
     @ManyToOne
