@@ -184,7 +184,7 @@ public class StudyService {
     public ChooseMentorRes chooseMentor(Long studyId, String mentorLoginId) {
         Long mentorId = userRepository.findUserByLoginId(mentorLoginId).get().getId();
         // 지원한 멘토 목록에서 해당 mentor Id를 제외한 나머지 다 지우기
-        userAndStudyRepository.chooseMentor(studyId, mentorId);
+        userAndStudyRepository.chooseMentor(studyId, mentorId, Role.MENTOR);
 
         // 해당 스터디의 mentor 지정
         Study study = studyRepository.findById(studyId).get();
