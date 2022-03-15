@@ -45,10 +45,6 @@ public class Study extends BaseEntity implements Auditable {
     @ToString.Exclude
     private List<UserAndStudy> userAndStudyList = new ArrayList<>();
 
-    public void addUserAndStudy(UserAndStudy userAndStudy) {
-        this.userAndStudyList.add(userAndStudy);
-    }
-
     @Builder
     public Study(String name, String info, String type, String place, Integer maxNum, StudyStatus status, Long makerId) {
         this.name = name;

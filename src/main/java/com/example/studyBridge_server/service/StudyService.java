@@ -41,7 +41,6 @@ public class StudyService {
             study.setMentorId(user.getId());
         }
 
-
         Study savedStudy = studyRepository.save(study);
 
         //  스터디 생성 시, 채팅방 생성 - 입장 메세지는 실제 채팅창 화면에 들어갔을때 날리는 것으로 한다.
@@ -183,8 +182,8 @@ public class StudyService {
     @Transactional
     public ChooseMentorRes chooseMentor(Long studyId, String mentorLoginId) {
         Long mentorId = userRepository.findUserByLoginId(mentorLoginId).get().getId();
-        // 지원한 멘토 목록에서 해당 mentor Id를 제외한 나머지 다 지우기
-        userAndStudyRepository.chooseMentor(studyId, mentorId, Role.MENTOR);
+        // 지원한 멘토 목록 다 지우기
+        userAndStudyRepository.chooseMentor(studyId, Role.MENTOR);
 
         // 해당 스터디의 mentor 지정
         Study study = studyRepository.findById(studyId).get();
@@ -196,8 +195,6 @@ public class StudyService {
         Room room = roomRepository.findRoomByStudyId(studyId);
         UserAndRoom userAndRoom = new UserAndRoom(userRepository.findById(mentorId).get(), room);
         userAndRoomRepository.save(userAndRoom);
-
-
 
         return ChooseMentorRes.builder()
                 .studyId(studyId)
