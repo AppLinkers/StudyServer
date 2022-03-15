@@ -215,4 +215,23 @@ public class StudyService {
             return "현재 멘토가 지정되어있지 않습니다.";
         }
     }
+
+    @Transactional
+    public StudyDeleteRes delete(StudyDeleteReq studyDeleteReq) {
+        Study study = studyRepository.findById(studyDeleteReq.getStudyId()).get();
+        if (study.getMakerId().equals(studyDeleteReq.getMakerId())) {
+            roomRepository.deleteRoomByStudyId(studyDeleteReq.getStudyId());
+
+            studyRepository.delete(study);
+
+            return StudyDeleteRes.builder()
+                    .studyId(study.getId())
+                    .build();
+        } else {
+            return StudyDeleteRes.builder()
+                    .studyId(-1L)
+                    .build();
+        }
+
+    }
 }

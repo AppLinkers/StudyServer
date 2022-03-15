@@ -80,4 +80,9 @@ public class StudyController {
     public ResponseEntity<String> chosenMentor(@RequestParam Long studyId) {
         return ResponseEntity.status(201).body(studyService.findChosenMentorLoginId(studyId));
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<StudyDeleteRes> delete(@RequestBody StudyDeleteReq studyDeleteReq) {
+        return ResponseEntity.status(201).body(studyService.delete(studyDeleteReq));
+    }
 }
