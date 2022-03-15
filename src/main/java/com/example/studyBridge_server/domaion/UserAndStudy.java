@@ -3,6 +3,7 @@ package com.example.studyBridge_server.domaion;
 import com.example.studyBridge_server.domaion.listener.Auditable;
 import com.example.studyBridge_server.domaion.type.Role;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -20,7 +21,7 @@ public class UserAndStudy extends BaseEntity implements Auditable {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Study study;
 
     @ManyToOne
