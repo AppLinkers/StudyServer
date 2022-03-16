@@ -81,7 +81,7 @@ public class StudyController {
         return ResponseEntity.status(201).body(studyService.findChosenMentorLoginId(studyId));
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public ResponseEntity<StudyDeleteRes> delete(@RequestBody StudyDeleteReq studyDeleteReq) {
         return ResponseEntity.status(201).body(studyService.delete(studyDeleteReq));
     }
