@@ -213,6 +213,12 @@ public class StudyService {
         }
     }
 
+    /**
+     *
+     * 스터디 제거시
+     * 해당 채팅방 데이터 삭제 : Message, UserAndRoom, Room
+     * 스터디 데이터 삭제 : UserAndStudy, Study
+     */
     @Transactional
     public StudyDeleteRes delete(StudyDeleteReq studyDeleteReq) {
         Study study = studyRepository.findById(studyDeleteReq.getStudyId()).get();
@@ -223,10 +229,12 @@ public class StudyService {
 
             return StudyDeleteRes.builder()
                     .studyId(study.getId())
+                    .makerId(study.getMakerId())
                     .build();
         } else {
             return StudyDeleteRes.builder()
                     .studyId(-1L)
+                    .makerId(-1L)
                     .build();
         }
 

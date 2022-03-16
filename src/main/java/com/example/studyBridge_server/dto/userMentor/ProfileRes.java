@@ -1,12 +1,16 @@
 package com.example.studyBridge_server.dto.userMentor;
 
 import com.example.studyBridge_server.domaion.Certificate;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ProfileRes {
 

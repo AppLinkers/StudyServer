@@ -21,7 +21,6 @@ public class UserAndRoom {
     private User user;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "room_id")
     private Room room;
 

@@ -24,7 +24,6 @@ public class UserAndStudy extends BaseEntity implements Auditable {
     private Role role;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Study study;
 
     @ManyToOne

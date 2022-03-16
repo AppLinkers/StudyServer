@@ -28,7 +28,7 @@ public class Room extends BaseEntity implements Auditable {
         this.study = study;
     }
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonIgnore
     private List<UserAndRoom> userAndRoomList = new ArrayList<>();
