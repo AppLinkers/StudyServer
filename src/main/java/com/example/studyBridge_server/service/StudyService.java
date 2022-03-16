@@ -6,7 +6,6 @@ import com.example.studyBridge_server.domaion.type.StudyStatus;
 import com.example.studyBridge_server.dto.study.*;
 import com.example.studyBridge_server.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +29,7 @@ public class StudyService {
                 .makerId(user.getId())
                 .name(studyMakeReq.getName())
                 .info(studyMakeReq.getInfo())
+                .explain(studyMakeReq.getExplain())
                 .place(studyMakeReq.getPlace())
                 .maxNum(studyMakeReq.getMaxNum())
                 .type(studyMakeReq.getType())
@@ -105,6 +105,7 @@ public class StudyService {
                             .id(study.getId())
                             .name(study.getName())
                             .info(study.getInfo())
+                            .explain(study.getExplain())
                             .maxNum(study.getMaxNum())
                             .status(study.getStatus().toString())
                             .type(study.getType())

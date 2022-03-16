@@ -19,6 +19,8 @@ public class StudyMakeReq {
 
     private String info;
 
+    private String explain;
+
     private String place;
 
     private Integer maxNum;

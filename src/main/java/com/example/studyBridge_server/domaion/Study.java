@@ -25,9 +25,12 @@ public class Study extends BaseEntity implements Auditable {
 
     private String info; // 한줄 설명
 
+    private String explain; // study 설명
+
     private String type; // subject
 
     private String place; // study 위치
+
 
     private Integer maxNum; // 최대 인원 수
 
@@ -46,9 +49,10 @@ public class Study extends BaseEntity implements Auditable {
     private List<UserAndStudy> userAndStudyList = new ArrayList<>();
 
     @Builder
-    public Study(String name, String info, String type, String place, Integer maxNum, StudyStatus status, Long makerId) {
+    public Study(String name, String info, String explain, String type, String place, Integer maxNum, StudyStatus status, Long makerId) {
         this.name = name;
         this.info = info;
+        this.explain = explain;
         this.type = type;
         this.place = place;
         this.maxNum = maxNum;

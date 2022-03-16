@@ -18,6 +18,8 @@ public class StudyFindRes {
 
     private String info;
 
+    private String explain;
+
     private Integer maxNum;
 
     private String status;
