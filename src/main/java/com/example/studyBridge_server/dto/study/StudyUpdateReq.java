@@ -3,9 +3,11 @@ package com.example.studyBridge_server.dto.study;
 import lombok.Data;
 
 @Data
-public class StudyMakeReq {
+public class StudyUpdateReq {
 
-    private String makerId;
+    private Long studyId;
+
+    private Long makerId;
 
     private String name;
 
@@ -14,8 +16,6 @@ public class StudyMakeReq {
     private String info;
 
     private String explain;
-
-    private String place;
 
     private Integer maxNum;
 }

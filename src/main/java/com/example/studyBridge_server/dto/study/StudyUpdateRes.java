@@ -9,11 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StudyFindRes {
+public class StudyUpdateRes {
 
-    private Long id;
+    private Long studyId;
+
+    private Long makerId;
 
     private String name;
+
+    private String type;
 
     private String info;
 
@@ -21,11 +25,4 @@ public class StudyFindRes {
 
     private Integer maxNum;
 
-    private String status;
-
-    private String place;
-
-    private String type;
-
-    private int menteeCnt;
 }

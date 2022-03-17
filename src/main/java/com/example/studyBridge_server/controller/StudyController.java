@@ -85,4 +85,13 @@ public class StudyController {
     public ResponseEntity<StudyDeleteRes> delete(@RequestBody StudyDeleteReq studyDeleteReq) {
         return ResponseEntity.status(201).body(studyService.delete(studyDeleteReq));
     }
+
+    @PostMapping("/update")
+    public ResponseEntity<StudyUpdateRes> update(@RequestBody StudyUpdateReq studyUpdateReq) {
+        try {
+            return ResponseEntity.status(201).body(studyService.update(studyUpdateReq));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new StudyUpdateRes());
+        }
+    }
 }

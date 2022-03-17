@@ -240,4 +240,35 @@ public class StudyService {
         }
 
     }
+
+    /**
+     * 스터디 수정 기능
+     * param : 스터디 id, maker id,
+     */
+    @Transactional
+    public StudyUpdateRes update(StudyUpdateReq studyUpdateReq) throws Exception {
+        Study study = studyRepository.findById(studyUpdateReq.getStudyId()).get();
+
+        if (!study.getMakerId().equals(studyUpdateReq.getMakerId())) {
+            throw new Exception();
+        }
+
+        study.setName(studyUpdateReq.getName());
+        study.setType(studyUpdateReq.getType());
+        study.setInfo(studyUpdateReq.getInfo());
+        study.setExplain(studyUpdateReq.getExplain());
+        study.setMaxNum(studyUpdateReq.getMaxNum());
+
+        Study savedStudy = studyRepository.save(study);
+
+        return StudyUpdateRes.builder()
+                .studyId(savedStudy.getId())
+                .makerId(savedStudy.getMakerId())
+                .name(savedStudy.getName())
+                .type(savedStudy.getType())
+                .info(savedStudy.getInfo())
+                .explain(savedStudy.getExplain())
+                .maxNum(savedStudy.getMaxNum())
+                .build();
+    }
 }
