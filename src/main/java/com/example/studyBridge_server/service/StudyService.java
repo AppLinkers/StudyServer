@@ -29,7 +29,7 @@ public class StudyService {
                 .makerId(user.getId())
                 .name(studyMakeReq.getName())
                 .info(studyMakeReq.getInfo())
-                .explain(studyMakeReq.getExplain())
+                .studyExplain(studyMakeReq.getExplain())
                 .place(studyMakeReq.getPlace())
                 .maxNum(studyMakeReq.getMaxNum())
                 .type(studyMakeReq.getType())
@@ -105,7 +105,7 @@ public class StudyService {
                             .id(study.getId())
                             .name(study.getName())
                             .info(study.getInfo())
-                            .explain(study.getExplain())
+                            .explain(study.getStudyExplain())
                             .maxNum(study.getMaxNum())
                             .status(study.getStatus().toString())
                             .type(study.getType())
@@ -262,7 +262,7 @@ public class StudyService {
         study.setName(studyUpdateReq.getName());
         study.setType(studyUpdateReq.getType());
         study.setInfo(studyUpdateReq.getInfo());
-        study.setExplain(studyUpdateReq.getExplain());
+        study.setStudyExplain(studyUpdateReq.getExplain());
         study.setMaxNum(studyUpdateReq.getMaxNum());
 
         Study savedStudy = studyRepository.save(study);
@@ -273,7 +273,7 @@ public class StudyService {
                 .name(savedStudy.getName())
                 .type(savedStudy.getType())
                 .info(savedStudy.getInfo())
-                .explain(savedStudy.getExplain())
+                .explain(savedStudy.getStudyExplain())
                 .maxNum(savedStudy.getMaxNum())
                 .build();
     }
