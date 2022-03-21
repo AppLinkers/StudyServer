@@ -1,6 +1,7 @@
 package com.example.studyBridge_server.domaion;
 
 import com.example.studyBridge_server.domaion.type.MessageType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.Entity;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Message {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Room.class)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "room_id")
+    @JsonIgnore
     private Room room; // 채팅 방 식별자
 
     private Long senderId; // 채팅 전송자 식별자
