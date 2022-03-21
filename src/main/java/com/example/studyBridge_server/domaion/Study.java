@@ -44,7 +44,7 @@ public class Study extends BaseEntity implements Auditable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "study_id")
-    @ToString.Exclude
+    @JsonIgnore
     private List<UserAndStudy> userAndStudyList = new ArrayList<>();
 
     @Builder
