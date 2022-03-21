@@ -13,7 +13,9 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -57,7 +59,13 @@ public class MessageService {
     }
 
     public List<Message> findByRoomId(Long room_id) {
-        return messageRepository.findByRoom(roomRepository.findById(room_id).get());
+        Optional<List<Message>> result = messageRepository.findByRoom(roomRepository.findById(room_id).get());
+
+        if (result.isPresent()) {
+            return result.get();
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     public FindRoomRes findRoomByStudyId(Long studyId) {

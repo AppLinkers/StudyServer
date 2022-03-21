@@ -17,13 +17,12 @@ public class UserSignUpReq {
 
     private String loginPw;
 
-    private String role; // Role.valueOf(role) 로 형 변환시켜 주기
+    private String role;
 
     private String phone;
 
-    private String gender; // Gender.valueOf(gender) 로 형 변환시켜주기
+    private String gender;
 
     private String location;
 
-//    private MultipartFile profileImg; // img -> s3 -> url 값 저장
 }

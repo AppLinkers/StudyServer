@@ -171,8 +171,14 @@ public class StudyService {
         return studyRepository.findStatus(studyId);
     }
 
+    // 구독 해제?
     @Transactional
     public int deleteMentor(Long studyId) {
+        // 해당 스터디의 멘토 null 처리
+        Study study = studyRepository.findById(studyId).get();
+        study.setMentorId(null);
+        studyRepository.save(study);
+
         // 채팅방에서 해당 사용자(멘토) 삭제
         Room room = roomRepository.findRoomByStudyId(studyId);
         Long mentorId = studyRepository.findMentorIdByStudyId(studyId).get();
@@ -207,7 +213,7 @@ public class StudyService {
     public String findChosenMentorLoginId(Long studyId) {
         Optional<Long> mentorId = studyRepository.findMentorIdByStudyId(studyId);
 
-        if (mentorId != null) {
+        if (mentorId.isPresent()) {
             return userRepository.findLoginIdById(mentorId.get());
         } else {
             return "현재 멘토가 지정되어있지 않습니다.";
