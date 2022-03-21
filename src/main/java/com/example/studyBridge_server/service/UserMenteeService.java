@@ -61,6 +61,13 @@ public class UserMenteeService {
         return result;
     }
 
+    public Boolean isLiked(Long menteeId, Long mentorId) {
+        if (likeMentorRepository.findLikeMentorByMenteeIdAndMentorId(menteeId, mentorId).isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 }

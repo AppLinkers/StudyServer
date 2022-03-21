@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface LikeMentorRepository extends JpaRepository<LikeMentor, Long> {
 
-    LikeMentor findLikeMentorByMenteeIdAndMentorId(Long menteeId, Long mentorId);
+    Optional<LikeMentor> findLikeMentorByMenteeIdAndMentorId(Long menteeId, Long mentorId);
 
     @Modifying
     int deleteLikeMentorByMenteeIdAndMentorId(Long menteeId, Long mentorId);

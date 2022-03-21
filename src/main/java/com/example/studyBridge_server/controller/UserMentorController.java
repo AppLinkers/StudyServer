@@ -25,12 +25,12 @@ public class UserMentorController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<ProfileRes> getProfile(@RequestParam String userLoginId) {
-        return ResponseEntity.status(201).body(userMentorService.getProfile(userLoginId));
+    public ResponseEntity<ProfileRes> getProfile(@RequestParam String mentorLoginId, @RequestParam String userLoginId) {
+        return ResponseEntity.status(201).body(userMentorService.getProfile(mentorLoginId, userLoginId));
     }
 
     @GetMapping("/allProfile")
-    public ResponseEntity<List<ProfileRes>> getAllProfile() {
-        return ResponseEntity.status(201).body(userMentorService.getAllProfile());
+    public ResponseEntity<List<ProfileRes>> getAllProfile(@RequestParam String userLoginId) {
+        return ResponseEntity.status(201).body(userMentorService.getAllProfile(userLoginId));
     }
 }

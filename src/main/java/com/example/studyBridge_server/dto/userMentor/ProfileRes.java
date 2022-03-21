@@ -38,4 +38,6 @@ public class ProfileRes {
 
     private String appeal;
 
+    private Boolean liked;
+
 }

@@ -3,6 +3,8 @@ package com.example.studyBridge_server.service;
 import com.example.studyBridge_server.domaion.Certificate;
 import com.example.studyBridge_server.domaion.MentorProfile;
 import com.example.studyBridge_server.domaion.User;
+import com.example.studyBridge_server.domaion.type.Role;
+import com.example.studyBridge_server.dto.userMentee.LikeMentorRes;
 import com.example.studyBridge_server.dto.userMentor.ProfileRes;
 import com.example.studyBridge_server.dto.userMentor.ProfileReq;
 import com.example.studyBridge_server.dto.userMentor.ProfileTextReq;
@@ -24,6 +26,7 @@ public class UserMentorService {
     private final MentorProfileRepository mentorProfileRepository;
     private final UserRepository userRepository;
     private final CertificateRepository certificateRepository;
+    private final UserMenteeService userMenteeService;
     private final S3Uploader s3Uploader;
 
     public ProfileRes profile(ProfileReq profileReq) throws IOException {
@@ -106,13 +109,24 @@ public class UserMentorService {
 
     }
 
-    public ProfileRes getProfile(String userLoginId) {
-        MentorProfile mentorProfile = mentorProfileRepository.findByUser(userRepository.findUserByLoginId(userLoginId).get());
+    public ProfileRes getProfile(String mentorLoginId, String userLoginId) {
+        User user = userRepository.findUserByLoginId(userLoginId).get();
+        User mentor = userRepository.findUserByLoginId(mentorLoginId).get();
+
+        MentorProfile mentorProfile = mentorProfileRepository.findByUser(mentor);
 
         List<Certificate> certificates = new ArrayList<>();
         Optional<List<Certificate>> searchedCertificates = certificateRepository.findAllByMentorProfile(mentorProfile);
         if (searchedCertificates.isPresent()) {
             certificates = searchedCertificates.get();
+        }
+
+        Boolean liked = false;
+
+        if (user.getRole().equals(Role.MENTEE)) {
+            if (userMenteeService.isLiked(user.getId(), mentor.getId())) {
+                liked = true;
+            }
         }
 
         return ProfileRes.builder()
@@ -128,19 +142,43 @@ public class UserMentorService {
                 .experience(mentorProfile.getExperience())
                 .curriculum(mentorProfile.getCurriculum())
                 .appeal(mentorProfile.getAppeal())
+                .liked(liked)
                 .build();
     }
 
-    public List<ProfileRes> getAllProfile() {
+    /**
+     * 사용자가 멘토 멘티인지 판단 후, 멘티이면 좋아요 눌렀던 멘토인지 확인
+     * 멘토이면 좋아요 값 False 로 설정 후 넘겨주기
+     * @param userLoginId
+     * @return
+     */
+    public List<ProfileRes> getAllProfile(String userLoginId) {
         List<ProfileRes> result = new ArrayList<>();
-        mentorProfileRepository.findAll().forEach(
-                mentorProfile -> {
-                    List<Certificate> certificates = new ArrayList<>();
-                    Optional<List<Certificate>> searchedCertificates = certificateRepository.findAllByMentorProfile(mentorProfile);
-                    if (searchedCertificates.isPresent()) {
-                        certificates = searchedCertificates.get();
-                    }
-                    result.add(
+        List<LikeMentorRes> mentorLikeList = new ArrayList<>();
+
+        User user = userRepository.findUserByLoginId(userLoginId).get();
+
+        if (user.getRole().equals(Role.MENTEE)) {
+            mentorLikeList = userMenteeService.findLikedMentors(user.getId());
+        }
+
+        List<MentorProfile> mentorProfileList = mentorProfileRepository.findAll();
+
+        for (MentorProfile mentorProfile : mentorProfileList) {
+            List<Certificate> certificates = new ArrayList<>();
+            Optional<List<Certificate>> searchedCertificates = certificateRepository.findAllByMentorProfile(mentorProfile);
+
+            if (searchedCertificates.isPresent()) {
+                certificates = searchedCertificates.get();
+            }
+
+            Boolean liked = false;
+
+            if (mentorLikeList.contains(new LikeMentorRes(user.getId(), mentorProfile.getUser().getId()))){
+                liked = true;
+            }
+
+                result.add(
                         ProfileRes.builder()
                                 .userId(mentorProfile.getUser().getId())
                                 .userName(mentorProfile.getUser().getName())
@@ -154,10 +192,10 @@ public class UserMentorService {
                                 .experience(mentorProfile.getExperience())
                                 .curriculum(mentorProfile.getCurriculum())
                                 .appeal(mentorProfile.getAppeal())
+                                .liked(liked)
                                 .build()
-                    );
-                }
-        );
+                );
+        }
 
         return result;
     }
