@@ -31,7 +31,7 @@ public class ToDo extends BaseEntity implements Auditable {
     private String feedBack;
 
     @Enumerated(value = EnumType.STRING)
-    private ToDoStatus toDoStatus;
+    private ToDoStatus status;
 
     @JoinColumn(name = "mentee_id")
     @ManyToOne(fetch = FetchType.LAZY)

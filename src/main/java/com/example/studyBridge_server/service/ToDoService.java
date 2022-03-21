@@ -46,7 +46,7 @@ public class ToDoService {
         toDo.setTask(assignToDoReq.getTask());
         toDo.setDueDate(assignToDoReq.getDueDate());
         toDo.setFeedBack("");
-        toDo.setToDoStatus(ToDoStatus.READY);
+        toDo.setStatus(ToDoStatus.READY);
 
         Optional<List<User>> menteeList = userAndStudyRepository.findMenteeByStudyId(assignToDoReq.getStudyId());
 
@@ -79,12 +79,12 @@ public class ToDoService {
             throw new Exception();
         }
 
-        toDo.setToDoStatus(ToDoStatus.valueOf(changeToDoStatusReq.getStatus()));
+        toDo.setStatus(ToDoStatus.valueOf(changeToDoStatusReq.getStatus()));
 
         ToDo savedToDo = toDoRepository.save(toDo);
 
         return ChangeToDoStatusRes.builder()
-                .status(savedToDo.getToDoStatus())
+                .status(savedToDo.getStatus())
                 .menteeId(savedToDo.getUser().getId())
                 .toDoId(savedToDo.getId())
                 .build();
@@ -119,7 +119,7 @@ public class ToDoService {
     public ConfirmToDoRes confirm(ConfirmToDoReq confirmToDoReq) throws Exception {
         ToDo toDo = toDoRepository.findById(confirmToDoReq.getToDoId()).get();
 
-        if (!toDo.getToDoStatus().equals(ToDoStatus.DONE)) {
+        if (!toDo.getStatus().equals(ToDoStatus.DONE)) {
             throw new Exception();
         }
 
@@ -127,14 +127,14 @@ public class ToDoService {
             throw new Exception();
         }
 
-        toDo.setToDoStatus(ToDoStatus.CONFIRMED);
+        toDo.setStatus(ToDoStatus.CONFIRMED);
 
         ToDo savedToDo = toDoRepository.save(toDo);
 
         return ConfirmToDoRes.builder()
                 .toDoId(savedToDo.getId())
                 .mentorId(savedToDo.getStudy().getMentorId())
-                .toDoStatus(savedToDo.getToDoStatus())
+                .toDoStatus(savedToDo.getStatus())
                 .build();
     }
 
@@ -162,7 +162,7 @@ public class ToDoService {
                                 .task(toDo.getTask())
                                 .dueDate(toDo.getDueDate())
                                 .feedBack(toDo.getFeedBack())
-                                .toDoStatus(toDo.getToDoStatus())
+                                .toDoStatus(toDo.getStatus())
                                 .build();
 
                         result.add(findToDoRes);
@@ -186,7 +186,7 @@ public class ToDoService {
     public List<FindToDoRes> findConfirmedOfMentee(Long menteeId) {
         List<FindToDoRes> result = new ArrayList<>();
 
-        Optional<List<ToDo>> toDoList = toDoRepository.findAllByUserIdAndToDoStatus(menteeId, ToDoStatus.CONFIRMED);
+        Optional<List<ToDo>> toDoList = toDoRepository.findAllByUserIdAndStatus(menteeId, ToDoStatus.CONFIRMED);
 
         if (toDoList != null) {
             toDoList.get().forEach(
@@ -197,7 +197,7 @@ public class ToDoService {
                                 .task(toDo.getTask())
                                 .dueDate(toDo.getDueDate())
                                 .feedBack(toDo.getFeedBack())
-                                .toDoStatus(toDo.getToDoStatus())
+                                .toDoStatus(toDo.getStatus())
                                 .build();
 
                         result.add(findToDoRes);

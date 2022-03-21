@@ -11,7 +11,7 @@ public interface ToDoRepository extends JpaRepository<ToDo, Long> {
 
     Optional<List<ToDo>> findAllByStudyId(Long studyId);
 
-    Optional<List<ToDo>> findAllByUserIdAndToDoStatus(Long userId, ToDoStatus toDoStatus);
+    Optional<List<ToDo>> findAllByUserIdAndStatus(Long userId, ToDoStatus status);
 
     int countDistinctByUserId(Long userId);
 }

@@ -1,14 +1,9 @@
 package com.example.studyBridge_server.domaion;
 
 import com.example.studyBridge_server.domaion.listener.Auditable;
-import com.example.studyBridge_server.domaion.type.Subject;
-import com.example.studyBridge_server.support.StringArrayConverter;
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Optional;
 
 @Entity
 @NoArgsConstructor
@@ -30,9 +25,6 @@ public class MentorProfile extends BaseEntity implements Auditable {
 
     private String nickName;
 
-    //    @Nullable
-//    @Enumerated(value = EnumType.STRING)
-//    private Subject subject;
     private String subject;
 
     private String school;
