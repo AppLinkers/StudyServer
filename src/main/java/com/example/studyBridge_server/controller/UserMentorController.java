@@ -20,7 +20,6 @@ public class UserMentorController {
     @SneakyThrows
     @PostMapping("/profile")
     public ResponseEntity<ProfileRes> profile(@ModelAttribute ProfileReq profileReq) {
-        System.out.println(profileReq.toString());
         return ResponseEntity.status(201).body(userMentorService.profile(profileReq));
     }
 

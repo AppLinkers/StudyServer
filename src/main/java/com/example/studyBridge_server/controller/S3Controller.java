@@ -16,7 +16,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class S3Controller {
 
-    @Autowired
     private final S3Uploader s3Uploader;
 
     @PostMapping("/s3")
