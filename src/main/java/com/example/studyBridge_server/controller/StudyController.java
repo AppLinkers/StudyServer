@@ -1,6 +1,5 @@
 package com.example.studyBridge_server.controller;
 
-import com.example.studyBridge_server.domaion.Study;
 import com.example.studyBridge_server.dto.study.*;
 import com.example.studyBridge_server.service.StudyService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +29,7 @@ public class StudyController {
     public ResponseEntity<List<StudyFindRes>> find() {
         return ResponseEntity.status(201).body(studyService.find());
     }
+
 
     @GetMapping("/isApplied")
     public ResponseEntity<Boolean> isApplied(@RequestParam Long studyId, @RequestParam String userLoginId) {

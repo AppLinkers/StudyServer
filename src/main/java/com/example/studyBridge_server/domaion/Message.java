@@ -18,6 +18,8 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(value = EnumType.STRING)
     private MessageType messageType; // 생성 및 입장 / 퇴장 / 채팅 구분
 
     // Many : 1
