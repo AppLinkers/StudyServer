@@ -81,6 +81,7 @@ public class AssignedToDoController {
      */
     @GetMapping("/mentee")
     public ResponseEntity<List<FindAssignedToDoRes>> findByMentee(@RequestParam("menteeId") Long menteeId) {
+        System.out.println("test");
         return ResponseEntity.status(201).body(assignedToDoService.findByMentee(menteeId));
     }
 }
