@@ -54,9 +54,11 @@ public class ToDoService {
 
         ToDo savedToDo = toDoRepository.save(toDo);
 
+        System.out.println(assignToDoReq.getStudyId());
+
         Optional<List<User>> menteeList = userAndStudyRepository.findMenteeByStudyId(assignToDoReq.getStudyId());
 
-        if (menteeList != null) {
+        if (menteeList.isPresent()) {
             for (User mentee : menteeList.get()) {
 
                 AssignedToDo assignedToDo = new AssignedToDo();

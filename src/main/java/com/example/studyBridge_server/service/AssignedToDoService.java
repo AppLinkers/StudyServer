@@ -5,7 +5,6 @@ import com.example.studyBridge_server.domaion.type.ToDoStatus;
 import com.example.studyBridge_server.dto.assignedToDo.*;
 import com.example.studyBridge_server.repository.AssignedToDoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,6 @@ import java.util.Optional;
 public class AssignedToDoService {
 
     private final AssignedToDoRepository assignedToDoRepository;
-
     private final UserAuthService userAuthService;
 
     /**

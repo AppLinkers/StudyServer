@@ -2,11 +2,11 @@ package com.example.studyBridge_server.service;
 
 import com.example.studyBridge_server.domaion.Message;
 import com.example.studyBridge_server.domaion.Room;
-import com.example.studyBridge_server.domaion.User;
-import com.example.studyBridge_server.domaion.UserAndRoom;
 import com.example.studyBridge_server.domaion.type.MessageType;
 import com.example.studyBridge_server.dto.message.FindRoomRes;
-import com.example.studyBridge_server.repository.*;
+import com.example.studyBridge_server.repository.MessageRepository;
+import com.example.studyBridge_server.repository.RoomRepository;
+import com.example.studyBridge_server.repository.UserAndRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -23,7 +23,6 @@ import java.util.Optional;
 public class MessageService {
 
     private final SimpMessageSendingOperations messagingTemplate;
-    private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final MessageRepository messageRepository;
     private final UserAndRoomRepository userAndRoomRepository;

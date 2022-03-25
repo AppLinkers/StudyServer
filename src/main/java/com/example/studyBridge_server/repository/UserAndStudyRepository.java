@@ -19,7 +19,7 @@ public interface UserAndStudyRepository extends JpaRepository<UserAndStudy, Long
     @Query(value = "SELECT user.login_id FROM user WHERE user.id in (SELECT user_and_study.user_id FROM user_and_study WHERE user_and_study.study_id = :studyId and user_and_study.role = :role)", nativeQuery = true)
     Optional<List<String>> findUserLoginIdByStudyId(@Param("studyId") Long studyId, @Param("role") String role);
 
-    @Query(value = "select u from User u where u.id in (select uas from UserAndStudy uas where uas.study.id = :studyId and uas.role = com.example.studyBridge_server.domaion.type.Role.MENTEE)")
+    @Query(value = "select u from User u where u.id in (select uas.user.id from UserAndStudy uas where uas.study.id = :studyId and uas.role = com.example.studyBridge_server.domaion.type.Role.MENTEE)")
     Optional<List<User>> findMenteeByStudyId(@Param("studyId") Long studyId);
 
     @Modifying
