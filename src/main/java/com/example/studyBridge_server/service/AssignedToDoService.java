@@ -5,6 +5,7 @@ import com.example.studyBridge_server.domaion.type.ToDoStatus;
 import com.example.studyBridge_server.dto.assignedToDo.*;
 import com.example.studyBridge_server.repository.AssignedToDoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,8 @@ import java.util.Optional;
 public class AssignedToDoService {
 
     private final AssignedToDoRepository assignedToDoRepository;
+
+    private final UserAuthService userAuthService;
 
     /**
      * 멘티가 status 변경 (ready -> progress -> done)
@@ -103,28 +106,7 @@ public class AssignedToDoService {
 
         Optional<List<AssignedToDo>> assignedToDoList = assignedToDoRepository.findAllByUserIdAndStatus(menteeId, status);
 
-        if (assignedToDoList != null) {
-            assignedToDoList.get().forEach(
-                    assignedToDo -> {
-                        FindAssignedToDoRes findAssignedToDoRes = FindAssignedToDoRes.builder()
-                                .id(assignedToDo.getId())
-                                .toDoId(assignedToDo.getToDo().getId())
-                                .studyId(assignedToDo.getToDo().getStudy().getId())
-                                .menteeId(menteeId)
-                                .mentorId(assignedToDo.getToDo().getStudy().getMentorId())
-                                .task(assignedToDo.getToDo().getTask())
-                                .explain(assignedToDo.getToDo().getToDoExplain())
-                                .dueDate(assignedToDo.getToDo().getDueDate())
-                                .feedBack(assignedToDo.getFeedBack())
-                                .status(assignedToDo.getStatus().toString())
-                                .build();
-
-                        result.add(findAssignedToDoRes);
-                    }
-            );
-        }
-
-        return result;
+        return getFindAssignedToDoRes(assignedToDoList);
     }
 
     /**
@@ -156,12 +138,13 @@ public class AssignedToDoService {
         if (assignedToDoList.isPresent()) {
             assignedToDoList.get().forEach(
                     assignedToDo -> {
+
                         FindAssignedToDoRes findAssignedToDoRes = FindAssignedToDoRes.builder()
                                 .id(assignedToDo.getId())
                                 .toDoId(assignedToDo.getToDo().getId())
                                 .studyId(assignedToDo.getToDo().getStudy().getId())
-                                .menteeId(assignedToDo.getUser().getId())
-                                .mentorId(assignedToDo.getToDo().getStudy().getMentorId())
+                                .menteeName(assignedToDo.getUser().getName())
+                                .mentorName(userAuthService.getName(assignedToDo.getToDo().getStudy().getMentorId()))
                                 .task(assignedToDo.getToDo().getTask())
                                 .explain(assignedToDo.getToDo().getToDoExplain())
                                 .dueDate(assignedToDo.getToDo().getDueDate())

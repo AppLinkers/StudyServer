@@ -87,4 +87,8 @@ public class UserAuthService {
         return userRepository.findRoleByLoginId(loginId).equals(Role.MENTEE);
     }
 
+    public String getName(Long userId) {
+        return userRepository.findNameById(userId);
+    }
+
 }

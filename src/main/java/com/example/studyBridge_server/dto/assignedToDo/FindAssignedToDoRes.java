@@ -19,9 +19,9 @@ public class FindAssignedToDoRes {
 
     private Long studyId;
 
-    private Long menteeId;
+    private String menteeName;
 
-    private Long mentorId;
+    private String mentorName;
 
     private String task;
 
