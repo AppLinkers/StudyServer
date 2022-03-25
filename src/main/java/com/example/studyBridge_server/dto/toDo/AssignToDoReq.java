@@ -13,6 +13,8 @@ public class AssignToDoReq {
 
     private String task;
 
+    private String explain;
+
     private LocalDateTime dueDate;
 
 }

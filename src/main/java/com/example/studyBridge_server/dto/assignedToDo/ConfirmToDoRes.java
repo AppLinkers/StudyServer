@@ -1,4 +1,4 @@
-package com.example.studyBridge_server.dto.toDo;
+package com.example.studyBridge_server.dto.assignedToDo;
 
 import com.example.studyBridge_server.domaion.type.ToDoStatus;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ public class ConfirmToDoRes {
 
     private Long mentorId;
 
-    private Long toDoId;
+    private Long assignedToDoId;
 
     private ToDoStatus toDoStatus;
 }

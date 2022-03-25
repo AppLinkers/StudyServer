@@ -1,6 +1,9 @@
 package com.example.studyBridge_server.controller;
 
-import com.example.studyBridge_server.dto.toDo.*;
+import com.example.studyBridge_server.dto.toDo.AssignToDoReq;
+import com.example.studyBridge_server.dto.toDo.AssignToDoRes;
+import com.example.studyBridge_server.dto.toDo.FindToDoReq;
+import com.example.studyBridge_server.dto.toDo.FindToDoRes;
 import com.example.studyBridge_server.service.ToDoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,58 +19,44 @@ public class ToDoController {
 
     private final ToDoService toDoService;
 
+    /**
+     * ToDo 할당
+     */
     @PostMapping("/")
-    ResponseEntity<AssignToDoRes> assign(@RequestBody AssignToDoReq assignToDoReq) {
+    public ResponseEntity<AssignToDoRes> assign(@RequestBody AssignToDoReq assignToDoReq) {
         try {
-             return ResponseEntity.status(201).body(toDoService.assign(assignToDoReq));
+            return ResponseEntity.status(201).body(toDoService.assign(assignToDoReq));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new AssignToDoRes());
         }
     }
 
-    @PostMapping("/status")
-    ResponseEntity<ChangeToDoStatusRes> changeStatus(@RequestBody ChangeToDoStatusReq changeToDoStatusReq) {
-        try {
-            return ResponseEntity.status(201).body(toDoService.changeStatus(changeToDoStatusReq));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ChangeToDoStatusRes());
-        }
+    /**
+     * 특정 멘토가 소속된 스터디들의 List<ToDo> 반환
+     */
+    @GetMapping("/mentor")
+    public ResponseEntity<List<FindToDoRes>> findOfMentor(@RequestParam("mentorId") Long mentorId) {
+        return ResponseEntity.status(201).body(toDoService.findToDoByMentor(mentorId));
     }
 
-    @PostMapping("/feedBack")
-    ResponseEntity<FeedBackToDoRes> feedBack(@RequestBody FeedBackToDoReq feedBackToDoReq) {
-        try {
-            return ResponseEntity.status(201).body(toDoService.feedBack(feedBackToDoReq));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new FeedBackToDoRes());
-        }
-    }
-
-    @PostMapping("/confirm")
-    ResponseEntity<ConfirmToDoRes> confirm(@RequestBody ConfirmToDoReq confirmToDoReq) {
-        try {
-            return ResponseEntity.status(201).body(toDoService.confirm(confirmToDoReq));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ConfirmToDoRes());
-        }
-    }
-
+    /**
+     * 특정 스터디의 List<ToDo> 반환
+     */
     @GetMapping("/study")
-    ResponseEntity<List<FindToDoRes>> findOfStudy(@RequestParam("studyId") Long studyId, @RequestParam("mentorId") Long mentorId) {
+    public ResponseEntity<List<FindToDoRes>> findOfStudy(@RequestParam("studyId") Long studyId, @RequestParam("mentorId") Long mentorId) {
         try {
-            return ResponseEntity.status(201).body(toDoService.findOfStudy(new FindToDoReq(studyId, mentorId)));
+            return ResponseEntity.status(201).body(toDoService.findOfStudy(new FindToDoReq(mentorId, studyId)));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(new ArrayList<>());
         }
     }
 
-    @GetMapping("/mentee")
-    ResponseEntity<Integer> countOfMentee(@RequestParam("menteeId") Long menteeId) {
-        return ResponseEntity.status(201).body(toDoService.countOfMentee(menteeId));
-    }
-
-    @GetMapping("/mentee/confirmed")
-    ResponseEntity<List<FindToDoRes>> findConfirmedOfMentee(@RequestParam("menteeId") Long menteeId) {
-        return ResponseEntity.status(201).body(toDoService.findConfirmedOfMentee(menteeId));
+    /**
+     * 특정 ToDo 삭제 기능
+     */
+    @PostMapping("/delete")
+    public ResponseEntity<Integer> delete(@RequestParam("toDoId") Long toDoId) {
+        return ResponseEntity.status(201).body(toDoService.delete(toDoId));
     }
 }

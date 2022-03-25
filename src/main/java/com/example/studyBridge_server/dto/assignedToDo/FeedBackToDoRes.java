@@ -1,4 +1,4 @@
-package com.example.studyBridge_server.dto.toDo;
+package com.example.studyBridge_server.dto.assignedToDo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class FeedBackToDoRes {
     private Long mentorId;
 
-    private Long toDoId;
+    private Long assignedToDoId;
 
     private String feedBack;
 }

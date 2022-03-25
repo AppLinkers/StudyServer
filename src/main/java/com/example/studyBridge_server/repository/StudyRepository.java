@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface StudyRepository extends JpaRepository<Study, Long> {
@@ -22,4 +23,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     @Query("select s.mentorId from Study s where s.id = :studyId")
     Optional<Long> findMentorIdByStudyId(@Param("studyId") Long studyId);
+
+    @Query("select s.id from Study s where s.mentorId = :mentorId")
+    Optional<List<Long>> findAllStudyIdByMentorId(@Param("mentorId") Long mentorId);
 }

@@ -2,6 +2,7 @@ package com.example.studyBridge_server.domaion;
 
 import com.example.studyBridge_server.domaion.listener.Auditable;
 import com.example.studyBridge_server.domaion.type.ToDoStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -25,21 +28,14 @@ public class ToDo extends BaseEntity implements Auditable {
 
     private String task;
 
+    private String toDoExplain;
+
     @Column(columnDefinition = "datetime(6) default now(6)")
     private LocalDateTime dueDate;
-
-    private String feedBack;
-
-    @Enumerated(value = EnumType.STRING)
-    private ToDoStatus status;
-
-    @JoinColumn(name = "mentee_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
 
     @JoinColumn(name = "study_id")
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Study study;
+
 }

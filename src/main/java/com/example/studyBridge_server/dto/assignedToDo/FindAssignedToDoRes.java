@@ -1,6 +1,5 @@
-package com.example.studyBridge_server.dto.toDo;
+package com.example.studyBridge_server.dto.assignedToDo;
 
-import com.example.studyBridge_server.domaion.type.ToDoStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,11 +11,17 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindToDoRes {
+public class FindAssignedToDoRes {
 
     private Long id;
 
+    private Long toDoId;
+
     private Long studyId;
+
+    private Long menteeId;
+
+    private Long mentorId;
 
     private String task;
 
@@ -24,4 +29,7 @@ public class FindToDoRes {
 
     private LocalDateTime dueDate;
 
+    private String feedBack;
+
+    private String status;
 }

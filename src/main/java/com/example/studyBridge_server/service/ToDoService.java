@@ -1,10 +1,15 @@
 package com.example.studyBridge_server.service;
 
+import com.example.studyBridge_server.domaion.AssignedToDo;
 import com.example.studyBridge_server.domaion.Study;
 import com.example.studyBridge_server.domaion.ToDo;
 import com.example.studyBridge_server.domaion.User;
 import com.example.studyBridge_server.domaion.type.ToDoStatus;
-import com.example.studyBridge_server.dto.toDo.*;
+import com.example.studyBridge_server.dto.toDo.AssignToDoReq;
+import com.example.studyBridge_server.dto.toDo.AssignToDoRes;
+import com.example.studyBridge_server.dto.toDo.FindToDoReq;
+import com.example.studyBridge_server.dto.toDo.FindToDoRes;
+import com.example.studyBridge_server.repository.AssignedToDoRepository;
 import com.example.studyBridge_server.repository.StudyRepository;
 import com.example.studyBridge_server.repository.ToDoRepository;
 import com.example.studyBridge_server.repository.UserAndStudyRepository;
@@ -21,6 +26,7 @@ import java.util.Optional;
 public class ToDoService {
 
     private final ToDoRepository toDoRepository;
+    private final AssignedToDoRepository assignedToDoRepository;
     private final UserAndStudyRepository userAndStudyRepository;
     private final StudyRepository studyRepository;
 
@@ -33,33 +39,38 @@ public class ToDoService {
 
         Study study = studyRepository.findById(assignToDoReq.getStudyId()).get();
 
-
         // check Mentor
         if (!study.getMentorId().equals(assignToDoReq.getMentorId())) {
             throw new Exception();
         }
 
-        List<ToDo> toDoList = new ArrayList<>();
+        List<AssignedToDo> assignedToDoList = new ArrayList<>();
 
         ToDo toDo = new ToDo();
         toDo.setStudy(study);
         toDo.setTask(assignToDoReq.getTask());
+        toDo.setToDoExplain(assignToDoReq.getExplain());
         toDo.setDueDate(assignToDoReq.getDueDate());
-        toDo.setFeedBack("");
-        toDo.setStatus(ToDoStatus.READY);
+
+        ToDo savedToDo = toDoRepository.save(toDo);
 
         Optional<List<User>> menteeList = userAndStudyRepository.findMenteeByStudyId(assignToDoReq.getStudyId());
 
         if (menteeList != null) {
             for (User mentee : menteeList.get()) {
-                toDo.setUser(mentee);
-                toDoList.add(toDo);
+
+                AssignedToDo assignedToDo = new AssignedToDo();
+                assignedToDo.setFeedBack("");
+                assignedToDo.setStatus(ToDoStatus.READY);
+                assignedToDo.setToDo(savedToDo);
+                assignedToDo.setUser(mentee);
+                assignedToDoList.add(assignedToDo);
 
                 menteeCnt++;
             }
         }
 
-        toDoRepository.saveAll(toDoList);
+        assignedToDoRepository.saveAll(assignedToDoList);
 
         return AssignToDoRes.builder()
                 .menteeCnt(menteeCnt)
@@ -69,78 +80,42 @@ public class ToDoService {
     }
 
     /**
-     * 멘티가 status 변경 (ready -> progress -> done)
+     * 멘토 아이디로 현재 자신인 멘토인 스터디 목록 불러오기
      */
-    @Transactional
-    public ChangeToDoStatusRes changeStatus(ChangeToDoStatusReq changeToDoStatusReq) throws Exception {
-        ToDo toDo = toDoRepository.findById(changeToDoStatusReq.getToDoId()).get();
+    public List<FindToDoRes> findToDoByMentor(Long mentorId) {
+        List<FindToDoRes> result = new ArrayList<>();
 
-        if (!toDo.getUser().getId().equals(changeToDoStatusReq.getMenteeId())) {
-            throw new Exception();
+        Optional<List<Long>> studyIdList = studyRepository.findAllStudyIdByMentorId(mentorId);
+
+        if (studyIdList.isPresent()) {
+            studyIdList.get().forEach(
+                    studyId -> {
+                        Optional<List<ToDo>> toDoList = toDoRepository.findAllByStudyId(studyId);
+
+                        if (toDoList.isPresent()) {
+                            toDoList.get().forEach(
+                                    toDo -> {
+                                        FindToDoRes findToDoRes = FindToDoRes.builder()
+                                                .id(toDo.getId())
+                                                .studyId(studyId)
+                                                .task(toDo.getTask())
+                                                .explain(toDo.getToDoExplain())
+                                                .dueDate(toDo.getDueDate())
+                                                .build();
+
+                                        result.add(findToDoRes);
+                                    }
+                            );
+                        }
+                    }
+            );
         }
 
-        toDo.setStatus(ToDoStatus.valueOf(changeToDoStatusReq.getStatus()));
-
-        ToDo savedToDo = toDoRepository.save(toDo);
-
-        return ChangeToDoStatusRes.builder()
-                .status(savedToDo.getStatus())
-                .menteeId(savedToDo.getUser().getId())
-                .toDoId(savedToDo.getId())
-                .build();
+        return result;
     }
 
     /**
-     * feedBack 작성
-     */
-    @Transactional
-    public FeedBackToDoRes feedBack(FeedBackToDoReq feedBackToDoReq) throws Exception {
-        ToDo toDo = toDoRepository.findById(feedBackToDoReq.getToDoId()).get();
-
-        if (!toDo.getStudy().getMentorId().equals(feedBackToDoReq.getMentorId())) {
-            throw new Exception();
-        }
-
-        toDo.setFeedBack(feedBackToDoReq.getFeedBack());
-
-        ToDo savedToDo = toDoRepository.save(toDo);
-
-        return FeedBackToDoRes.builder()
-                .toDoId(savedToDo.getId())
-                .mentorId(savedToDo.getStudy().getMentorId())
-                .feedBack(savedToDo.getFeedBack())
-                .build();
-    }
-
-    /**
-     * 멘토가 done 상태인 ToDo를 Confirmed 로 상태 변경
-     */
-    @Transactional
-    public ConfirmToDoRes confirm(ConfirmToDoReq confirmToDoReq) throws Exception {
-        ToDo toDo = toDoRepository.findById(confirmToDoReq.getToDoId()).get();
-
-        if (!toDo.getStatus().equals(ToDoStatus.DONE)) {
-            throw new Exception();
-        }
-
-        if (!toDo.getStudy().getMentorId().equals(confirmToDoReq.getMentorId())) {
-            throw new Exception();
-        }
-
-        toDo.setStatus(ToDoStatus.CONFIRMED);
-
-        ToDo savedToDo = toDoRepository.save(toDo);
-
-        return ConfirmToDoRes.builder()
-                .toDoId(savedToDo.getId())
-                .mentorId(savedToDo.getStudy().getMentorId())
-                .toDoStatus(savedToDo.getStatus())
-                .build();
-    }
-
-
-    /**
-     * 해당 스터디 멘티의 ToDoList 불러오기
+     * 해당 스터디 의 ToDoList 불러오기
      * Param : Long studyId, Long mentorId
      */
     public List<FindToDoRes> findOfStudy(FindToDoReq findToDoReq) throws Exception {
@@ -158,11 +133,10 @@ public class ToDoService {
                     toDo -> {
                         FindToDoRes findToDoRes = FindToDoRes.builder()
                                 .id(toDo.getId())
-                                .menteeId(toDo.getUser().getId())
+                                .studyId(findToDoReq.getStudyId())
                                 .task(toDo.getTask())
+                                .explain(toDo.getToDoExplain())
                                 .dueDate(toDo.getDueDate())
-                                .feedBack(toDo.getFeedBack())
-                                .toDoStatus(toDo.getStatus())
                                 .build();
 
                         result.add(findToDoRes);
@@ -174,38 +148,13 @@ public class ToDoService {
     }
 
     /**
-     * 멘티의 총 ToDo 개수 불러오기
+     * 특정 ToDo 삭제
      */
-    public int countOfMentee(Long menteeId) {
-        return toDoRepository.countDistinctByUserId(menteeId);
+    @Transactional
+    public Integer delete(Long toDoId) {
+        return toDoRepository.deleteAllById(toDoId);
     }
 
-    /**
-     * 멘티 confirmed 상태인 ToDoList 불러오기
-     */
-    public List<FindToDoRes> findConfirmedOfMentee(Long menteeId) {
-        List<FindToDoRes> result = new ArrayList<>();
 
-        Optional<List<ToDo>> toDoList = toDoRepository.findAllByUserIdAndStatus(menteeId, ToDoStatus.CONFIRMED);
-
-        if (toDoList != null) {
-            toDoList.get().forEach(
-                    toDo -> {
-                        FindToDoRes findToDoRes = FindToDoRes.builder()
-                                .id(toDo.getId())
-                                .menteeId(toDo.getUser().getId())
-                                .task(toDo.getTask())
-                                .dueDate(toDo.getDueDate())
-                                .feedBack(toDo.getFeedBack())
-                                .toDoStatus(toDo.getStatus())
-                                .build();
-
-                        result.add(findToDoRes);
-                    }
-            );
-        }
-
-        return result;
-    }
 
 }

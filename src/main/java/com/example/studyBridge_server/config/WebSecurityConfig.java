@@ -23,4 +23,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .headers().frameOptions().disable();
     }
+
+    /**
+     * 권한 설정 필요
+     */
 }

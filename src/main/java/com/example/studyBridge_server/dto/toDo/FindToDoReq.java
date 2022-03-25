@@ -12,4 +12,5 @@ public class FindToDoReq {
     private Long mentorId;
 
     private Long studyId;
+
 }

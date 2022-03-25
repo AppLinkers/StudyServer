@@ -55,10 +55,10 @@ public class User extends BaseEntity implements Auditable {
     @ToString.Exclude
     private List<UserAndStudy> userAndStudyList = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "mentee_id")
+    // 다대일 양방향 - 연관관계의 주인이 아닌, 어디에 매핑 됐는지에 관한 정보를 넣어줌
+    @OneToMany(mappedBy = "user")
     @ToString.Exclude
-    private List<ToDo> toDoList = new ArrayList<>();
+    private List<AssignedToDo> toDoList = new ArrayList<>();
 
     @Builder
     public User(@NonNull String loginId, @NonNull String loginPw, @NonNull String name, String phone, String profileImg, String location, Gender gender, Role role) {
