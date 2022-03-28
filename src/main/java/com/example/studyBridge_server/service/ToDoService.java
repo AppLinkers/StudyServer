@@ -82,7 +82,7 @@ public class ToDoService {
     }
 
     /**
-     * 멘토 아이디로 현재 자신인 멘토인 스터디 목록 불러오기
+     * 멘토 아이디로 현재 자신이 멘토인 스터디의 투두 목록 불러오기
      */
     public List<FindToDoRes> findToDoByMentor(Long mentorId) {
         List<FindToDoRes> result = new ArrayList<>();

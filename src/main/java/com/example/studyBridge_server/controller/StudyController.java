@@ -30,6 +30,14 @@ public class StudyController {
         return ResponseEntity.status(201).body(studyService.find());
     }
 
+    /**
+     * 내가 속한 스터디 목록 반환 (멘토, 멘티 분리됨)
+     */
+    @GetMapping("/user")
+    public ResponseEntity<List<StudyFindRes>> findByUserId(@RequestParam Long userId) {
+        return ResponseEntity.status(201).body(studyService.findByUserId(userId));
+    }
+
 
     @GetMapping("/isApplied")
     public ResponseEntity<Boolean> isApplied(@RequestParam Long studyId, @RequestParam String userLoginId) {

@@ -277,4 +277,52 @@ public class StudyService {
                 .maxNum(savedStudy.getMaxNum())
                 .build();
     }
+
+    /**
+     * 내가 속한 스터디 목록 반환
+     */
+    public List<StudyFindRes> findByUserId(Long userId) {
+        List<StudyFindRes> result = new ArrayList<>();
+
+        User user = userRepository.findById(userId).get();
+
+        if (user.getRole().equals(Role.MENTEE)) {
+            Optional<List<Study>> studyList = studyRepository.findByMenteeId(userId);
+            result = convertStudyListToStudyFindResList(studyList);
+        } else if (user.getRole().equals(Role.MENTOR)) {
+            Optional<List<Study>> studyList = studyRepository.findByMentorId(userId);
+            result = convertStudyListToStudyFindResList(studyList);
+        }
+
+        return result;
+    }
+
+    /**
+     * StudyList를 List<StudyFindRes> 로 변환
+     */
+    public List<StudyFindRes> convertStudyListToStudyFindResList(Optional<List<Study>> studyList) {
+        List<StudyFindRes> result = new ArrayList<>();
+
+        if (studyList.isPresent()) {
+            studyList.get().forEach(
+                    study -> {
+                        StudyFindRes studyFindRes = StudyFindRes.builder()
+                                .id(study.getId())
+                                .name(study.getName())
+                                .info(study.getInfo())
+                                .explain(study.getStudyExplain())
+                                .maxNum(study.getMaxNum())
+                                .status(study.getStatus().toString())
+                                .place(study.getPlace())
+                                .type(study.getType())
+                                .menteeCnt(menteeCntOfStudy(study.getId()))
+                                .build();
+
+                        result.add(studyFindRes);
+                    }
+            );
+        }
+
+        return result;
+    }
 }
