@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Map;
 
 @Slf4j
 @Component
@@ -20,20 +18,6 @@ public class Interceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("Method : {}, url : {}", request.getMethod(), request.getRequestURI());
-        if (request.getMethod().equals("POST")) {
-            // read Body
-//            log.info("\nBody : {}", getBody(request));
-
-//            if (!request.getParameterMap().isEmpty()) {
-//                for (Map.Entry<String, String[]> param : request.getParameterMap().entrySet()) {
-//                    log.info("Param : {}", param.getKey() + Arrays.toString(param.getValue()));
-//                }
-//            }
-        }
-        else if (request.getMethod().equals("GET")) {
-            // read Param
-
-        }
         return super.preHandle(request, response, handler);
     }
 

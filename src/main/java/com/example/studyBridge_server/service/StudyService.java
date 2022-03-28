@@ -288,6 +288,7 @@ public class StudyService {
 
         if (user.getRole().equals(Role.MENTEE)) {
             Optional<List<Study>> studyList = studyRepository.findByMenteeId(userId);
+            System.out.println(studyList.get().size());
             result = convertStudyListToStudyFindResList(studyList);
         } else if (user.getRole().equals(Role.MENTOR)) {
             Optional<List<Study>> studyList = studyRepository.findByMentorId(userId);
@@ -317,6 +318,7 @@ public class StudyService {
                                 .type(study.getType())
                                 .menteeCnt(menteeCntOfStudy(study.getId()))
                                 .build();
+
 
                         result.add(studyFindRes);
                     }

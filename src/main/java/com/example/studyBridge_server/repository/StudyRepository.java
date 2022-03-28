@@ -32,7 +32,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     Optional<List<Study>> findByMentorId(@Param("mentorId") Long mentorId);
 
     // 내가 멘티인 스터디 목록 반환
-    @Query("select s from Study s where s.id in (select uas.id from UserAndStudy uas where uas.user.id = :menteeId)")
+    @Query("select s from Study s where s.id in (select uas.study.id from UserAndStudy uas where uas.user.id = :menteeId)")
     Optional<List<Study>> findByMenteeId(@Param("menteeId") Long menteeId);
 
 
