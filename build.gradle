@@ -42,7 +42,6 @@ dependencies {
 
 	// STOMP
 	implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.4'
-
 }
 
 tasks.named('test') {

@@ -91,8 +91,5 @@ public class UserAuthService {
         return userRepository.findNameById(userId);
     }
 
-    public User findUserByLoginId(String LoginId) {
-        return userRepository.findUserByLoginId(LoginId).get();
-    }
 
 }

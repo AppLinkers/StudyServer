@@ -23,10 +23,8 @@ public class StudyService {
     private final UserAndRoomRepository userAndRoomRepository;
     private final RoomRepository roomRepository;
 
-    private final UserAuthService userAuthService;
-
     public StudyMakeRes make(StudyMakeReq studyMakeReq) {
-        User user = userAuthService.findUserByLoginId(studyMakeReq.getMakerId());
+        User user = userRepository.findUserByLoginId(studyMakeReq.getMakerId()).get();
         Study study = Study.builder()
                 .makerId(user.getId())
                 .name(studyMakeReq.getName())
