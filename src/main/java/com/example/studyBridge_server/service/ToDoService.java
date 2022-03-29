@@ -54,8 +54,6 @@ public class ToDoService {
 
         ToDo savedToDo = toDoRepository.save(toDo);
 
-        System.out.println(assignToDoReq.getStudyId());
-
         Optional<List<User>> menteeList = userAndStudyRepository.findMenteeByStudyId(assignToDoReq.getStudyId());
 
         if (menteeList.isPresent()) {
@@ -155,7 +153,6 @@ public class ToDoService {
     public Integer delete(Long toDoId) {
         return toDoRepository.deleteAllById(toDoId);
     }
-
 
 
 }
