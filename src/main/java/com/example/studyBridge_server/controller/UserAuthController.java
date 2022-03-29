@@ -27,7 +27,7 @@ public class UserAuthController {
     public ResponseEntity login(@RequestBody UserLoginReq userLoginReq) {
 
         try {
-            return ResponseEntity.ok().body(userAuthService.login(userLoginReq));
+            return ResponseEntity.status(201).body(userAuthService.login(userLoginReq));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ErrorMessage(e.getMessage()));
         }
@@ -37,7 +37,7 @@ public class UserAuthController {
     @GetMapping("/id")
     public ResponseEntity<String> valid(@RequestParam String userLoginId) {
         if (userAuthService.IdValidChk(userLoginId)) {
-            return ResponseEntity.ok().body("success");
+            return ResponseEntity.status(201).body("success");
         } else {
             return ResponseEntity.badRequest().body("not valid");
         }
@@ -47,9 +47,9 @@ public class UserAuthController {
     @GetMapping("/role")
     public ResponseEntity<Boolean> isMentee(@RequestParam String userLoginId) {
         if (userAuthService.isMentee(userLoginId)) {
-            return ResponseEntity.ok().body(true);
+            return ResponseEntity.status(201).body(true);
         } else {
-            return ResponseEntity.ok().body(false);
+            return ResponseEntity.status(201).body(false);
         }
     }
 }
