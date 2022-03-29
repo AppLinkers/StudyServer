@@ -29,7 +29,5 @@ public class FindAssignedToDoRes {
 
     private LocalDateTime dueDate;
 
-    private String feedBack;
-
     private String status;
 }

@@ -19,8 +19,6 @@ public class AssignedToDo extends BaseEntity implements Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String feedBack;
-
     @Enumerated(value = EnumType.STRING)
     private ToDoStatus status;
 

@@ -62,7 +62,6 @@ public class ToDoService {
             for (User mentee : menteeList.get()) {
 
                 AssignedToDo assignedToDo = new AssignedToDo();
-                assignedToDo.setFeedBack("");
                 assignedToDo.setStatus(ToDoStatus.READY);
                 assignedToDo.setToDo(savedToDo);
                 assignedToDo.setUser(mentee);

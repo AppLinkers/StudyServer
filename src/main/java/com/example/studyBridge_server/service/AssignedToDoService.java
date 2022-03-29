@@ -42,28 +42,6 @@ public class AssignedToDoService {
     }
 
     /**
-     * feedBack 작성
-     */
-    @Transactional
-    public FeedBackToDoRes feedBack(FeedBackToDoReq feedBackToDoReq) throws Exception {
-        AssignedToDo assignedToDo = assignedToDoRepository.findById(feedBackToDoReq.getAssignedToDoId()).get();
-
-        if (!assignedToDo.getToDo().getStudy().getMentorId().equals(feedBackToDoReq.getMentorId())) {
-            throw new Exception();
-        }
-
-        assignedToDo.setFeedBack(feedBackToDoReq.getFeedBack());
-
-        AssignedToDo savedAssignedToDo = assignedToDoRepository.save(assignedToDo);
-
-        return FeedBackToDoRes.builder()
-                .assignedToDoId(savedAssignedToDo.getId())
-                .mentorId(savedAssignedToDo.getToDo().getStudy().getMentorId())
-                .feedBack(savedAssignedToDo.getFeedBack())
-                .build();
-    }
-
-    /**
      * 멘토가 done 상태인 ToDo를 Confirmed 로 상태 변경
      */
     @Transactional
@@ -83,9 +61,9 @@ public class AssignedToDoService {
         AssignedToDo savedAssignedToDo = assignedToDoRepository.save(assignedToDo);
 
         return ConfirmToDoRes.builder()
-                .assignedToDoId(assignedToDo.getId())
-                .mentorId(assignedToDo.getToDo().getStudy().getMentorId())
-                .toDoStatus(assignedToDo.getStatus())
+                .assignedToDoId(savedAssignedToDo.getId())
+                .mentorId(savedAssignedToDo.getToDo().getStudy().getMentorId())
+                .toDoStatus(savedAssignedToDo.getStatus())
                 .build();
     }
 
@@ -146,7 +124,6 @@ public class AssignedToDoService {
                                 .task(assignedToDo.getToDo().getTask())
                                 .explain(assignedToDo.getToDo().getToDoExplain())
                                 .dueDate(assignedToDo.getToDo().getDueDate())
-                                .feedBack(assignedToDo.getFeedBack())
                                 .status(assignedToDo.getStatus().toString())
                                 .build();
 

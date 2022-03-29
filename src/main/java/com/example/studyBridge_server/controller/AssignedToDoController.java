@@ -29,18 +29,6 @@ public class AssignedToDoController {
     }
 
     /**
-     * AssignedToDo feedBack 작성
-     */
-    @PostMapping("/feedBack")
-    public ResponseEntity<FeedBackToDoRes> feedBack(@RequestBody FeedBackToDoReq feedBackToDoReq) {
-        try {
-            return ResponseEntity.status(201).body(assignedToDoService.feedBack(feedBackToDoReq));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new FeedBackToDoRes());
-        }
-    }
-
-    /**
      * AssignedToDo 상태 CONFIRMED 로 변경
      */
     @PostMapping("/confirm")
