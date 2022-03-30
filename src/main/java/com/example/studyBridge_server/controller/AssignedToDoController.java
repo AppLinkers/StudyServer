@@ -44,8 +44,16 @@ public class AssignedToDoController {
      * 특정 멘티의 AssignedToDo 개수 반환
      */
     @GetMapping("/mentee/cnt")
-    public ResponseEntity<Integer> countOfMentee(@RequestParam("menteeId") Long menteeId) {
-        return ResponseEntity.status(201).body(assignedToDoService.countOfMentee(menteeId));
+    public ResponseEntity<Integer> countByMentee(@RequestParam("menteeId") Long menteeId) {
+        return ResponseEntity.status(201).body(assignedToDoService.countByMentee(menteeId));
+    }
+
+    /**
+     * 특정 멘티의 특정 상태인 AssignedToDo 개수 반환
+     */
+    @GetMapping("/mentee/cnt/status")
+    public ResponseEntity<Integer> countByMenteeAndStatus(@RequestParam("menteeId") Long menteeId, @RequestParam("status") ToDoStatus status) {
+        return ResponseEntity.status(201).body(assignedToDoService.countByMenteeAndStatus(menteeId, status));
     }
 
     /**

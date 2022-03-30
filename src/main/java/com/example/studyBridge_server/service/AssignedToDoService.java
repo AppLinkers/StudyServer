@@ -70,8 +70,15 @@ public class AssignedToDoService {
     /**
      * 멘티의 총 ToDo 개수 불러오기
      */
-    public int countOfMentee(Long menteeId) {
+    public int countByMentee(Long menteeId) {
         return assignedToDoRepository.countDistinctByUserId(menteeId);
+    }
+
+    /**
+     * 멘티의 특정 상태인 ToDo 개수 불러오기
+     */
+    public int countByMenteeAndStatus(Long menteeId, ToDoStatus status) {
+        return assignedToDoRepository.countDistinctByUserIdAndStatus(menteeId, status);
     }
 
     /**
