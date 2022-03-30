@@ -119,6 +119,7 @@ public class AssignedToDoService {
                                 .id(assignedToDo.getId())
                                 .toDoId(assignedToDo.getToDo().getId())
                                 .studyId(assignedToDo.getToDo().getStudy().getId())
+                                .menteeId(assignedToDo.getUser().getId())
                                 .menteeName(assignedToDo.getUser().getName())
                                 .mentorName(userAuthService.getName((assignedToDo.getToDo().getStudy().getMentorId())))
                                 .task(assignedToDo.getToDo().getTask())
