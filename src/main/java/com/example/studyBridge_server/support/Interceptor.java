@@ -17,13 +17,22 @@ public class Interceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("Method : {}, url : {}", request.getMethod(), request.getRequestURI());
+        long startTime = System.currentTimeMillis();
+        request.setAttribute("start", startTime);
         return super.preHandle(request, response, handler);
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        log.info("response status : {}", response.getStatus());
+        long endTime = System.currentTimeMillis();
+
+        long processedTime = endTime - (long) request.getAttribute("start");
+
+        String timeLogger = "\n" + "Method : " + request.getMethod() + ", url : " + request.getRequestURI() + "\n";
+        timeLogger = timeLogger + "response status : " + response.getStatus() + "\n";
+        timeLogger = timeLogger + "processed Time : " + processedTime;
+
+        log.info(timeLogger);
         super.postHandle(request, response, handler, modelAndView);
     }
 
