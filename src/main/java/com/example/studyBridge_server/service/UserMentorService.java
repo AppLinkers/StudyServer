@@ -37,10 +37,9 @@ public class UserMentorService {
         List<List<String>> certificates = new ArrayList<>();
 
         if (profileReq.getCertificatesImg() != null) {
-            for (int i = 0; i < profileReq.getCertificatesImg().get().size();) {
+            for (int i = 0; i < profileReq.getCertificatesImg().get().size(); i++) {
                 String certificateImg = s3Uploader.upload(profileReq.getCertificatesImg().get().get(i), "mentor/profile");
-                certificates.add(List.of(new String[]{profileReq.getProfileTextReq().getCertificates().get().get(i), certificateImg}));
-                i += 1;
+                certificates.add(List.of(new String[]{profileReq.getCertificates().get().get(i), certificateImg}));
             }
         }
 
@@ -76,7 +75,7 @@ public class UserMentorService {
         }
 
         List<Certificate> savedCertificate = new ArrayList<>();
-        if (!certificates.isEmpty()) {
+        if (certificates.size() > 0) {
             List<Certificate> saveCertificates = new ArrayList<>();
             certificates.forEach(c -> {
                 Certificate certificate = new Certificate();

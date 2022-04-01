@@ -29,8 +29,9 @@ public class S3Uploader {
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile) // 파일 변환할 수 없으면 에러
                 .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File Convert Fail"));
-
-        return upload(uploadFile, dirName);
+        System.out.println(dirName);
+        System.out.println(upload(uploadFile, dirName));
+        return "test";
     }
 
     // S3로 파일 업로드 하기

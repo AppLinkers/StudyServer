@@ -13,6 +13,8 @@ public class ProfileReq {
 
     private Optional<List<MultipartFile>> certificatesImg;
 
+    private Optional<List<String>> certificates;
+
     private ProfileTextReq profileTextReq;
 
 }

@@ -20,8 +20,6 @@ public class ProfileTextReq {
 
     private String school;
 
-    private Optional<List<String>> certificates;
-
     private String experience;
 
     private String curriculum;
