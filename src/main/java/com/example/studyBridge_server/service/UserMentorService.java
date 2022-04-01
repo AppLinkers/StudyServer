@@ -105,6 +105,7 @@ public class UserMentorService {
                 .experience(result.getExperience())
                 .curriculum(result.getCurriculum())
                 .appeal(result.getAppeal())
+                .liked(false)
                 .build();
 
     }
@@ -178,23 +179,23 @@ public class UserMentorService {
                 liked = true;
             }
 
-                result.add(
-                        ProfileRes.builder()
-                                .userId(mentorProfile.getUser().getId())
-                                .userName(mentorProfile.getUser().getName())
-                                .location(mentorProfile.getUser().getLocation())
-                                .info(mentorProfile.getInfo())
-                                .nickName(mentorProfile.getNickName())
-                                .school(mentorProfile.getSchool())
-                                .schoolImg(mentorProfile.getSchoolImg())
-                                .subject(mentorProfile.getSubject())
-                                .certificates(certificates)
-                                .experience(mentorProfile.getExperience())
-                                .curriculum(mentorProfile.getCurriculum())
-                                .appeal(mentorProfile.getAppeal())
-                                .liked(liked)
-                                .build()
-                );
+            result.add(
+                    ProfileRes.builder()
+                            .userId(mentorProfile.getUser().getId())
+                            .userName(mentorProfile.getUser().getName())
+                            .location(mentorProfile.getUser().getLocation())
+                            .info(mentorProfile.getInfo())
+                            .nickName(mentorProfile.getNickName())
+                            .school(mentorProfile.getSchool())
+                            .schoolImg(mentorProfile.getSchoolImg())
+                            .subject(mentorProfile.getSubject())
+                            .certificates(certificates)
+                            .experience(mentorProfile.getExperience())
+                            .curriculum(mentorProfile.getCurriculum())
+                            .appeal(mentorProfile.getAppeal())
+                            .liked(liked)
+                            .build()
+            );
         }
 
         return result;

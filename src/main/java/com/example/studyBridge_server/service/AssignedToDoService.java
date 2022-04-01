@@ -8,9 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -85,8 +83,6 @@ public class AssignedToDoService {
      * 멘티 특정 상태인 ToDoList 불러오기
      */
     public List<FindAssignedToDoRes> findByMenteeAndStatus(Long menteeId, ToDoStatus status) {
-        List<FindAssignedToDoRes> result = new ArrayList<>();
-
         Optional<List<AssignedToDo>> assignedToDoList = assignedToDoRepository.findAllByUserIdAndStatus(menteeId, status);
 
         return getFindAssignedToDoRes(assignedToDoList);
@@ -143,4 +139,12 @@ public class AssignedToDoService {
         return result;
     }
 
+    public Map<String, Integer> countByMenteeAndStudy(Long menteeId, Long studyId) {
+        Map<String, Integer> result = new HashMap<>();
+
+        result.put("total", assignedToDoRepository.countDistinctByUserIdAndToDo_StudyId(menteeId, studyId));
+        result.put("confirmed", assignedToDoRepository.countDistinctByUserIdAndToDo_StudyIdAndStatus(menteeId, studyId, ToDoStatus.CONFIRMED));
+
+        return result;
+    }
 }

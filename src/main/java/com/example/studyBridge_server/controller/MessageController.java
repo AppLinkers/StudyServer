@@ -1,7 +1,6 @@
 package com.example.studyBridge_server.controller;
 
 import com.example.studyBridge_server.domaion.Message;
-import com.example.studyBridge_server.domaion.Room;
 import com.example.studyBridge_server.dto.message.FindRoomRes;
 import com.example.studyBridge_server.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor

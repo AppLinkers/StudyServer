@@ -13,6 +13,10 @@ public interface AssignedToDoRepository extends JpaRepository<AssignedToDo, Long
 
     int countDistinctByUserIdAndStatus(Long userId, ToDoStatus status);
 
+    int countDistinctByUserIdAndToDo_StudyId(Long userId, Long studyId);
+
+    int countDistinctByUserIdAndToDo_StudyIdAndStatus(Long userId, Long studyId, ToDoStatus status);
+
     Optional<List<AssignedToDo>> findAllByUserIdAndStatus(Long userId, ToDoStatus status);
 
     Optional<List<AssignedToDo>> findAllByToDoId(Long toDoId);

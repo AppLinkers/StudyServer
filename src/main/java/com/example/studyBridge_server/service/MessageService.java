@@ -29,6 +29,8 @@ public class MessageService {
 
     @Transactional
     public void send(Message message) {
+        System.out.println(message.toString());
+
         String senderName = message.getSenderName();
 
         if (message.getMessageType().equals(MessageType.ENTER)) {
@@ -38,13 +40,13 @@ public class MessageService {
             messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoom().getId(), message);
             messageRepository.save(message);
 
-        } else if (message.getMessageType().equals(MessageType.TALK)) {
+        } else if (message.getMessageType().equals(MessageType.TALK) || message.getMessageType().equals(MessageType.PHOTO)) {
 
             // 채팅 처리
             messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoom().getId(), message);
             messageRepository.save(message);
 
-        } else {
+        } else if(message.getMessage().equals(MessageType.EXIT)) {
 
             // 채팅방 퇴장 메시지 전달
             message.setMessage("[알림]" + senderName + " 님이 퇴장하였습니다.");

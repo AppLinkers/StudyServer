@@ -31,4 +31,6 @@ public class Message {
     private Long senderId; // 채팅 전송자 식별자
     private String senderName; // 채팅 전송자 아이디
     private String message; // 채팅 본문
+
+
 }
