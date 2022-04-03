@@ -4,11 +4,9 @@ import com.example.studyBridge_server.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -26,8 +24,11 @@ public class S3Controller {
     }
 
     @PostMapping("/chat/one")
-    public String chatImg(@RequestParam("image") MultipartFile multipartFile) throws IOException {
-        String result = s3Uploader.upload(multipartFile, "chat");
-        return result;
+    public ResponseEntity<String> chatImg(@ModelAttribute("image") MultipartFile image) throws IOException {
+        if (image == null) {
+            return ResponseEntity.badRequest().body("image file null");
+        } else {
+            return ResponseEntity.status(201).body(s3Uploader.upload(image, "chat"));
+        }
     }
 }
