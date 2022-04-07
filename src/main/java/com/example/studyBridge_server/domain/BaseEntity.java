@@ -1,7 +1,6 @@
-package com.example.studyBridge_server.domaion;
+package com.example.studyBridge_server.domain;
 
 import lombok.Data;
-import org.hibernate.annotations.Entity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

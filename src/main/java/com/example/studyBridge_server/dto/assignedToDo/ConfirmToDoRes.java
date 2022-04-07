@@ -1,6 +1,6 @@
 package com.example.studyBridge_server.dto.assignedToDo;
 
-import com.example.studyBridge_server.domaion.type.ToDoStatus;
+import com.example.studyBridge_server.domain.type.ToDoStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

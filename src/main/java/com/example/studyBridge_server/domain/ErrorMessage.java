@@ -1,4 +1,4 @@
-package com.example.studyBridge_server.domaion;
+package com.example.studyBridge_server.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

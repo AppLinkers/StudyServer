@@ -1,6 +1,5 @@
-package com.example.studyBridge_server.domaion.listener;
+package com.example.studyBridge_server.domain.listener;
 
-import javax.persistence.PrePersist;
 import java.time.LocalDateTime;
 
 public interface Auditable {

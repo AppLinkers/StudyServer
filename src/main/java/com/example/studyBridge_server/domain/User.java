@@ -1,10 +1,9 @@
-package com.example.studyBridge_server.domaion;
+package com.example.studyBridge_server.domain;
 
-import com.example.studyBridge_server.domaion.listener.Auditable;
-import com.example.studyBridge_server.domaion.type.Gender;
-import com.example.studyBridge_server.domaion.type.Role;
+import com.example.studyBridge_server.domain.listener.Auditable;
+import com.example.studyBridge_server.domain.type.Gender;
+import com.example.studyBridge_server.domain.type.Role;
 import com.example.studyBridge_server.support.BooleanToYNConverter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 

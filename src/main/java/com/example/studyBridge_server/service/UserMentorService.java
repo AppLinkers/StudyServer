@@ -1,9 +1,9 @@
 package com.example.studyBridge_server.service;
 
-import com.example.studyBridge_server.domaion.Certificate;
-import com.example.studyBridge_server.domaion.MentorProfile;
-import com.example.studyBridge_server.domaion.User;
-import com.example.studyBridge_server.domaion.type.Role;
+import com.example.studyBridge_server.domain.Certificate;
+import com.example.studyBridge_server.domain.MentorProfile;
+import com.example.studyBridge_server.domain.User;
+import com.example.studyBridge_server.domain.type.Role;
 import com.example.studyBridge_server.dto.userMentee.LikeMentorRes;
 import com.example.studyBridge_server.dto.userMentor.ProfileRes;
 import com.example.studyBridge_server.dto.userMentor.ProfileReq;

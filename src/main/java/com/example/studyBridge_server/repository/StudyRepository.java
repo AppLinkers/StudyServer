@@ -1,6 +1,6 @@
 package com.example.studyBridge_server.repository;
 
-import com.example.studyBridge_server.domaion.Study;
+import com.example.studyBridge_server.domain.Study;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

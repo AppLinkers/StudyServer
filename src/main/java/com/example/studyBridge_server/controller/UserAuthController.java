@@ -1,6 +1,6 @@
 package com.example.studyBridge_server.controller;
 
-import com.example.studyBridge_server.domaion.ErrorMessage;
+import com.example.studyBridge_server.domain.ErrorMessage;
 import com.example.studyBridge_server.dto.userAuth.UserLoginReq;
 import com.example.studyBridge_server.dto.userAuth.UserSignUpReq;
 import com.example.studyBridge_server.dto.userAuth.UserSignUpRes;

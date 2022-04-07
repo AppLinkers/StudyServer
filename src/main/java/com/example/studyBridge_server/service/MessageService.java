@@ -1,8 +1,8 @@
 package com.example.studyBridge_server.service;
 
-import com.example.studyBridge_server.domaion.Message;
-import com.example.studyBridge_server.domaion.Room;
-import com.example.studyBridge_server.domaion.type.MessageType;
+import com.example.studyBridge_server.domain.Message;
+import com.example.studyBridge_server.domain.Room;
+import com.example.studyBridge_server.domain.type.MessageType;
 import com.example.studyBridge_server.dto.message.FindRoomRes;
 import com.example.studyBridge_server.repository.MessageRepository;
 import com.example.studyBridge_server.repository.RoomRepository;
@@ -46,7 +46,7 @@ public class MessageService {
             messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoom().getId(), message);
             messageRepository.save(message);
 
-        } else if(message.getMessage().equals(MessageType.EXIT)) {
+        } else if(message.getMessageType().equals(MessageType.EXIT)) {
 
             // 채팅방 퇴장 메시지 전달
             message.setMessage("[알림]" + senderName + " 님이 퇴장하였습니다.");

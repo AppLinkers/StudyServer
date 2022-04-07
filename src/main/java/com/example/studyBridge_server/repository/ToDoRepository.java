@@ -1,7 +1,6 @@
 package com.example.studyBridge_server.repository;
 
-import com.example.studyBridge_server.domaion.ToDo;
-import com.example.studyBridge_server.domaion.type.ToDoStatus;
+import com.example.studyBridge_server.domain.ToDo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 

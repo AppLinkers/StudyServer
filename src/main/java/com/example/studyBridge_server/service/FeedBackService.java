@@ -1,8 +1,8 @@
 package com.example.studyBridge_server.service;
 
-import com.example.studyBridge_server.domaion.AssignedToDo;
-import com.example.studyBridge_server.domaion.FeedBack;
-import com.example.studyBridge_server.domaion.User;
+import com.example.studyBridge_server.domain.AssignedToDo;
+import com.example.studyBridge_server.domain.FeedBack;
+import com.example.studyBridge_server.domain.User;
 import com.example.studyBridge_server.dto.feedBack.FindFeedBackRes;
 import com.example.studyBridge_server.dto.feedBack.WriteFeedBackReq;
 import com.example.studyBridge_server.dto.feedBack.WriteFeedBackRes;

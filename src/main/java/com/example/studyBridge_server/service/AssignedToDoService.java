@@ -1,7 +1,7 @@
 package com.example.studyBridge_server.service;
 
-import com.example.studyBridge_server.domaion.AssignedToDo;
-import com.example.studyBridge_server.domaion.type.ToDoStatus;
+import com.example.studyBridge_server.domain.AssignedToDo;
+import com.example.studyBridge_server.domain.type.ToDoStatus;
 import com.example.studyBridge_server.dto.assignedToDo.*;
 import com.example.studyBridge_server.repository.AssignedToDoRepository;
 import lombok.RequiredArgsConstructor;

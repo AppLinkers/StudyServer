@@ -1,11 +1,8 @@
-package com.example.studyBridge_server.domaion;
+package com.example.studyBridge_server.domain;
 
-import com.example.studyBridge_server.domaion.listener.Auditable;
-import com.example.studyBridge_server.domaion.type.Role;
+import com.example.studyBridge_server.domain.listener.Auditable;
+import com.example.studyBridge_server.domain.type.Role;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -24,9 +21,11 @@ public class UserAndStudy extends BaseEntity implements Auditable {
     private Role role;
 
     @ManyToOne
+    @ToString.Exclude
     private Study study;
 
     @ManyToOne
+    @ToString.Exclude
     private User user;
 
     @Builder

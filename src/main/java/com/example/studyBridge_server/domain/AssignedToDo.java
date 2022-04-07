@@ -1,9 +1,9 @@
-package com.example.studyBridge_server.domaion;
+package com.example.studyBridge_server.domain;
 
 import javax.persistence.*;
 
-import com.example.studyBridge_server.domaion.listener.Auditable;
-import com.example.studyBridge_server.domaion.type.ToDoStatus;
+import com.example.studyBridge_server.domain.listener.Auditable;
+import com.example.studyBridge_server.domain.type.ToDoStatus;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

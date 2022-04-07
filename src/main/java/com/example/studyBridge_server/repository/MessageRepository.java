@@ -1,7 +1,7 @@
 package com.example.studyBridge_server.repository;
 
-import com.example.studyBridge_server.domaion.Message;
-import com.example.studyBridge_server.domaion.Room;
+import com.example.studyBridge_server.domain.Message;
+import com.example.studyBridge_server.domain.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

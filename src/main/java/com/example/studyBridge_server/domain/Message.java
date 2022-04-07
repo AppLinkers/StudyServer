@@ -1,7 +1,7 @@
-package com.example.studyBridge_server.domaion;
+package com.example.studyBridge_server.domain;
 
-import com.example.studyBridge_server.domaion.type.MessageType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.studyBridge_server.domain.type.MessageType;
+import lombok.Builder;
 import lombok.Data;
 import javax.persistence.Entity;
 import lombok.NoArgsConstructor;
@@ -33,4 +33,12 @@ public class Message {
     private String message; // 채팅 본문
 
 
+    @Builder
+    public Message(MessageType messageType, Room room, Long senderId, String senderName, String message) {
+        this.messageType = messageType;
+        this.room = room;
+        this.senderId = senderId;
+        this.senderName = senderName;
+        this.message = message;
+    }
 }

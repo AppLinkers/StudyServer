@@ -1,6 +1,6 @@
 package com.example.studyBridge_server.repository;
 
-import com.example.studyBridge_server.domaion.FeedBack;
+import com.example.studyBridge_server.domain.FeedBack;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 

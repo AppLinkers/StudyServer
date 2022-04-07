@@ -1,8 +1,9 @@
 package com.example.studyBridge_server.service;
 
-import com.example.studyBridge_server.domaion.*;
-import com.example.studyBridge_server.domaion.type.Role;
-import com.example.studyBridge_server.domaion.type.StudyStatus;
+import com.example.studyBridge_server.domain.*;
+import com.example.studyBridge_server.domain.type.MessageType;
+import com.example.studyBridge_server.domain.type.Role;
+import com.example.studyBridge_server.domain.type.StudyStatus;
 import com.example.studyBridge_server.dto.study.*;
 import com.example.studyBridge_server.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ public class StudyService {
     private final UserAndStudyRepository userAndStudyRepository;
     private final UserAndRoomRepository userAndRoomRepository;
     private final RoomRepository roomRepository;
+
+    private final MessageService messageService;
 
     public StudyMakeRes make(StudyMakeReq studyMakeReq) {
         User user = userRepository.findUserByLoginId(studyMakeReq.getMakerId()).get();
@@ -95,6 +98,52 @@ public class StudyService {
                 .build();
 
         return studyApplyRes;
+    }
+
+    /**
+     * 스터디 신청 취소
+     * UserAndStudy And UserAndRoom delete
+     */
+    @Transactional
+    public StudyWithdrawRes withdraw(StudyWithdrawReq studyWithdrawReq) throws Exception {
+        User user = userRepository.findById(studyWithdrawReq.getUserId()).get();
+        Study study = studyRepository.findById(studyWithdrawReq.getStudyId()).get();
+        Room room = roomRepository.findRoomByStudyId(study.getId());
+
+        if (study.getMakerId().equals(user.getId())) {
+            throw new RuntimeException();
+        }
+
+        if (!study.getStatus().equals(StudyStatus.APPLY) && user.getRole().equals(Role.MENTEE)) {
+            throw new RuntimeException();
+        }
+
+        if (!(study.getStatus().equals(StudyStatus.APPLY) || study.getStatus().equals(StudyStatus.WAIT)) && user.getRole().equals(Role.MENTOR)) {
+            throw new RuntimeException();
+        }
+
+        if (user.getRole().equals(Role.MENTEE)) {
+            // 퇴장 메세지
+            Message message = Message.builder()
+                    .room(room)
+                    .senderId(user.getId())
+                    .senderName(user.getName())
+                    .messageType(MessageType.EXIT)
+                    .message("exit")
+                    .build();
+
+            messageService.send(message);
+        }
+
+        // UserAndStudy 삭제
+        UserAndStudy userAndStudy = userAndStudyRepository.findByUserAndStudy(user.getLoginId(), study.getId()).get();
+        userAndStudyRepository.delete(userAndStudy);
+
+        return StudyWithdrawRes.builder()
+                .studyId(study.getId())
+                .userId(user.getId())
+                .status(study.getStatus()).
+                build();
     }
 
     public List<StudyFindRes> find() {

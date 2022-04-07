@@ -1,10 +1,10 @@
 package com.example.studyBridge_server.service;
 
-import com.example.studyBridge_server.domaion.AssignedToDo;
-import com.example.studyBridge_server.domaion.Study;
-import com.example.studyBridge_server.domaion.ToDo;
-import com.example.studyBridge_server.domaion.User;
-import com.example.studyBridge_server.domaion.type.ToDoStatus;
+import com.example.studyBridge_server.domain.AssignedToDo;
+import com.example.studyBridge_server.domain.Study;
+import com.example.studyBridge_server.domain.ToDo;
+import com.example.studyBridge_server.domain.User;
+import com.example.studyBridge_server.domain.type.ToDoStatus;
 import com.example.studyBridge_server.dto.toDo.AssignToDoReq;
 import com.example.studyBridge_server.dto.toDo.AssignToDoRes;
 import com.example.studyBridge_server.dto.toDo.FindToDoReq;

@@ -1,6 +1,6 @@
 package com.example.studyBridge_server.dto.userMentor;
 
-import com.example.studyBridge_server.domaion.Certificate;
+import com.example.studyBridge_server.domain.Certificate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

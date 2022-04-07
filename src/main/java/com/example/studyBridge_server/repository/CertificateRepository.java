@@ -1,7 +1,7 @@
 package com.example.studyBridge_server.repository;
 
-import com.example.studyBridge_server.domaion.Certificate;
-import com.example.studyBridge_server.domaion.MentorProfile;
+import com.example.studyBridge_server.domain.Certificate;
+import com.example.studyBridge_server.domain.MentorProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

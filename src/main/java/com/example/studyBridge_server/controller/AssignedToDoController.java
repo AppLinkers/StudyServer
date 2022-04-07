@@ -1,13 +1,12 @@
 package com.example.studyBridge_server.controller;
 
-import com.example.studyBridge_server.domaion.type.ToDoStatus;
+import com.example.studyBridge_server.domain.type.ToDoStatus;
 import com.example.studyBridge_server.dto.assignedToDo.*;
 import com.example.studyBridge_server.service.AssignedToDoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

@@ -4,6 +4,7 @@ import com.example.studyBridge_server.dto.study.*;
 import com.example.studyBridge_server.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,17 @@ public class StudyController {
     @PostMapping("/apply")
     public ResponseEntity<StudyApplyRes> apply(@RequestBody StudyApplyReq studyApplyReq) {
         return ResponseEntity.status(201).body(studyService.apply(studyApplyReq));
+    }
+
+    @PostMapping("/withdraw")
+    public ResponseEntity<StudyWithdrawRes> withdraw(@RequestBody StudyWithdrawReq studyWithdrawReq) {
+        try {
+            return ResponseEntity.status(201).body(studyService.withdraw(studyWithdrawReq));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(StudyWithdrawRes.builder()
+                    .studyId(studyWithdrawReq.getStudyId())
+                    .userId(studyWithdrawReq.getUserId()).build());
+        }
     }
 
     @GetMapping()

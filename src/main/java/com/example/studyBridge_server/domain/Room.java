@@ -1,6 +1,6 @@
-package com.example.studyBridge_server.domaion;
+package com.example.studyBridge_server.domain;
 
-import com.example.studyBridge_server.domaion.listener.Auditable;
+import com.example.studyBridge_server.domain.listener.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.lang.Nullable;

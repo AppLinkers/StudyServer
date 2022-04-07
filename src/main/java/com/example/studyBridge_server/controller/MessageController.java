@@ -1,6 +1,6 @@
 package com.example.studyBridge_server.controller;
 
-import com.example.studyBridge_server.domaion.Message;
+import com.example.studyBridge_server.domain.Message;
 import com.example.studyBridge_server.dto.message.FindRoomRes;
 import com.example.studyBridge_server.service.MessageService;
 import lombok.RequiredArgsConstructor;

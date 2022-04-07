@@ -1,9 +1,7 @@
-package com.example.studyBridge_server.domaion;
+package com.example.studyBridge_server.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 

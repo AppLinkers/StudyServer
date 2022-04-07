@@ -1,8 +1,8 @@
-package com.example.studyBridge_server.domaion;
+package com.example.studyBridge_server.domain;
 
 
-import com.example.studyBridge_server.domaion.listener.Auditable;
-import com.example.studyBridge_server.domaion.type.StudyStatus;
+import com.example.studyBridge_server.domain.listener.Auditable;
+import com.example.studyBridge_server.domain.type.StudyStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 

@@ -1,7 +1,7 @@
 package com.example.studyBridge_server.repository;
 
-import com.example.studyBridge_server.domaion.User;
-import com.example.studyBridge_server.domaion.type.Role;
+import com.example.studyBridge_server.domain.User;
+import com.example.studyBridge_server.domain.type.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

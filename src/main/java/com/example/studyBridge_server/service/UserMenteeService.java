@@ -1,6 +1,6 @@
 package com.example.studyBridge_server.service;
 
-import com.example.studyBridge_server.domaion.LikeMentor;
+import com.example.studyBridge_server.domain.LikeMentor;
 import com.example.studyBridge_server.dto.userMentee.LikeMentorRes;
 import com.example.studyBridge_server.repository.LikeMentorRepository;
 import lombok.RequiredArgsConstructor;
