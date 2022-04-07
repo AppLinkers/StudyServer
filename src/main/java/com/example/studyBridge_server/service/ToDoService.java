@@ -1,18 +1,13 @@
 package com.example.studyBridge_server.service;
 
-import com.example.studyBridge_server.domain.AssignedToDo;
-import com.example.studyBridge_server.domain.Study;
-import com.example.studyBridge_server.domain.ToDo;
-import com.example.studyBridge_server.domain.User;
+import com.example.studyBridge_server.domain.*;
+import com.example.studyBridge_server.domain.type.MessageType;
 import com.example.studyBridge_server.domain.type.ToDoStatus;
 import com.example.studyBridge_server.dto.toDo.AssignToDoReq;
 import com.example.studyBridge_server.dto.toDo.AssignToDoRes;
 import com.example.studyBridge_server.dto.toDo.FindToDoReq;
 import com.example.studyBridge_server.dto.toDo.FindToDoRes;
-import com.example.studyBridge_server.repository.AssignedToDoRepository;
-import com.example.studyBridge_server.repository.StudyRepository;
-import com.example.studyBridge_server.repository.ToDoRepository;
-import com.example.studyBridge_server.repository.UserAndStudyRepository;
+import com.example.studyBridge_server.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +23,11 @@ public class ToDoService {
     private final ToDoRepository toDoRepository;
     private final AssignedToDoRepository assignedToDoRepository;
     private final UserAndStudyRepository userAndStudyRepository;
+    private final UserRepository userRepository;
     private final StudyRepository studyRepository;
+    private final RoomRepository roomRepository;
+
+    private final MessageService messageService;
 
     /**
      * 멘토가 멘티에게 과제 배정
@@ -70,6 +69,19 @@ public class ToDoService {
         }
 
         assignedToDoRepository.saveAll(assignedToDoList);
+
+        Room room = roomRepository.findRoomByStudyId(study.getId());
+        User mentor = userRepository.findById(study.getId()).get();
+
+        Message message = Message.builder()
+                .room(room)
+                .senderId(mentor.getId())
+                .senderName(mentor.getName())
+                .messageType(MessageType.TALK)
+                .message("과제가 부여되었습니다.")
+                .build();
+
+        messageService.send(message);
 
         return AssignToDoRes.builder()
                 .menteeCnt(menteeCnt)
