@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 @Slf4j
-@Component
+//@Component
 public class Interceptor extends HandlerInterceptorAdapter {
 
     @Override

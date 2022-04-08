@@ -121,7 +121,7 @@ public class UserMentorService {
             certificates = searchedCertificates.get();
         }
 
-        Boolean liked = false;
+        boolean liked = false;
 
         if (user.getRole().equals(Role.MENTEE)) {
             if (userMenteeService.isLiked(user.getId(), mentor.getId())) {
