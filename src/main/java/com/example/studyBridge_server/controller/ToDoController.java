@@ -27,6 +27,7 @@ public class ToDoController {
         try {
             return ResponseEntity.status(201).body(toDoService.assign(assignToDoReq));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(new AssignToDoRes());
         }
     }

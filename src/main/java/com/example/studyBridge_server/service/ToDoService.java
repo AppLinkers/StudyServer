@@ -71,7 +71,7 @@ public class ToDoService {
         assignedToDoRepository.saveAll(assignedToDoList);
 
         Room room = roomRepository.findRoomByStudyId(study.getId());
-        User mentor = userRepository.findById(study.getId()).get();
+        User mentor = userRepository.findById(study.getMentorId()).get();
 
         Message message = Message.builder()
                 .room(room)
