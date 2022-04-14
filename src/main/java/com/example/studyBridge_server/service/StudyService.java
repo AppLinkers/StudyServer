@@ -7,6 +7,7 @@ import com.example.studyBridge_server.domain.type.StudyStatus;
 import com.example.studyBridge_server.dto.study.*;
 import com.example.studyBridge_server.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

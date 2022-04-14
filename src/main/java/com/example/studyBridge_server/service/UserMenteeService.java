@@ -18,17 +18,25 @@ public class UserMenteeService {
     private final LikeMentorRepository likeMentorRepository;
 
     public LikeMentorRes likeMentor(Long menteeId, Long mentorId) {
-        LikeMentor likeMentor = LikeMentor.builder()
-                .menteeId(menteeId)
-                .mentorId(mentorId)
-                .build();
+        if (likeMentorRepository.findLikeMentorByMenteeIdAndMentorId(menteeId, mentorId).isEmpty()){
+            LikeMentor likeMentor = LikeMentor.builder()
+                    .menteeId(menteeId)
+                    .mentorId(mentorId)
+                    .build();
 
-        LikeMentor savedLikeMentor = likeMentorRepository.save(likeMentor);
+            LikeMentor savedLikeMentor = likeMentorRepository.save(likeMentor);
 
-        return LikeMentorRes.builder()
-                .menteeId(savedLikeMentor.getMenteeId())
-                .mentorId(savedLikeMentor.getMentorId())
-                .build();
+            return LikeMentorRes.builder()
+                    .menteeId(savedLikeMentor.getMenteeId())
+                    .mentorId(savedLikeMentor.getMentorId())
+                    .build();
+        } else {
+            return LikeMentorRes.builder()
+                    .menteeId(menteeId)
+                    .mentorId(mentorId)
+                    .build();
+        }
+
     }
 
     @Transactional
