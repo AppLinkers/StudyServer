@@ -30,9 +30,7 @@ public class S3Uploader {
         File uploadFile = convert(multipartFile) // 파일 변환할 수 없으면 에러
                 .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File Convert Fail"));
 
-        String result = upload(uploadFile, "chat");
-        System.out.println("image upload success" + result);
-        return result;
+        return upload(uploadFile, dirName);
     }
 
     // S3로 파일 업로드 하기
