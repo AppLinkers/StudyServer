@@ -23,6 +23,8 @@ public class StudyUpdateRes {
 
     private String explain;
 
+    private String place;
+
     private Integer maxNum;
 
 }

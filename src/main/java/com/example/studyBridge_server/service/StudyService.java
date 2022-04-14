@@ -313,6 +313,7 @@ public class StudyService {
         study.setType(studyUpdateReq.getType());
         study.setInfo(studyUpdateReq.getInfo());
         study.setStudyExplain(studyUpdateReq.getExplain());
+        study.setPlace(studyUpdateReq.getPlace());
         study.setMaxNum(studyUpdateReq.getMaxNum());
 
         Study savedStudy = studyRepository.save(study);
@@ -324,6 +325,7 @@ public class StudyService {
                 .type(savedStudy.getType())
                 .info(savedStudy.getInfo())
                 .explain(savedStudy.getStudyExplain())
+                .place(savedStudy.getPlace())
                 .maxNum(savedStudy.getMaxNum())
                 .build();
     }

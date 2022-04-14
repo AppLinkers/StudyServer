@@ -17,5 +17,7 @@ public class StudyUpdateReq {
 
     private String explain;
 
+    private String place;
+
     private Integer maxNum;
 }
