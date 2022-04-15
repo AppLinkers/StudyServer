@@ -106,7 +106,8 @@ public class StudyService {
      * UserAndStudy And UserAndRoom delete
      */
     @Transactional
-    public StudyWithdrawRes withdraw(StudyWithdrawReq studyWithdrawReq) throws Exception {
+    @Modifying
+    public StudyWithdrawRes withdraw(StudyWithdrawReq studyWithdrawReq) {
         User user = userRepository.findById(studyWithdrawReq.getUserId()).get();
         Study study = studyRepository.findById(studyWithdrawReq.getStudyId()).get();
         Room room = roomRepository.findRoomByStudyId(study.getId());
@@ -136,9 +137,7 @@ public class StudyService {
             messageService.send(message);
         }
 
-        // UserAndStudy 삭제
-        UserAndStudy userAndStudy = userAndStudyRepository.findByUserAndStudy(user.getLoginId(), study.getId()).get();
-        userAndStudyRepository.delete(userAndStudy);
+        userAndStudyRepository.deleteUserAndStudiesByStudyIdAndUserId(study.getId(), user.getId());
 
         return StudyWithdrawRes.builder()
                 .studyId(study.getId())

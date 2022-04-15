@@ -26,5 +26,9 @@ public interface UserAndStudyRepository extends JpaRepository<UserAndStudy, Long
     @Query("delete from UserAndStudy uas where uas.study.id = :studyId and uas.role = :role")
     int chooseMentor(@Param("studyId") Long studyId, @Param("role") Role role);
 
+    @Modifying
+    @Query("delete from UserAndStudy uas where uas.study.id = :studyId and uas.user.id = :userId")
+    int deleteUserAndStudiesByStudyIdAndUserId(@Param("studyId") Long studyId, @Param("userId") Long userId);
+
     int countAllByStudyIdAndRole(Long studyId, Role role);
 }
