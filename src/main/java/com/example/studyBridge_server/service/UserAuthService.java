@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -113,6 +114,29 @@ public class UserAuthService {
         target.setPhone(userprofileUpdateReq.getPhone());
         target.setLocation(userprofileUpdateReq.getLocation());
         target.setGender(userprofileUpdateReq.getGender());
+
+        User savedUser = userRepository.save(target);
+
+        UserProfileRes result = UserProfileRes.builder()
+                .loginId(savedUser.getLoginId())
+                .name(savedUser.getName())
+                .phone(savedUser.getPhone())
+                .profileImg(savedUser.getProfileImg())
+                .location(savedUser.getLocation())
+                .gender(savedUser.getGender())
+                .role(savedUser.getRole())
+                .build();
+
+        return result;
+    }
+
+    @Transactional
+    public UserProfileRes updateProfileImg(String userLoginId, MultipartFile imgFile) throws IOException {
+        String imgUrl = s3Uploader.upload(imgFile, "user/profile");
+
+        User target = userRepository.findUserByLoginId(userLoginId).orElseThrow(() -> new RuntimeException("wrong_loginId"));
+
+        target.setProfileImg(imgUrl);
 
         User savedUser = userRepository.save(target);
 

@@ -6,6 +6,7 @@ import com.example.studyBridge_server.service.UserAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/user/auth")
@@ -62,6 +63,17 @@ public class UserAuthController {
     public ResponseEntity<UserProfileRes> updateProfile(@ModelAttribute UserProfileUpdateReq userprofileUpdateReq) {
         try {
             return ResponseEntity.status(201).body(userAuthService.updateProfile(userprofileUpdateReq));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new UserProfileRes());
+        }
+    }
+
+    // 기본 프로필 이미지 업데이트
+    @PostMapping("/profile/img")
+    public ResponseEntity<UserProfileRes> updateProfileImg(@RequestParam String userLoginId, @RequestParam MultipartFile imgFile) {
+        try {
+            return ResponseEntity.status(201).body(userAuthService.updateProfileImg(userLoginId, imgFile));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(new UserProfileRes());
