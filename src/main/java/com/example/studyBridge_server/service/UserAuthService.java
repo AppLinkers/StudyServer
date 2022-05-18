@@ -4,15 +4,16 @@ import com.example.studyBridge_server.domain.MentorProfile;
 import com.example.studyBridge_server.domain.type.Gender;
 import com.example.studyBridge_server.domain.type.Role;
 import com.example.studyBridge_server.domain.User;
-import com.example.studyBridge_server.dto.userAuth.UserLoginReq;
-import com.example.studyBridge_server.dto.userAuth.UserLoginRes;
-import com.example.studyBridge_server.dto.userAuth.UserSignUpReq;
-import com.example.studyBridge_server.dto.userAuth.UserSignUpRes;
+import com.example.studyBridge_server.dto.userAuth.*;
 import com.example.studyBridge_server.repository.MentorProfileRepository;
 import com.example.studyBridge_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class UserAuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final MentorProfileRepository mentorProfileRepository;
+    private final S3Uploader s3Uploader;
 
     public UserSignUpRes create(UserSignUpReq userSignUpReq) {
         // 비밀번호 암호화
@@ -92,4 +94,38 @@ public class UserAuthService {
     }
 
 
+    public UserProfileRes profile(String userLoginId) {
+        return userRepository.findProfileByStringId(userLoginId);
+    }
+
+    @Transactional
+    public UserProfileRes updateProfile(UserProfileUpdateReq userprofileUpdateReq) throws IOException {
+        User target = userRepository.findUserByLoginId(userprofileUpdateReq.getLoginId()).orElseThrow(() -> new RuntimeException("wrong_loginId"));
+
+        if (userprofileUpdateReq.getProfileImg() == null) {
+            // 이미지 업로드
+            String imgUrl = s3Uploader.upload(userprofileUpdateReq.getProfileImg().get(), "user/profile");
+
+            target.setProfileImg(imgUrl);
+        }
+
+        target.setName(userprofileUpdateReq.getName());
+        target.setPhone(userprofileUpdateReq.getPhone());
+        target.setLocation(userprofileUpdateReq.getLocation());
+        target.setGender(userprofileUpdateReq.getGender());
+
+        User savedUser = userRepository.save(target);
+
+        UserProfileRes result = UserProfileRes.builder()
+                .loginId(savedUser.getLoginId())
+                .name(savedUser.getName())
+                .phone(savedUser.getPhone())
+                .profileImg(savedUser.getProfileImg())
+                .location(savedUser.getLocation())
+                .gender(savedUser.getGender())
+                .role(savedUser.getRole())
+                .build();
+
+        return result;
+    }
 }

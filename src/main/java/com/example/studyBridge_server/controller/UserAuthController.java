@@ -1,9 +1,7 @@
 package com.example.studyBridge_server.controller;
 
 import com.example.studyBridge_server.domain.ErrorMessage;
-import com.example.studyBridge_server.dto.userAuth.UserLoginReq;
-import com.example.studyBridge_server.dto.userAuth.UserSignUpReq;
-import com.example.studyBridge_server.dto.userAuth.UserSignUpRes;
+import com.example.studyBridge_server.dto.userAuth.*;
 import com.example.studyBridge_server.service.UserAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +48,23 @@ public class UserAuthController {
             return ResponseEntity.status(201).body(true);
         } else {
             return ResponseEntity.status(201).body(false);
+        }
+    }
+
+    // 기본 프로필 조회
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileRes> profile(@RequestParam String userLoginId) {
+        return ResponseEntity.status(201).body(userAuthService.profile(userLoginId));
+    }
+
+    // 기본 프로필 업데이트
+    @PostMapping("/profile")
+    public ResponseEntity<UserProfileRes> updateProfile(@ModelAttribute UserProfileUpdateReq userprofileUpdateReq) {
+        try {
+            return ResponseEntity.status(201).body(userAuthService.updateProfile(userprofileUpdateReq));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new UserProfileRes());
         }
     }
 }

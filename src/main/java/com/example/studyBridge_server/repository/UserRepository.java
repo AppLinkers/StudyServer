@@ -2,6 +2,7 @@ package com.example.studyBridge_server.repository;
 
 import com.example.studyBridge_server.domain.User;
 import com.example.studyBridge_server.domain.type.Role;
+import com.example.studyBridge_server.dto.userAuth.UserProfileRes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u.name from User u where u.id = :id")
     String findNameById(@Param("id") Long id);
+
+    @Query("select new com.example.studyBridge_server.dto.userAuth.UserProfileRes(u.loginId, u.name, u.phone, u.profileImg, u.location, u.gender, u.role) from User u where u.loginId = :loginId")
+    UserProfileRes findProfileByStringId(@Param("loginId") String loginId);
 }
