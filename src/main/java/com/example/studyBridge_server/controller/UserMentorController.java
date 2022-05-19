@@ -20,12 +20,21 @@ public class UserMentorController {
     @SneakyThrows
     @PostMapping("/profile")
     public ResponseEntity<ProfileRes> profile(@ModelAttribute ProfileReq profileReq) {
-        return ResponseEntity.status(201).body(userMentorService.profile(profileReq));
+        try {
+            return ResponseEntity.status(201).body(userMentorService.profile(profileReq));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ProfileRes());
+        }
     }
 
     @GetMapping("/profile")
     public ResponseEntity<ProfileRes> getProfile(@RequestParam String mentorLoginId, @RequestParam String userLoginId) {
-        return ResponseEntity.status(201).body(userMentorService.getProfile(mentorLoginId, userLoginId));
+        try {
+            return ResponseEntity.status(201).body(userMentorService.getProfile(mentorLoginId, userLoginId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new ProfileRes());
+        }
     }
 
     @GetMapping("/allProfile")

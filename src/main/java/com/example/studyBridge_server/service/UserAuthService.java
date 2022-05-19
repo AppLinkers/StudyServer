@@ -25,12 +25,13 @@ public class UserAuthService {
     private final MentorProfileRepository mentorProfileRepository;
     private final S3Uploader s3Uploader;
 
+    /**
+     * create User entity
+     */
     public UserSignUpRes create(UserSignUpReq userSignUpReq) {
         // 비밀번호 암호화
         String loginPw = passwordEncoder.encode(userSignUpReq.getLoginPw());
 
-        // profile img 처리
-        //String ImgUrl = s3Uploader.upload(userSignUpReq.getProfileImg(), "user/profile");
         String ImgUrl = "https://study-bridge.s3.us-east-2.amazonaws.com/user/profile/basic.png";
 
         User user = User.builder()
@@ -94,11 +95,16 @@ public class UserAuthService {
         return userRepository.findNameById(userId);
     }
 
-
+    /**
+     * get user profile for userLoginId
+     */
     public UserProfileRes profile(String userLoginId) {
         return userRepository.findProfileByStringId(userLoginId);
     }
 
+    /**
+     * update user profile
+     */
     @Transactional
     public UserProfileRes updateProfile(UserProfileUpdateReq userprofileUpdateReq) throws IOException {
         User target = userRepository.findUserByLoginId(userprofileUpdateReq.getLoginId()).orElseThrow(() -> new RuntimeException("wrong_loginId"));
@@ -117,19 +123,14 @@ public class UserAuthService {
 
         User savedUser = userRepository.save(target);
 
-        UserProfileRes result = UserProfileRes.builder()
-                .loginId(savedUser.getLoginId())
-                .name(savedUser.getName())
-                .phone(savedUser.getPhone())
-                .profileImg(savedUser.getProfileImg())
-                .location(savedUser.getLocation())
-                .gender(savedUser.getGender())
-                .role(savedUser.getRole())
-                .build();
+        UserProfileRes result = userToUserProfileRes(savedUser);
 
         return result;
     }
 
+    /**
+     * update user profile image
+     */
     @Transactional
     public UserProfileRes updateProfileImg(String userLoginId, MultipartFile imgFile) throws IOException {
         String imgUrl = s3Uploader.upload(imgFile, "user/profile");
@@ -140,16 +141,23 @@ public class UserAuthService {
 
         User savedUser = userRepository.save(target);
 
-        UserProfileRes result = UserProfileRes.builder()
-                .loginId(savedUser.getLoginId())
-                .name(savedUser.getName())
-                .phone(savedUser.getPhone())
-                .profileImg(savedUser.getProfileImg())
-                .location(savedUser.getLocation())
-                .gender(savedUser.getGender())
-                .role(savedUser.getRole())
-                .build();
+        UserProfileRes result = userToUserProfileRes(savedUser);
 
         return result;
+    }
+
+    /**
+     * User -> UserProfileRes
+     */
+    public UserProfileRes userToUserProfileRes(User user) {
+        return UserProfileRes.builder()
+                .loginId(user.getLoginId())
+                .name(user.getName())
+                .phone(user.getPhone())
+                .profileImg(user.getProfileImg())
+                .location(user.getLocation())
+                .gender(user.getGender())
+                .role(user.getRole())
+                .build();
     }
 }

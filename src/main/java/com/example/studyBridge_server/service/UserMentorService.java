@@ -29,6 +29,9 @@ public class UserMentorService {
     private final UserMenteeService userMenteeService;
     private final S3Uploader s3Uploader;
 
+    /**
+     * mentor Profile 등록
+     */
     public ProfileRes profile(ProfileReq profileReq) throws IOException {
 
         // img 업로드
@@ -55,7 +58,7 @@ public class UserMentorService {
         }
 
         // 업데이트 할 멘토 프로필 불러오기
-        MentorProfile mentorProfile = mentorProfileRepository.findByUser(user);
+        MentorProfile mentorProfile = mentorProfileRepository.findByUser(user).orElseThrow(() -> new RuntimeException("not mentor login id"));
         mentorProfile.setInfo(profileTextReq.getInfo());
         mentorProfile.setNickName(profileTextReq.getNickName());
         mentorProfile.setSchool(profileTextReq.getSchool());
@@ -109,11 +112,15 @@ public class UserMentorService {
 
     }
 
+    /**
+     * mentorLoginId 의 mentorProfile 조회
+     * liked = userLoginId 가 해당 mentor를 '좋아요' 했는지
+     */
     public ProfileRes getProfile(String mentorLoginId, String userLoginId) {
         User user = userRepository.findUserByLoginId(userLoginId).get();
         User mentor = userRepository.findUserByLoginId(mentorLoginId).get();
 
-        MentorProfile mentorProfile = mentorProfileRepository.findByUser(mentor);
+        MentorProfile mentorProfile = mentorProfileRepository.findByUser(mentor).orElseThrow(() -> new RuntimeException("no mentor login id"));
 
         List<Certificate> certificates = new ArrayList<>();
         Optional<List<Certificate>> searchedCertificates = certificateRepository.findAllByMentorProfile(mentorProfile);
