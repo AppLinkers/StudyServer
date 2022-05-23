@@ -3,15 +3,14 @@ package com.example.studyBridge_server.service;
 import com.example.studyBridge_server.domain.*;
 import com.example.studyBridge_server.domain.type.MessageType;
 import com.example.studyBridge_server.domain.type.ToDoStatus;
-import com.example.studyBridge_server.dto.toDo.AssignToDoReq;
-import com.example.studyBridge_server.dto.toDo.AssignToDoRes;
-import com.example.studyBridge_server.dto.toDo.FindToDoReq;
-import com.example.studyBridge_server.dto.toDo.FindToDoRes;
+import com.example.studyBridge_server.dto.toDo.*;
 import com.example.studyBridge_server.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -166,5 +165,8 @@ public class ToDoService {
         return toDoRepository.deleteAllById(toDoId);
     }
 
-
+    @Transactional
+    public int updateDueDate(UpdateToDoDueDateReq request) {
+        return toDoRepository.updateDueDate(request.getToDoId(), request.getDueDate());
+    }
 }

@@ -1,14 +1,12 @@
 package com.example.studyBridge_server.controller;
 
-import com.example.studyBridge_server.dto.toDo.AssignToDoReq;
-import com.example.studyBridge_server.dto.toDo.AssignToDoRes;
-import com.example.studyBridge_server.dto.toDo.FindToDoReq;
-import com.example.studyBridge_server.dto.toDo.FindToDoRes;
+import com.example.studyBridge_server.dto.toDo.*;
 import com.example.studyBridge_server.service.ToDoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,5 +57,10 @@ public class ToDoController {
     @PostMapping("/delete")
     public ResponseEntity<Integer> delete(@RequestParam("toDoId") Long toDoId) {
         return ResponseEntity.status(201).body(toDoService.delete(toDoId));
+    }
+
+    @PostMapping("/update/dueDate")
+    public ResponseEntity<Integer> updateDueDate(@RequestBody UpdateToDoDueDateReq request) {
+        return ResponseEntity.status(201).body(toDoService.updateDueDate(request));
     }
 }

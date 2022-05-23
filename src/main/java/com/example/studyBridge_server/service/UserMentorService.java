@@ -96,6 +96,7 @@ public class UserMentorService {
         // 결과 생성
         return ProfileRes.builder()
                 .userId(user.getId())
+                .userLoginId(user.getLoginId())
                 .userName(user.getName())
                 .location(profileTextReq.getLocation())
                 .info(result.getInfo())
@@ -136,21 +137,7 @@ public class UserMentorService {
             }
         }
 
-        return ProfileRes.builder()
-                .userId(mentorProfile.getUser().getId())
-                .userName(mentorProfile.getUser().getName())
-                .location(mentorProfile.getUser().getLocation())
-                .info(mentorProfile.getInfo())
-                .nickName(mentorProfile.getNickName())
-                .school(mentorProfile.getSchool())
-                .schoolImg(mentorProfile.getSchoolImg())
-                .subject(mentorProfile.getSubject())
-                .certificates(certificates)
-                .experience(mentorProfile.getExperience())
-                .curriculum(mentorProfile.getCurriculum())
-                .appeal(mentorProfile.getAppeal())
-                .liked(liked)
-                .build();
+        return mentorProfileToProfileRes(mentorProfile, certificates, liked);
     }
 
     /**
@@ -186,24 +173,30 @@ public class UserMentorService {
             }
 
             result.add(
-                    ProfileRes.builder()
-                            .userId(mentorProfile.getUser().getId())
-                            .userName(mentorProfile.getUser().getName())
-                            .location(mentorProfile.getUser().getLocation())
-                            .info(mentorProfile.getInfo())
-                            .nickName(mentorProfile.getNickName())
-                            .school(mentorProfile.getSchool())
-                            .schoolImg(mentorProfile.getSchoolImg())
-                            .subject(mentorProfile.getSubject())
-                            .certificates(certificates)
-                            .experience(mentorProfile.getExperience())
-                            .curriculum(mentorProfile.getCurriculum())
-                            .appeal(mentorProfile.getAppeal())
-                            .liked(liked)
-                            .build()
+                    mentorProfileToProfileRes(mentorProfile, certificates, liked)
             );
         }
 
         return result;
     }
+
+    public ProfileRes mentorProfileToProfileRes(MentorProfile mentorProfile, List<Certificate> certificates, Boolean liked) {
+        return ProfileRes.builder()
+                .userId(mentorProfile.getUser().getId())
+                .userLoginId(mentorProfile.getUser().getLoginId())
+                .userName(mentorProfile.getUser().getName())
+                .location(mentorProfile.getUser().getLocation())
+                .info(mentorProfile.getInfo())
+                .nickName(mentorProfile.getNickName())
+                .school(mentorProfile.getSchool())
+                .schoolImg(mentorProfile.getSchoolImg())
+                .subject(mentorProfile.getSubject())
+                .certificates(certificates)
+                .experience(mentorProfile.getExperience())
+                .curriculum(mentorProfile.getCurriculum())
+                .appeal(mentorProfile.getAppeal())
+                .liked(liked)
+                .build();
+    }
 }
+

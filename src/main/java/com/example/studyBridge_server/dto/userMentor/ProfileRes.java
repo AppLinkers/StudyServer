@@ -16,6 +16,8 @@ public class ProfileRes {
 
     private Long userId;
 
+    private String userLoginId;
+
     private String userName;
 
     private String location;
