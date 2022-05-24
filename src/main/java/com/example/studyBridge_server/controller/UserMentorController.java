@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -42,4 +43,5 @@ public class UserMentorController {
     public ResponseEntity<List<ProfileRes>> getAllProfile(@RequestParam String userLoginId) {
         return ResponseEntity.status(201).body(userMentorService.getAllProfile(userLoginId));
     }
+
 }

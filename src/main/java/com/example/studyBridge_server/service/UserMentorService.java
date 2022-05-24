@@ -5,8 +5,8 @@ import com.example.studyBridge_server.domain.MentorProfile;
 import com.example.studyBridge_server.domain.User;
 import com.example.studyBridge_server.domain.type.Role;
 import com.example.studyBridge_server.dto.userMentee.LikeMentorRes;
-import com.example.studyBridge_server.dto.userMentor.ProfileRes;
 import com.example.studyBridge_server.dto.userMentor.ProfileReq;
+import com.example.studyBridge_server.dto.userMentor.ProfileRes;
 import com.example.studyBridge_server.dto.userMentor.ProfileTextReq;
 import com.example.studyBridge_server.repository.CertificateRepository;
 import com.example.studyBridge_server.repository.MentorProfileRepository;
@@ -37,26 +37,28 @@ public class UserMentorService {
 
         String schoolImgUrl;
 
-        System.out.println(profileReq.getSchoolImg());
-
-        if (profileReq.getSchoolImg() instanceof MultipartFile) {
+        if (profileReq.getSchoolImg() instanceof String) {
+            schoolImgUrl = (String) profileReq.getSchoolImg();
+        } else {
             // img 업로드
             schoolImgUrl = s3Uploader.upload((MultipartFile) profileReq.getSchoolImg(), "mentor/profile");
-        } else {
-            schoolImgUrl = (String) profileReq.getSchoolImg();
         }
 
         List<List<String>> certificates = new ArrayList<>();
 
+        System.out.println(profileReq.getCertificatesImg());
+
         if (profileReq.getCertificatesImg() != null) {
             for (int i = 0; i < profileReq.getCertificatesImg().get().size(); i++) {
+                System.out.println(i);
                 String certificateImg;
-                if (profileReq.getCertificatesImg().get().get(i) instanceof MultipartFile) {
-                    certificateImg = s3Uploader.upload((MultipartFile) profileReq.getCertificatesImg().get().get(i), "mentor/profile");
-                } else {
+                if (profileReq.getCertificatesImg().get().get(i) instanceof String) {
+                    System.out.println("test string");
                     certificateImg = (String) profileReq.getCertificatesImg().get().get(i);
+                } else {
+                    System.out.println("test img");
+                    certificateImg = s3Uploader.upload((MultipartFile) profileReq.getCertificatesImg().get().get(i), "mentor/profile");
                 }
-
                 certificates.add(List.of(new String[]{profileReq.getCertificates().get().get(i), certificateImg}));
             }
         }

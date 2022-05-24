@@ -3,6 +3,7 @@ package com.example.studyBridge_server.dto.userMentor;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
