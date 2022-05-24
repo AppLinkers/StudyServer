@@ -23,6 +23,7 @@ public class UserMentorController {
         try {
             return ResponseEntity.status(201).body(userMentorService.profile(profileReq));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(new ProfileRes());
         }
     }
