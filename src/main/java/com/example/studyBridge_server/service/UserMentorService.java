@@ -37,6 +37,8 @@ public class UserMentorService {
 
         String schoolImgUrl;
 
+        System.out.println(profileReq.getSchoolImg());
+
         if (profileReq.getSchoolImg() instanceof MultipartFile) {
             // img 업로드
             schoolImgUrl = s3Uploader.upload((MultipartFile) profileReq.getSchoolImg(), "mentor/profile");
