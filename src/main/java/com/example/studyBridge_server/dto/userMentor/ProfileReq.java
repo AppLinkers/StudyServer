@@ -9,9 +9,9 @@ import java.util.Optional;
 @Data
 public class ProfileReq {
 
-    private MultipartFile schoolImg;
+    private Object schoolImg;
 
-    private Optional<List<MultipartFile>> certificatesImg;
+    private Optional<List<Object>> certificatesImg;
 
     private Optional<List<String>> certificates;
 

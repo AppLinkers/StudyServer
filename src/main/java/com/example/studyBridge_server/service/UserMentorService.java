@@ -13,6 +13,7 @@ import com.example.studyBridge_server.repository.MentorProfileRepository;
 import com.example.studyBridge_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,14 +35,26 @@ public class UserMentorService {
      */
     public ProfileRes profile(ProfileReq profileReq) throws IOException {
 
-        // img 업로드
-        String schoolImgUrl = s3Uploader.upload(profileReq.getSchoolImg(), "mentor/profile");
+        String schoolImgUrl;
+
+        if (profileReq.getSchoolImg() instanceof MultipartFile) {
+            // img 업로드
+            schoolImgUrl = s3Uploader.upload((MultipartFile) profileReq.getSchoolImg(), "mentor/profile");
+        } else {
+            schoolImgUrl = (String) profileReq.getSchoolImg();
+        }
 
         List<List<String>> certificates = new ArrayList<>();
 
         if (profileReq.getCertificatesImg() != null) {
             for (int i = 0; i < profileReq.getCertificatesImg().get().size(); i++) {
-                String certificateImg = s3Uploader.upload(profileReq.getCertificatesImg().get().get(i), "mentor/profile");
+                String certificateImg;
+                if (profileReq.getCertificatesImg().get().get(i) instanceof MultipartFile) {
+                    certificateImg = s3Uploader.upload((MultipartFile) profileReq.getCertificatesImg().get().get(i), "mentor/profile");
+                } else {
+                    certificateImg = (String) profileReq.getCertificatesImg().get().get(i);
+                }
+
                 certificates.add(List.of(new String[]{profileReq.getCertificates().get().get(i), certificateImg}));
             }
         }
