@@ -88,6 +88,7 @@ public class FeedBackService {
                                 .assignedToDoId(feedBack.getAssignedToDo().getId())
                                 .writerId(feedBack.getUser().getId())
                                 .writerName(feedBack.getUser().getName())
+                                .writerProfileImg(feedBack.getUser().getProfileImg())
                                 .comment(feedBack.getComment())
                                 .build();
 

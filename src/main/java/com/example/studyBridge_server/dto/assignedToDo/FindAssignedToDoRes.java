@@ -23,7 +23,11 @@ public class FindAssignedToDoRes {
 
     private String menteeName;
 
+    private String menteeProfileImg;
+
     private String mentorName;
+
+    private String mentorProfileImg;
 
     private String task;
 

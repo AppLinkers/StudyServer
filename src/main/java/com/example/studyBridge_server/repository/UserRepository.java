@@ -22,6 +22,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u.name from User u where u.id = :id")
     String findNameById(@Param("id") Long id);
 
+    @Query("select u.profileImg from User u where u.id = :id")
+    String findProfileImgById(@Param("id") Long id);
+
     @Query("select new com.example.studyBridge_server.dto.userAuth.UserProfileRes(u.loginId, u.name, u.phone, u.profileImg, u.location, u.gender, u.role) from User u where u.loginId = :loginId")
     UserProfileRes findProfileByStringId(@Param("loginId") String loginId);
 }

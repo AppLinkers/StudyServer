@@ -20,5 +20,7 @@ public class FindFeedBackRes {
 
     private String writerName;
 
+    private String writerProfileImg;
+
     private String comment;
 }

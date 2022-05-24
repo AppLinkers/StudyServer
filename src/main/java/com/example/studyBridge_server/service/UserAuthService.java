@@ -95,6 +95,9 @@ public class UserAuthService {
         return userRepository.findNameById(userId);
     }
 
+    public String getProfileImg(Long userId) {
+        return userRepository.findProfileImgById(userId);}
+
     /**
      * get user profile for userLoginId
      */
