@@ -20,6 +20,8 @@ public class ProfileRes {
 
     private String userName;
 
+    private String profileImg;
+
     private String location;
 
     private String info;
