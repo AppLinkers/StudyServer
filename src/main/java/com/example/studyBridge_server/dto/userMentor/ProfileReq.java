@@ -12,7 +12,7 @@ public class ProfileReq {
 
     private Object schoolImg;
 
-    private Optional<List<Object>> certificatesImg;
+    private Optional<ArrayList> certificatesImg;
 
     private Optional<List<String>> certificates;
 

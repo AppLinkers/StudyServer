@@ -29,7 +29,6 @@ public class MessageService {
 
     @Transactional
     public void send(Message message) {
-        System.out.println(message.toString());
 
         String senderName = message.getSenderName();
 
