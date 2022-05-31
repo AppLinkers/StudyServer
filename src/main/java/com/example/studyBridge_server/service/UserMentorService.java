@@ -13,7 +13,6 @@ import com.example.studyBridge_server.repository.MentorProfileRepository;
 import com.example.studyBridge_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,27 +36,24 @@ public class UserMentorService {
 
         String schoolImgUrl;
 
-        if (profileReq.getSchoolImg() instanceof String) {
-            schoolImgUrl = (String) profileReq.getSchoolImg();
+        if (profileReq.getSchoolImg().getContentType().equals("multipart/form-data")) {
+            schoolImgUrl = s3Uploader.upload(profileReq.getSchoolImg(), "mentor/profile");
         } else {
-            // img 업로드
-            schoolImgUrl = s3Uploader.upload((MultipartFile) profileReq.getSchoolImg(), "mentor/profile");
+            schoolImgUrl = profileReq.getSchoolImg().getOriginalFilename();
         }
+
+
 
         List<List<String>> certificates = new ArrayList<>();
 
-        System.out.println(profileReq.getCertificatesImg());
-
         if (profileReq.getCertificatesImg() != null) {
             for (int i = 0; i < profileReq.getCertificatesImg().get().size(); i++) {
-                System.out.println(i);
                 String certificateImg;
-                if (profileReq.getCertificatesImg().get().get(i) instanceof String) {
-                    System.out.println("test string");
-                    certificateImg = (String) profileReq.getCertificatesImg().get().get(i);
+
+                if (profileReq.getCertificatesImg().get().get(i).getContentType().equals("multipart/form-data")) {
+                    certificateImg = s3Uploader.upload(profileReq.getCertificatesImg().get().get(i), "mentor/profile");
                 } else {
-                    System.out.println("test img");
-                    certificateImg = s3Uploader.upload((MultipartFile) profileReq.getCertificatesImg().get().get(i), "mentor/profile");
+                    certificateImg = profileReq.getCertificatesImg().get().get(i).getOriginalFilename();
                 }
                 certificates.add(List.of(new String[]{profileReq.getCertificates().get().get(i), certificateImg}));
             }
