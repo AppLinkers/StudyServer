@@ -2,11 +2,15 @@ package com.example.studyBridge_server.service;
 
 import com.example.studyBridge_server.domain.Message;
 import com.example.studyBridge_server.domain.Room;
+import com.example.studyBridge_server.domain.User;
 import com.example.studyBridge_server.domain.type.MessageType;
 import com.example.studyBridge_server.dto.message.FindRoomRes;
+import com.example.studyBridge_server.dto.message.MessageReq;
+import com.example.studyBridge_server.dto.message.MessageRes;
 import com.example.studyBridge_server.repository.MessageRepository;
 import com.example.studyBridge_server.repository.RoomRepository;
 import com.example.studyBridge_server.repository.UserAndRoomRepository;
+import com.example.studyBridge_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -26,43 +30,88 @@ public class MessageService {
     private final RoomRepository roomRepository;
     private final MessageRepository messageRepository;
     private final UserAndRoomRepository userAndRoomRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public void send(Message message) {
+    public void send(MessageReq messageReq) {
 
-        String senderName = message.getSenderName();
+        User user = userRepository.findById(messageReq.getUserId()).get();
+        Room room = roomRepository.findById(messageReq.getRoomId()).get();
 
-        if (message.getMessageType().equals(MessageType.ENTER)) {
+        Message message = new Message();
+
+        message.setMessageType(messageReq.getMessageType());
+        message.setRoom(room);
+        message.setUser(user);
+
+        if (messageReq.getMessageType().equals(MessageType.ENTER)) {
 
             // 입장 메시지 전달
-            message.setMessage("[알림] " + senderName + " 님이 입장하였습니다.");
-            messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoom().getId(), message);
+            message.setMessage("[알림] " + user.getName() + " 님이 입장하였습니다.");
             messageRepository.save(message);
+
+            MessageRes messageRes = MessageToMessageRes(message);
+
+            messagingTemplate.convertAndSend("/sub/chat/room/" + messageRes.getRoomId(), messageRes);
 
         } else if (message.getMessageType().equals(MessageType.TALK) || message.getMessageType().equals(MessageType.PHOTO)) {
 
+            message.setMessage(messageReq.getMessage());
             // 채팅 처리
-            messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoom().getId(), message);
             messageRepository.save(message);
+
+            MessageRes messageRes = MessageToMessageRes(message);
+
+            messagingTemplate.convertAndSend("/sub/chat/room/" + messageRes.getRoomId(), messageRes);
 
         } else if(message.getMessageType().equals(MessageType.EXIT)) {
 
             // 채팅방 퇴장 메시지 전달
-            message.setMessage("[알림]" + senderName + " 님이 퇴장하였습니다.");
-            messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoom().getId(), message);
+            message.setMessage("[알림]" + user.getName() + " 님이 퇴장하였습니다.");
             messageRepository.save(message);
 
-            userAndRoomRepository.deleteUserAndRoomByRoomIdAndUserId(message.getRoom().getId(), message.getSenderId());
+            MessageRes messageRes = MessageToMessageRes(message);
+
+            messagingTemplate.convertAndSend("/sub/chat/room/" + messageRes.getRoomId(), messageRes);
+
+            userAndRoomRepository.deleteUserAndRoomByRoomIdAndUserId(message.getRoom().getId(), message.getUser().getId());
 
         }
 
     }
 
-    public List<Message> findByRoomId(Long room_id) {
-        Optional<List<Message>> result = messageRepository.findByRoom(roomRepository.findById(room_id).get());
+    private MessageRes MessageToMessageRes(Message message) {
+        return MessageRes.builder()
+                .messageType(message.getMessageType())
+                .roomId(message.getRoom().getId())
+                .userId(message.getUser().getId())
+                .userName(message.getUser().getName())
+                .userProfileImg(message.getUser().getProfileImg())
+                .message(message.getMessage())
+                .build();
+    }
 
-        if (result.isPresent()) {
-            return result.get();
+    public List<MessageRes> findByRoomId(Long room_id) {
+        List<MessageRes> result = new ArrayList<>();
+        Optional<List<Message>> messageList = messageRepository.findByRoom(roomRepository.findById(room_id).get());
+
+        if (messageList.isPresent()) {
+            messageList.get().forEach(
+                    message -> {
+                        MessageRes messageRes = MessageRes.builder()
+                                .messageType(message.getMessageType())
+                                .roomId(message.getRoom().getId())
+                                .userId(message.getUser().getId())
+                                .userName(message.getUser().getName())
+                                .userProfileImg(message.getUser().getProfileImg())
+                                .message(message.getMessage())
+                                .build();
+
+                        result.add(messageRes);
+                    }
+            );
+
+            return result;
         } else {
             return new ArrayList<>();
         }

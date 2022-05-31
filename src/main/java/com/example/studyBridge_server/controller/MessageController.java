@@ -2,6 +2,8 @@ package com.example.studyBridge_server.controller;
 
 import com.example.studyBridge_server.domain.Message;
 import com.example.studyBridge_server.dto.message.FindRoomRes;
+import com.example.studyBridge_server.dto.message.MessageReq;
+import com.example.studyBridge_server.dto.message.MessageRes;
 import com.example.studyBridge_server.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,12 @@ public class MessageController {
 
     @GetMapping("/message/{room_id}")
     @ResponseBody
-    public List<Message> messageList(@PathVariable Long room_id) {
+    public List<MessageRes> messageList(@PathVariable Long room_id) {
         return messageService.findByRoomId(room_id);
     }
 
     @MessageMapping("/chat/message")
-    public void message(Message message) {
+    public void message(MessageReq message) {
         messageService.send(message);
     }
 

@@ -3,6 +3,7 @@ package com.example.studyBridge_server.service;
 import com.example.studyBridge_server.domain.*;
 import com.example.studyBridge_server.domain.type.MessageType;
 import com.example.studyBridge_server.domain.type.ToDoStatus;
+import com.example.studyBridge_server.dto.message.MessageReq;
 import com.example.studyBridge_server.dto.toDo.*;
 import com.example.studyBridge_server.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -72,15 +73,14 @@ public class ToDoService {
         Room room = roomRepository.findRoomByStudyId(study.getId());
         User mentor = userRepository.findById(study.getMentorId()).get();
 
-        Message message = Message.builder()
-                .room(room)
-                .senderId(mentor.getId())
-                .senderName(mentor.getName())
+        MessageReq messageReq = MessageReq.builder()
                 .messageType(MessageType.TALK)
+                .roomId(room.getId())
+                .userId(mentor.getId())
                 .message("과제가 부여되었습니다.")
                 .build();
 
-        messageService.send(message);
+        messageService.send(messageReq);
 
         return AssignToDoRes.builder()
                 .menteeCnt(menteeCnt)

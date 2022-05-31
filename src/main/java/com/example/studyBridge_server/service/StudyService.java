@@ -4,6 +4,7 @@ import com.example.studyBridge_server.domain.*;
 import com.example.studyBridge_server.domain.type.MessageType;
 import com.example.studyBridge_server.domain.type.Role;
 import com.example.studyBridge_server.domain.type.StudyStatus;
+import com.example.studyBridge_server.dto.message.MessageReq;
 import com.example.studyBridge_server.dto.study.*;
 import com.example.studyBridge_server.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -126,15 +127,14 @@ public class StudyService {
 
         if (user.getRole().equals(Role.MENTEE)) {
             // 퇴장 메세지
-            Message message = Message.builder()
-                    .room(room)
-                    .senderId(user.getId())
-                    .senderName(user.getName())
+            MessageReq messageReq = MessageReq.builder()
                     .messageType(MessageType.EXIT)
+                    .roomId(room.getId())
+                    .userId(user.getId())
                     .message("exit")
                     .build();
 
-            messageService.send(message);
+            messageService.send(messageReq);
         }
 
         userAndStudyRepository.deleteUserAndStudiesByStudyIdAndUserId(study.getId(), user.getId());
