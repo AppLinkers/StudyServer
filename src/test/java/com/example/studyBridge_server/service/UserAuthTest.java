@@ -40,6 +40,7 @@ public class UserAuthTest {
                 .role("MENTEE")
                 .location("test_location")
                 .phone("01012345678")
+                .personalInfo(true)
                 .build();
     }
 }

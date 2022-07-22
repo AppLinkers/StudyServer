@@ -36,6 +36,7 @@ public class UserAuthTest {
                 .phone("010-0000-0000")
                 .gender("MALE")
                 .location("test_location")
+                .personalInfo(true)
                 .build();
 
         // when
@@ -57,6 +58,7 @@ public class UserAuthTest {
                 .phone("010-0000-0000")
                 .gender("MALE")
                 .location("test_location")
+                .personalInfo(true)
                 .build();
 
         userAuthService.create(userSignUpReq);
