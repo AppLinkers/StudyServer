@@ -25,4 +25,5 @@ public class UserSignUpReq {
 
     private String location;
 
+    private Boolean personalInfo;
 }

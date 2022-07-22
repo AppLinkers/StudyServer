@@ -49,6 +49,9 @@ public class User extends BaseEntity implements Auditable {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @Convert(converter = BooleanToYNConverter.class)
+    private boolean personalInfo;
+
     @OneToMany
     @JoinColumn(name = "user_id")
     @ToString.Exclude
@@ -60,7 +63,7 @@ public class User extends BaseEntity implements Auditable {
     private List<AssignedToDo> toDoList = new ArrayList<>();
 
     @Builder
-    public User(@NonNull String loginId, @NonNull String loginPw, @NonNull String name, String phone, String profileImg, String location, Gender gender, Role role) {
+    public User(@NonNull String loginId, @NonNull String loginPw, @NonNull String name, String phone, String profileImg, String location, Gender gender, Role role, Boolean personalInfo) {
         this.loginId = loginId;
         this.loginPw = loginPw;
         this.name = name;
@@ -71,5 +74,6 @@ public class User extends BaseEntity implements Auditable {
         this.location = location;
         this.gender = gender;
         this.role = role;
+        this.personalInfo = personalInfo;
     }
 }

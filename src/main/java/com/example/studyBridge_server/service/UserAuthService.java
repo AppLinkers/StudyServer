@@ -43,6 +43,7 @@ public class UserAuthService {
                 .phone(userSignUpReq.getPhone())
                 .location(userSignUpReq.getLocation())
                 .profileImg(ImgUrl)
+                .personalInfo(userSignUpReq.getPersonalInfo())
                 .build();
 
         User createdUser = userRepository.save(user);
