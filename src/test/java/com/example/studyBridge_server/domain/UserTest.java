@@ -33,6 +33,7 @@ public class UserTest {
                 .phone("01012345678")
                 .location("test_location")
                 .role(Role.MENTEE)
+                .personalInfo(true)
                 .build();
 
         List<User> users = new ArrayList<>();
