@@ -5,7 +5,9 @@ import com.example.studyBridge_server.domain.type.Gender;
 import com.example.studyBridge_server.domain.type.Role;
 import com.example.studyBridge_server.domain.User;
 import com.example.studyBridge_server.dto.userAuth.*;
+import com.example.studyBridge_server.repository.LikeMentorRepository;
 import com.example.studyBridge_server.repository.MentorProfileRepository;
+import com.example.studyBridge_server.repository.StudyRepository;
 import com.example.studyBridge_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +25,8 @@ public class UserAuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final MentorProfileRepository mentorProfileRepository;
+    private final LikeMentorRepository likeMentorRepository;
+    private final StudyRepository studyRepository;
     private final S3Uploader s3Uploader;
 
     /**
@@ -63,6 +67,25 @@ public class UserAuthService {
                 .build();
 
         return userSignUpRes;
+    }
+
+    @Transactional
+    public String signOut(Long userId) {
+        // Like Mentor 삭제
+        User user = userRepository.findById(userId).get();
+        if (user.getRole().equals(Role.MENTEE)) {
+            likeMentorRepository.deleteAllByMenteeId(userId);
+        } else {
+            likeMentorRepository.deleteAllByMentorId(userId);
+        }
+
+        // 스터디 삭제
+        studyRepository.deleteAllByMakerId(userId);
+
+        // 회원 탈퇴
+        userRepository.deleteById(userId);
+
+        return userId.toString();
     }
 
     public UserLoginRes login(UserLoginReq userLoginReq) {
@@ -137,7 +160,12 @@ public class UserAuthService {
      */
     @Transactional
     public UserProfileRes updateProfileImg(String userLoginId, MultipartFile imgFile) throws IOException {
-        String imgUrl = s3Uploader.upload(imgFile, "user/profile");
+        String imgUrl = "";
+        if (imgFile.getOriginalFilename().equals("https://study-bridge.s3.us-east-2.amazonaws.com/user/profile/basic.png")) {
+            imgUrl = imgFile.getOriginalFilename();
+        } else {
+            imgUrl = s3Uploader.upload(imgFile, "user/profile");
+        }
 
         User target = userRepository.findUserByLoginId(userLoginId).orElseThrow(() -> new RuntimeException("wrong_loginId"));
 

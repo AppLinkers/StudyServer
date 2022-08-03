@@ -7,6 +7,7 @@ import com.example.studyBridge_server.domain.type.StudyStatus;
 import com.example.studyBridge_server.dto.message.MessageReq;
 import com.example.studyBridge_server.dto.study.*;
 import com.example.studyBridge_server.repository.*;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class StudyService {
     private final UserAndStudyRepository userAndStudyRepository;
     private final UserAndRoomRepository userAndRoomRepository;
     private final RoomRepository roomRepository;
+    private final ToDoRepository toDoRepository;
+    private final AssignedToDoRepository assignedToDoRepository;
+    private final MessageRepository messageRepository;
 
     private final MessageService messageService;
 
@@ -377,4 +381,31 @@ public class StudyService {
 
         return result;
     }
+
+    /**
+     * 멘티 탈퇴
+     * AssignedToDo : ToDoId, UserId
+     * Message : UserId, RoomId(StudyId)
+     * UserAndStudy
+     */
+    public StudyOutRes studyOut(StudyOutReq studyOutReq) {
+        // AssignedToDo
+        Optional<List<ToDo>> optionalToDoList = toDoRepository.findAllByStudyId(studyOutReq.getStudyId());
+        if (optionalToDoList.isPresent()) {
+            List<ToDo> toDoList = optionalToDoList.get();
+
+            toDoList.forEach(toDo ->  {
+                assignedToDoRepository.deleteAllByUserIdAndToDoId(studyOutReq.getMenteeId(), toDo.getId());
+            });
+        }
+
+        // Message
+        messageRepository.deleteAllByRoomIdAndUserId(studyOutReq.getStudyId(), studyOutReq.getMenteeId());
+
+        // UserAndStudy
+        userAndStudyRepository.deleteUserAndStudiesByStudyIdAndUserId(studyOutReq.getStudyId(), studyOutReq.getMenteeId());
+
+        return StudyOutRes.builder().studyId(studyOutReq.getStudyId()).menteeId(studyOutReq.getMenteeId()).build();
+    }
+
 }

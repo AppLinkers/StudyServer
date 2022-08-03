@@ -14,5 +14,11 @@ public interface LikeMentorRepository extends JpaRepository<LikeMentor, Long> {
     @Modifying
     int deleteLikeMentorByMenteeIdAndMentorId(Long menteeId, Long mentorId);
 
+    @Modifying
+    int deleteAllByMenteeId(Long menteeId);
+
+    @Modifying
+    int deleteAllByMentorId(Long mentorId);
+
     Optional<List<LikeMentor>> findLikeMentorsByMenteeId(Long menteeId);
 }

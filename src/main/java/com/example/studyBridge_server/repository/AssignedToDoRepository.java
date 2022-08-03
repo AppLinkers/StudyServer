@@ -3,6 +3,7 @@ package com.example.studyBridge_server.repository;
 import com.example.studyBridge_server.domain.AssignedToDo;
 import com.example.studyBridge_server.domain.type.ToDoStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +23,7 @@ public interface AssignedToDoRepository extends JpaRepository<AssignedToDo, Long
     Optional<List<AssignedToDo>> findAllByToDoId(Long toDoId);
 
     Optional<List<AssignedToDo>> findAllByUserId(Long userId);
+
+    @Modifying
+    int deleteAllByUserIdAndToDoId(Long userId, Long toDoId);
 }

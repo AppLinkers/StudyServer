@@ -3,6 +3,8 @@ package com.example.studyBridge_server.domain;
 import com.example.studyBridge_server.domain.listener.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -22,6 +24,7 @@ public class Room extends BaseEntity implements Auditable {
 
     @Nullable
     @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Study study;
 
     public Room(@Nullable Study study) {

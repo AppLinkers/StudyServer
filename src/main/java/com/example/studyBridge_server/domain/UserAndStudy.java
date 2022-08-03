@@ -3,6 +3,8 @@ package com.example.studyBridge_server.domain;
 import com.example.studyBridge_server.domain.listener.Auditable;
 import com.example.studyBridge_server.domain.type.Role;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -22,10 +24,12 @@ public class UserAndStudy extends BaseEntity implements Auditable {
 
     @ManyToOne
     @ToString.Exclude
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Study study;
 
     @ManyToOne
     @ToString.Exclude
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Builder

@@ -114,4 +114,9 @@ public class StudyController {
             return ResponseEntity.badRequest().body(new StudyUpdateRes());
         }
     }
+
+    @PostMapping("/out")
+    public ResponseEntity<StudyOutRes> studyOut(@RequestBody StudyOutReq studyOutReq) {
+        return ResponseEntity.status(201).body(studyService.studyOut(studyOutReq));
+    }
 }

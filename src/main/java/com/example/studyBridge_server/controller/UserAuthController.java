@@ -32,6 +32,13 @@ public class UserAuthController {
         }
     }
 
+    // 회원 탈퇴
+    @PostMapping("/sign/out/{userId}")
+    public String signOut(@PathVariable Long userId) {
+        return userAuthService.signOut(userId);
+
+    }
+
     // ID 중복 체크
     @GetMapping("/id")
     public ResponseEntity<String> valid(@RequestParam String userLoginId) {

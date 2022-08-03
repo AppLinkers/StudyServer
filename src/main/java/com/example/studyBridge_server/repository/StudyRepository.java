@@ -35,5 +35,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     @Query("select s from Study s where s.id in (select uas.study.id from UserAndStudy uas where uas.user.id = :menteeId)")
     Optional<List<Study>> findByMenteeId(@Param("menteeId") Long menteeId);
 
+    @Modifying
+    int deleteAllByMakerId(Long makerId);
 
 }
